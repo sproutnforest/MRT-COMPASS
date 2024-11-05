@@ -1,6 +1,6 @@
 name: mrt
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
@@ -16,12 +16,12 @@ dependencies:
   flutter_screenutil: ^5.0.0+2
 
 flutter_native_splash:
-  color: "#ffffff"  # Warna latar belakang splash screen
-  image: assets/logo.png  # Ganti dengan path logo Anda
+  color: "#ffffff" # Warna latar belakang splash screen
+  image: assets/logo.png # Ganti dengan path logo Anda
   android: true
   ios: true
   web: false
-  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -32,4 +32,7 @@ flutter:
   assets:
     - assets/pt1.png
     - assets/tr1.png
-    - assets/s1.png
+    - assets/rmh.png
+    - assets/tangga.png
+    - assets/logo.png
+    - assets/longtrain.png

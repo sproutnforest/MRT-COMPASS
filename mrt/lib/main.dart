@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mrt/constant.dart'; // Keep this import
+import 'package:mrt/Screens/first_screen.dart';
 import 'presentation/splash_screen.dart';
 
 void main() {
@@ -9,13 +11,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'MyApp',
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Auth',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        primaryColor: kPrimaryColor,
+        scaffoldBackgroundColor: Colors.white,
       ),
-      home: SplashScreen(), 
       routes: {
-        '/home': (context) => MyHomePage(),
+        '/': (context) => SplashScreen(),
+        '/first': (context) => FirstScreen(),
       },
     );
   }
