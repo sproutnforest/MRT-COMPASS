@@ -12,8 +12,7 @@ dependencies:
     sdk: flutter
   sizer: ^2.0.15
   cupertino_icons: ^1.0.8
-  flutter_native_splash: ^2.0.5
-  flutter_screenutil: ^5.0.0+2
+  http: ^0.13.3
 
 flutter_native_splash:
   color: "#ffffff" # Warna latar belakang splash screen
@@ -33,6 +32,7 @@ flutter:
     - assets/pt1.png
     - assets/tr1.png
     - assets/rmh.png
+    - assets/rmh2.png
     - assets/tangga.png
-    - assets/logo.png
+    - assets/bg.png
     - assets/longtrain.png

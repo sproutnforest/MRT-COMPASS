@@ -7,10 +7,11 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 7), () {
+    Timer(const Duration(seconds: 5), () {
       Navigator.pushReplacementNamed(context, '/first');
     });
   }
@@ -20,47 +21,51 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          Center(
-            child: Container(
-              width: 700,
-              height: 850,
-              color: Color(0xFF173156),
-              child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/tr1.png',
-                      width: 150,
-                      height: 150,
-                    ),
-                    const SizedBox(height: 30),
-                    const Text(
-                      "MRT COMPASS",
-                      style: TextStyle(
-                        fontSize: 40,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.white,
-                        fontFamily: 'Montserrat',
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
           Positioned(
             bottom: 0,
             child: Container(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.3,
-              color: Color(0xFFFFAA00),
-              child: Image.asset(
-                'assets/pt1.png',
-                fit: BoxFit.cover,
-                width: double.infinity,
+              height: MediaQuery.of(context).size.height * 1,
+              color: const Color(0xFFFFAA00),
+              child: Opacity(
+                opacity:
+                    0.5, // Ganti nilai ini untuk mengatur tingkat opacity (0.0 - 1.0)
+                child: Image.asset(
+                  'assets/pt1.png',
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                ),
               ),
+            ),
+          ),
+          Transform.translate(
+            offset: const Offset(125, 350),
+            child: Container(
+              child: Image.asset(
+                'assets/tr1.png',
+                width: 200,
+                height: 200,
+              ),
+            ),
+          ),
+          Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 50),
+                Transform.translate(
+                  offset: const Offset(0, -165),
+                  child: const Text(
+                    "MRT COMPASS",
+                    style: TextStyle(
+                      fontSize: 45,
+                      fontWeight: FontWeight.w800,
+                      color: Color(0xFF173156),
+                      fontFamily: 'Montserrat',
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
