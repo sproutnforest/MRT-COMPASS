@@ -33,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Transform.translate(
-                  offset: Offset(-155, 440),
+                  offset: const Offset(-155, 440),
                   child: Image.asset(
                     'assets/rmh2.png',
                     fit: BoxFit.contain,
@@ -103,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Transform.translate(
-                    offset: Offset(-90, -110),
+                    offset: const Offset(-90, -110),
                     child: const Text(
                       "Login",
                       style: TextStyle(
@@ -140,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
       padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
       width: 300,
       decoration: BoxDecoration(
-        color: Color(0xFFFFAA00),
+        color: const Color(0xFFFFAA00),
         borderRadius: BorderRadius.circular(50),
       ),
       child: Row(
@@ -179,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         width: 300,
         decoration: BoxDecoration(
-          color: Color(0xFF173156),
+          color: const Color(0xFF173156),
           borderRadius: BorderRadius.circular(50),
         ),
         child: const Row(

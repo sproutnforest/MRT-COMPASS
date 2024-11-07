@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:mrt/constant.dart'; // Keep this import
 import 'package:mrt/Screens/first_screen.dart';
-import 'presentation/splash_screen.dart';
-
+import 'package:mrt/Screens/Home_screen.dart';  // Ganti dengan HomePage atau Home_screen yang benar
+import 'package:mrt/presentation/splash_screen.dart';
+import 'package:mrt/constant.dart'; // Pastikan kPrimaryColor ada di sini
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,24 +21,12 @@ class MyApp extends StatelessWidget {
         primaryColor: kPrimaryColor,
         scaffoldBackgroundColor: Colors.white,
       ),
+      initialRoute: '/', // Route pertama yang akan dibuka
       routes: {
-        '/': (context) => SplashScreen(),
-        '/first': (context) => FirstScreen(),
+        '/': (context) => SplashScreen(), // SplashScreen
+        '/first': (context) => FirstScreen(), // FirstScreen
+        '/home': (context) => HomePage(), // Ganti dengan kelas yang benar, HomePage
       },
-    );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Home Page"),
-      ),
-      body: const Center(
-        child: Text("This is the Home Page!"),
-      ),
     );
   }
 }
