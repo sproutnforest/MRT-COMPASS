@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mrt/constant.dart'; // Pastikan kPrimaryColor ada di sini
 import 'package:mrt/Screens/first_screen.dart';
-import 'package:mrt/Screens/Home_screen.dart';  // Pastikan kelas yang benar untuk HomePage
+import 'package:mrt/Screens/home_screen.dart';  // Pastikan kelas yang benar untuk HomePage
 import 'package:mrt/presentation/splash_screen.dart';
 
 void main() {

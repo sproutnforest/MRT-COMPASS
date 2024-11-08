@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-// Pastikan kPrimaryColor ada di sini
+import 'package:mrt/constant.dart'; 
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,16 +10,16 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         title: Image.asset(
-          'assets/logo.png', // Ganti dengan path logo Anda
+          'assets/logo.png', // Replace with the correct path for your logo
           height: 30,
         ),
         centerTitle: true,
       ),
       body: Column(
         children: [
-          // Bagian Selamat Datang
+          // Welcome Section
           Container(
-            color: Colors.blue.shade900,
+            color: kPrimaryColor, // Replacing with your primary color constant
             padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,8 +44,18 @@ class HomePage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _buildLocationCard('Tujuan Kamu', 'Set lokasi Anda', Icons.location_on, Colors.blue.shade800),
-                    _buildLocationCard('Hello, Budi', 'Saldo: Rp. 100.000', Icons.account_balance_wallet, Colors.green.shade800),
+                    _buildLocationCard(
+                      'Tujuan Kamu', 
+                      'Set lokasi Anda', 
+                      Icons.location_on, 
+                      Colors.blue.shade800,
+                    ),
+                    _buildLocationCard(
+                      'Hello, Budi', 
+                      'Saldo: Rp. 100.000', 
+                      Icons.account_balance_wallet, 
+                      Colors.green.shade800,
+                    ),
                   ],
                 ),
               ],
@@ -55,17 +64,17 @@ class HomePage extends StatelessWidget {
           
           const SizedBox(height: 20),
           
-          // Tombol Beli Tiket
+          // Ticket Purchase Button
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green, // Mengganti primary dengan backgroundColor
+              backgroundColor: Colors.green, // Use backgroundColor instead of primary
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
             onPressed: () {
-              // Tambahkan aksi beli tiket
+              // Add ticket purchase action here
             },
             child: const Text(
               'Beli Tiket',
@@ -78,13 +87,13 @@ class HomePage extends StatelessWidget {
           
           const SizedBox(height: 20),
           
-          // Bagian Informasi
+          // Information Section with Grid
           Expanded(
             child: GridView.count(
               crossAxisCount: 3,
               padding: const EdgeInsets.all(10),
               children: [
-                _buildInfoCard('Arah MRT', 'assets/icon_direction.png'), // Ganti dengan ikon yang sesuai
+                _buildInfoCard('Arah MRT', 'assets/icon_direction.png'), // Replace with appropriate icon
                 _buildInfoCard('Jadwal', 'assets/icon_schedule.png'),
                 _buildInfoCard('Panduan', 'assets/icon_guide.png'),
               ],
@@ -93,21 +102,29 @@ class HomePage extends StatelessWidget {
         ],
       ),
       
-      // Navigasi Bawah
+      // Bottom Navigation
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.train), label: 'Train'),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
         ],
-        selectedItemColor: Colors.blue,
+        selectedItemColor: kPrimaryColor,
+        unselectedItemColor: Colors.grey,
+        onTap: (index) {
+          // Handle bottom navigation actions here
+        },
       ),
     );
   }
 
+  // Card for Location Information
   Widget _buildLocationCard(String title, String subtitle, IconData icon, Color color) {
     return Card(
       color: color,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
       child: Container(
         width: 150,
         padding: const EdgeInsets.all(15),
@@ -131,9 +148,13 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  // Card for Additional Information
   Widget _buildInfoCard(String title, String imagePath) {
     return Card(
       elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
