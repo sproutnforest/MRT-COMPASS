@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'first_screen.dart';
 import 'login_screen.dart';
 
 class PasswordValidator {
@@ -56,7 +55,6 @@ class RegisterScreenState extends State<RegisterScreen> {
       body: Stack(
         children: [
           _buildBackground(size),
-          _buildBackAndNextButtons(),
           _buildRegisterForm(size),
         ],
       ),
@@ -106,43 +104,6 @@ class RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget _buildBackAndNextButtons() {
-    return Positioned(
-      top: 50,
-      left: 20,
-      right: 20,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const FirstScreen()),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-            ),
-            child: const Text("Back"),
-          ),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-            ),
-            child: const Text("Next"),
-          ),
-        ],
-      ),
-    );
-  }
 
   Widget _buildRegisterForm(Size size) {
     return Center(
@@ -151,9 +112,9 @@ class RegisterScreenState extends State<RegisterScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-        const SizedBox(height: 50),
+        const SizedBox(height: 0),
             Transform.translate(
-              offset: const Offset(-90, -80),
+                offset: const Offset(0, 50),
               child: const Text(
                 "Register",
                 style: TextStyle(fontSize: 50, fontWeight: FontWeight.w900),

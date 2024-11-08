@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'first_screen.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -28,7 +27,6 @@ class LoginScreenState extends State<LoginScreen> {
       body: Stack(
         children: [
           _buildBackground(size),
-          _buildBackAndNextButtons(),
           _buildLoginForm(size),
         ],
       ),
@@ -78,44 +76,6 @@ class LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildBackAndNextButtons() {
-    return Positioned(
-      top: 50,
-      left: 20,
-      right: 20,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const FirstScreen()),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-            ),
-            child: const Text("Back"),
-          ),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-            ),
-            child: const Text("Next"),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildLoginForm(Size size) {
     return Center(
       child: SingleChildScrollView(
@@ -125,7 +85,7 @@ class LoginScreenState extends State<LoginScreen> {
           children: [
             const SizedBox(height: 50),
             Transform.translate(
-              offset: const Offset(-90, -80),
+              offset: const Offset(0, 0),
               child: const Text(
                 "Login",
                 style: TextStyle(fontSize: 50, fontWeight: FontWeight.w900),
