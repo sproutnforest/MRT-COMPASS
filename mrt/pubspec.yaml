@@ -13,7 +13,6 @@ dependencies:
   sizer: ^2.0.15
   cupertino_icons: ^1.0.8
   http: ^0.13.3
-  cloud_firestore: ^5.4.5
 
 flutter_native_splash:
   color: "#ffffff" # Warna latar belakang splash screen
