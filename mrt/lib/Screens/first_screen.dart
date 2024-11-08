@@ -3,16 +3,17 @@ import 'login_screen.dart';
 import 'register_screen.dart';
 
 class FirstScreen extends StatelessWidget {
+  const FirstScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          // Layer longtrain.png dan rmh2.png di belakang
           Positioned(
             child: Transform.translate(
-              offset: Offset(80, -330),
+              offset: const Offset(80, -330),
               child: Image.asset(
                 'assets/rmh2.png',
                 width: 320,
@@ -22,7 +23,7 @@ class FirstScreen extends StatelessWidget {
           ),
           Positioned(
             child: Transform.translate(
-              offset: Offset(0, -330),
+              offset: const Offset(0, -330),
               child: Image.asset(
                 'assets/longtrain.png',
                 width: 500,
@@ -30,7 +31,6 @@ class FirstScreen extends StatelessWidget {
               ),
             ),
           ),
-          // Layer pt1.png di atas longtrain.png dan rmh2.png
           Positioned(
             bottom: 0,
             left: 0,
@@ -63,7 +63,6 @@ class FirstScreen extends StatelessWidget {
               ),
             ),
           ),
-          // Konten utama dengan tombol Login dan Register
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -95,11 +94,11 @@ class FirstScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                      MaterialPageRoute(builder: (context) => const LoginScreen()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFFFAA00),
+                    backgroundColor: const Color(0xFFFFAA00),
                     padding: const EdgeInsets.symmetric(horizontal: 110, vertical: 20),
                     textStyle: const TextStyle(fontSize: 25),
                     shape: RoundedRectangleBorder(
@@ -125,11 +124,11 @@ class FirstScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => RegisterScreen()),
+                      MaterialPageRoute(builder: (context) => const RegisterScreen()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFFFAA00),
+                    backgroundColor: const Color(0xFFFFAA00),
                     padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
                     textStyle: const TextStyle(fontSize: 25),
                     shape: RoundedRectangleBorder(

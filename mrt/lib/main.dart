@@ -5,10 +5,12 @@ import 'presentation/splash_screen.dart';
 
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,19 +22,21 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
       ),
       routes: {
-        '/': (context) => SplashScreen(),
-        '/first': (context) => FirstScreen(),
+        '/': (context) => const SplashScreen(),
+        '/first': (context) => const FirstScreen(),
       },
     );
   }
 }
 
 class MyHomePage extends StatelessWidget {
+  const MyHomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Home Page"),
+        title: const Text("Home Page"),
       ),
       body: const Center(
         child: Text("This is the Home Page!"),
