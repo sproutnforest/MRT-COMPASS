@@ -5,15 +5,15 @@ class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  SplashScreenState createState() => SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 5), () {
+    Timer(const Duration(seconds: 7), () {
       Navigator.pushReplacementNamed(context, '/first');
     });
   }
@@ -42,12 +42,10 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
           Transform.translate(
             offset: const Offset(125, 350),
-            child: Container(
-              child: Image.asset(
-                'assets/tr1.png',
-                width: 200,
-                height: 200,
-              ),
+            child: Image.asset(
+              'assets/tr1.png',
+              width: 200,
+              height: 200,
             ),
           ),
           Center(

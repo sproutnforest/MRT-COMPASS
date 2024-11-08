@@ -11,7 +11,6 @@ class FirstScreen extends StatelessWidget {
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          // Layer longtrain.png dan rmh2.png di belakang
           Positioned(
             child: Transform.translate(
               offset: const Offset(80, -330),
@@ -32,7 +31,6 @@ class FirstScreen extends StatelessWidget {
               ),
             ),
           ),
-          // Layer pt1.png di atas longtrain.png dan rmh2.png
           Positioned(
             bottom: 0,
             left: 0,
@@ -65,7 +63,6 @@ class FirstScreen extends StatelessWidget {
               ),
             ),
           ),
-          // Konten utama dengan tombol Login dan Register
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
