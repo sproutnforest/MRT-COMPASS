@@ -21,10 +21,10 @@ class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
   @override
-  RegisterScreenState createState() => RegisterScreenState();
+  _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-class RegisterScreenState extends State<RegisterScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool _showPassword = false;
@@ -56,43 +56,6 @@ class RegisterScreenState extends State<RegisterScreen> {
       body: Stack(
         children: [
           _buildBackground(size),
-          Positioned(
-            top: 50,
-            left: 20,
-            right: 20,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const FirstScreen()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  child: const Text("Back"),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Aksi untuk tombol Next
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  child: const Text("Next"),
-                ),
-              ],
-            ),
-          ),
           _buildRegisterForm(size),
         ],
       ),
@@ -149,9 +112,9 @@ class RegisterScreenState extends State<RegisterScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 0),
+            const SizedBox(height: 50),
             Transform.translate(
-              offset: const Offset(0, 50),
+              offset: const Offset(0, 0),
               child: const Text(
                 "Register",
                 style: TextStyle(fontSize: 50, fontWeight: FontWeight.w900),
@@ -227,50 +190,47 @@ class RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget buildRegisterButton(Size size) {
-    return Transform.translate(
-      offset: const Offset(0, 40),
-      child: GestureDetector(
-        onTap: () {
-          if (isLongEnough && hasUpperLowerCase && hasSymbol) {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text("Registration Successful"),
-                  content: const Text("You have registered successfully!"),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text("OK"),
-                    ),
-                  ],
-                );
-              },
-            );
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Please meet all password requirements.")),
-            );
-          }
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-          width: 300,
-          decoration: BoxDecoration(
-            color: const Color(0xFF173156),
-            borderRadius: BorderRadius.circular(50),
-          ),
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.person_add, color: Colors.white),
-              SizedBox(width: 20),
-              Text(
-                "Register",
-                style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
+    return GestureDetector(
+      onTap: () {
+        if (isLongEnough && hasUpperLowerCase && hasSymbol) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text("Registration Successful"),
+                content: const Text("You have registered successfully!"),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text("OK"),
+                  ),
+                ],
+              );
+            },
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Please meet all password requirements.")),
+          );
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+        width: 300,
+        decoration: BoxDecoration(
+          color: const Color(0xFF173156),
+          borderRadius: BorderRadius.circular(50),
+        ),
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.person_add, color: Colors.white),
+            SizedBox(width: 20),
+            Text(
+              "Register",
+              style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ],
         ),
       ),
     );
