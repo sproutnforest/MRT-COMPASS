@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mrt/constant.dart'; // Pastikan kPrimaryColor ada di sini
+// Pastikan kPrimaryColor ada di sini
 
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,11 +21,11 @@ class HomePage extends StatelessWidget {
           // Bagian Selamat Datang
           Container(
             color: Colors.blue.shade900,
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Selamat datang teman MRT Compass!',
                   style: TextStyle(
                     color: Colors.white,
@@ -31,15 +33,15 @@ class HomePage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 5),
-                Text(
+                const SizedBox(height: 5),
+                const Text(
                   'Mau ke mana kita hari ini?',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -51,13 +53,13 @@ class HomePage extends StatelessWidget {
             ),
           ),
           
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           
           // Tombol Beli Tiket
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.green, // Mengganti primary dengan backgroundColor
-              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -65,7 +67,7 @@ class HomePage extends StatelessWidget {
             onPressed: () {
               // Tambahkan aksi beli tiket
             },
-            child: Text(
+            child: const Text(
               'Beli Tiket',
               style: TextStyle(
                 color: Colors.white,
@@ -74,13 +76,13 @@ class HomePage extends StatelessWidget {
             ),
           ),
           
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           
           // Bagian Informasi
           Expanded(
             child: GridView.count(
               crossAxisCount: 3,
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               children: [
                 _buildInfoCard('Arah MRT', 'assets/icon_direction.png'), // Ganti dengan ikon yang sesuai
                 _buildInfoCard('Jadwal', 'assets/icon_schedule.png'),
@@ -93,7 +95,7 @@ class HomePage extends StatelessWidget {
       
       // Navigasi Bawah
       bottomNavigationBar: BottomNavigationBar(
-        items: [
+        items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.train), label: 'Train'),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
@@ -108,20 +110,20 @@ class HomePage extends StatelessWidget {
       color: color,
       child: Container(
         width: 150,
-        padding: EdgeInsets.all(15),
+        padding: const EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Icon(icon, color: Colors.white, size: 30),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               title,
-              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+              style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Text(
               subtitle,
-              style: TextStyle(color: Colors.white, fontSize: 12),
+              style: const TextStyle(color: Colors.white, fontSize: 12),
             ),
           ],
         ),
@@ -140,10 +142,10 @@ class HomePage extends StatelessWidget {
             height: 50,
             width: 50,
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Text(
             title,
-            style: TextStyle(fontSize: 14),
+            style: const TextStyle(fontSize: 14),
             textAlign: TextAlign.center,
           ),
         ],

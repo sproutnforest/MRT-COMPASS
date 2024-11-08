@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const SplashScreen(), // SplashScreen
         '/first': (context) => const FirstScreen(), // FirstScreen
-        '/home': (context) => HomePage(), // HomePage sebagai rute tambahan
+        '/home': (context) => const HomePage(), // HomePage sebagai rute tambahan
       },
     );
   }
