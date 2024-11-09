@@ -33,45 +33,64 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("EDIT PROFIL"),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: Color(0xFF173156),
+        foregroundColor: Colors.white,
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            const CircleAvatar(
-              radius: 50,
-              backgroundImage: AssetImage('assets/profile_image.png'),
-            ),
-            IconButton(
-              icon: Icon(Icons.camera_alt, color: Colors.orange),
-              onPressed: () {
-                // Aksi untuk mengubah foto
-              },
+            Stack(
+              children: [
+                const CircleAvatar(
+                  radius: 70,
+                  backgroundImage: AssetImage('assets/profile_image.png'),
+                ),
+                Positioned(
+                  bottom: 5,
+                  right: 5,
+                  child: GestureDetector(
+                    onTap: () {
+                      
+                    },
+                    child: CircleAvatar(
+                      radius: 18,
+                      backgroundColor: Colors.orange,
+                      child: Icon(
+                        Icons.camera_alt,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 20),
             TextField(
               controller: nameController,
               decoration: InputDecoration(labelText: "Nama"),
             ),
+            const SizedBox(height: 20),
             TextField(
               controller: emailController,
               decoration: InputDecoration(labelText: "Email"),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 40),
             ElevatedButton(
               onPressed: () {
-                // Kembalikan data yang diperbarui ke halaman profil
                 Navigator.pop(context, {
                   'name': nameController.text,
                   'email': emailController.text,
                 });
               },
-              child: Text("Save"),
+              child: Text("Save", style: TextStyle(color: Colors.white, fontSize: 16),),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
+                minimumSize: Size(150, 45),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(18),
                 ),
               ),
             ),
