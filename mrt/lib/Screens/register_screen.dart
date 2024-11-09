@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
-import 'first_screen.dart';
+
 
 class PasswordValidator {
   static bool isLongEnough(String password) => password.length >= 8;
@@ -21,10 +21,10 @@ class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
   @override
-  _RegisterScreenState createState() => _RegisterScreenState();
+  RegisterScreenState createState() => RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool _showPassword = false;
@@ -55,14 +55,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          _buildBackground(size),
-          _buildRegisterForm(size),
+          buildBackground(size),
+          buildRegisterForm(size),
         ],
       ),
     );
   }
 
-  Widget _buildBackground(Size size) {
+  Widget buildBackground(Size size) {
     return Stack(
       children: [
         Positioned(
@@ -105,7 +105,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget _buildRegisterForm(Size size) {
+  Widget buildRegisterForm(Size size) {
     return Center(
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -134,7 +134,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             const SizedBox(height: 20),
             buildRegisterButton(size),
             const SizedBox(height: 55),
-            _buildLoginText(),
+            buildLoginText(),
           ],
         ),
       ),
@@ -236,7 +236,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget _buildLoginText() {
+  Widget buildLoginText() {
     return GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()));

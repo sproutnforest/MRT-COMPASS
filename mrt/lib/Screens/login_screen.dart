@@ -26,14 +26,14 @@ class LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          _buildBackground(size),
-          _buildLoginForm(size),
+          buildBackground(size),
+          buildLoginForm(size),
         ],
       ),
     );
   }
 
-  Widget _buildBackground(Size size) {
+  Widget buildBackground(Size size) {
     return Stack(
       children: [
         Positioned(
@@ -76,7 +76,7 @@ class LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildLoginForm(Size size) {
+  Widget buildLoginForm(Size size) {
     return Center(
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 25),
