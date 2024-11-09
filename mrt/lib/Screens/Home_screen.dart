@@ -1,25 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:mrt/constant.dart'; 
+import 'package:mrt/constant.dart'; // Ensure this is where your colors and constants are defined
+import 'profile_screen.dart'; // Import the profile screen here
+import 'feed_screen.dart'; // Import Feed screen (Create this if needed)
+import 'ticket_screen.dart'; // Import Ticket screen (Create this if needed)
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Image.asset(
-          'assets/logo.png', // Replace with the correct path for your logo
-          height: 30,
-        ),
-        centerTitle: true,
+        toolbarHeight: 0, // Hide app bar for custom top section
       ),
       body: Column(
         children: [
+          // Top Points Section - Make this clickable to navigate to Profile
+          GestureDetector(
+            onTap: () {
+              // Navigate to Profile Screen when Points are tapped
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfileScreen()), // ProfileScreen
+              );
+            },
+            child: Container(
+              color: Colors.green,
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: const Center(
+                child: Text(
+                  '96000 Points',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+
           // Welcome Section
           Container(
-            color: kPrimaryColor, // Replacing with your primary color constant
+            color: kPrimaryColor,
             padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,29 +70,29 @@ class HomePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     _buildLocationCard(
-                      'Tujuan Kamu', 
-                      'Set lokasi Anda', 
-                      Icons.location_on, 
+                      'Tujuan Kamu',
+                      'Kemana kita hari ini?',
+                      Icons.directions,
                       Colors.blue.shade800,
                     ),
                     _buildLocationCard(
-                      'Hello, Budi', 
-                      'Saldo: Rp. 100.000', 
-                      Icons.account_balance_wallet, 
-                      Colors.green.shade800,
+                      'Halte & Rute',
+                      'Telusuri Halte dan Rute',
+                      Icons.map,
+                      Colors.orange.shade800,
                     ),
                   ],
                 ),
               ],
             ),
           ),
-          
+
           const SizedBox(height: 20),
-          
+
           // Ticket Purchase Button
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green, // Use backgroundColor instead of primary
+              backgroundColor: Colors.green,
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -84,9 +109,9 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-          
+
           const SizedBox(height: 20),
-          
+
           // Information Section with Grid
           Expanded(
             child: GridView.count(
@@ -101,18 +126,42 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      
-      // Bottom Navigation
+
+      // Bottom Navigation with 4 Items (Home, Feed, Ticket, Profile)
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.train), label: 'Train'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
+          BottomNavigationBarItem(icon: Icon(Icons.feed), label: 'Feed'), // Added Feed icon
+          BottomNavigationBarItem(icon: Icon(Icons.confirmation_number), label: 'Ticket'), // Added Ticket icon
+          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'Profile'),
         ],
         selectedItemColor: kPrimaryColor,
         unselectedItemColor: Colors.grey,
         onTap: (index) {
           // Handle bottom navigation actions here
+          switch (index) {
+            case 0:
+              // Navigate to Home (currently on Home page)
+              break;
+            case 1:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const FeedScreen()), // Navigate to Feed Screen
+              );
+              break;
+            case 2:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const TicketScreen()), // Navigate to Ticket Screen
+              );
+              break;
+            case 3:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfileScreen()), // Navigate to Profile Screen
+              );
+              break;
+          }
         },
       ),
     );

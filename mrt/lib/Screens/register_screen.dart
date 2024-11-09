@@ -1,21 +1,6 @@
 import 'package:flutter/material.dart';
-import 'login_screen.dart';
-
-
-class PasswordValidator {
-  static bool isLongEnough(String password) => password.length >= 8;
-
-  static bool hasUpperLowerCase(String password) {
-    final upperCaseRegex = RegExp(r'[A-Z]');
-    final lowerCaseRegex = RegExp(r'[a-z]');
-    return upperCaseRegex.hasMatch(password) && lowerCaseRegex.hasMatch(password);
-  }
-
-  static bool hasSymbol(String password) {
-    final symbolRegex = RegExp(r'[!@#\$&*~]');
-    return symbolRegex.hasMatch(password);
-  }
-}
+import 'home_screen.dart';
+import 'login_screen.dart'; // Ensure this import points to the correct HomeScreen file
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -28,25 +13,12 @@ class RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool _showPassword = false;
-  bool isLongEnough = false;
-  bool hasUpperLowerCase = false;
-  bool hasSymbol = false;
-  bool isTyping = false;
 
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
-  }
-
-  void checkPasswordCriteria(String password) {
-    setState(() {
-      isTyping = password.isNotEmpty;
-      isLongEnough = PasswordValidator.isLongEnough(password);
-      hasUpperLowerCase = PasswordValidator.hasUpperLowerCase(password);
-      hasSymbol = PasswordValidator.hasSymbol(password);
-    });
   }
 
   @override
@@ -62,6 +34,7 @@ class RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
+  // Background Widget
   Widget buildBackground(Size size) {
     return Stack(
       children: [
@@ -105,42 +78,79 @@ class RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
+  // Register Form Widget
   Widget buildRegisterForm(Size size) {
-    return Center(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Column(
+    return Stack(
+      children: [
+        Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 50),
+                Transform.translate(
+                  offset: const Offset(0, 0),
+                  child: const Text(
+                    "Register",
+                    style: TextStyle(fontSize: 50, fontWeight: FontWeight.w900),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                buildTextField("Your Email", Icons.email, emailController, false),
+                const SizedBox(height: 15),
+                buildTextField("Password", Icons.lock, passwordController, true),
+                const SizedBox(height: 20),
+                buildRegisterButton(size),
+                const SizedBox(height: 20),
+                buildLoginText(),
+              ],
+            ),
+          ),
+        ),
+        // Positioned Next Button
+        Positioned(
+          top: 30, // Position the button 30px from the top of the screen
+          right: 20, // Position the button 20px from the right side
+          child: buildNextButton(size),
+        ),
+      ],
+    );
+  }
+
+  // "Next" Button widget for immediate navigation
+  Widget buildNextButton(Size size) {
+    return GestureDetector(
+      onTap: () {
+        // Directly navigate to HomeScreen when the "Next" button is clicked
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()), // Direct navigation
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+        width: 300,
+        decoration: BoxDecoration(
+          color: const Color(0xFF173156),
+          borderRadius: BorderRadius.circular(50),
+        ),
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 50),
-            Transform.translate(
-              offset: const Offset(0, 0),
-              child: const Text(
-                "Register",
-                style: TextStyle(fontSize: 50, fontWeight: FontWeight.w900),
-              ),
+            Icon(Icons.arrow_forward, color: Colors.white),
+            SizedBox(width: 20),
+            Text(
+              "Skip",
+              style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 20),
-            buildTextField("Your Email", Icons.email, emailController, false),
-            const SizedBox(height: 15),
-            buildTextField("Password", Icons.lock, passwordController, true),
-            const SizedBox(height: 10),
-            if (isTyping)
-              PasswordCriteria(
-                isLongEnough: isLongEnough,
-                hasUpperLowerCase: hasUpperLowerCase,
-                hasSymbol: hasSymbol,
-              ),
-            const SizedBox(height: 20),
-            buildRegisterButton(size),
-            const SizedBox(height: 55),
-            buildLoginText(),
           ],
         ),
       ),
     );
   }
 
+  // Text field widget for email/password
   Widget buildTextField(String hintText, IconData icon, TextEditingController controller, bool isPassword) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
@@ -159,11 +169,6 @@ class RegisterScreenState extends State<RegisterScreen> {
             child: TextField(
               controller: controller,
               obscureText: isPassword ? !_showPassword : false,
-              onChanged: (value) {
-                if (isPassword) {
-                  checkPasswordCriteria(value);
-                }
-              },
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: hintText,
@@ -189,30 +194,11 @@ class RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
+  // Register Button Widget (Optional, can be used if you want a registration process)
   Widget buildRegisterButton(Size size) {
     return GestureDetector(
       onTap: () {
-        if (isLongEnough && hasUpperLowerCase && hasSymbol) {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text("Registration Successful"),
-                content: const Text("You have registered successfully!"),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text("OK"),
-                  ),
-                ],
-              );
-            },
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Please meet all password requirements.")),
-          );
-        }
+        // You can place registration logic here if needed
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
@@ -236,6 +222,7 @@ class RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
+  // Login Text Widget
   Widget buildLoginText() {
     return GestureDetector(
       onTap: () {
@@ -254,41 +241,6 @@ class RegisterScreenState extends State<RegisterScreen> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class PasswordCriteria extends StatelessWidget {
-  final bool isLongEnough;
-  final bool hasUpperLowerCase;
-  final bool hasSymbol;
-
-  const PasswordCriteria({
-    super.key,
-    required this.isLongEnough,
-    required this.hasUpperLowerCase,
-    required this.hasSymbol,
-  });
-
-  Widget buildCriteriaRow(String criteria, bool isMet) {
-    return Row(
-      children: [
-        Icon(isMet ? Icons.check : Icons.close, color: isMet ? Colors.green : Colors.red, size: 20),
-        const SizedBox(width: 10),
-        Text(criteria),
-      ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        buildCriteriaRow("At least 8 characters", isLongEnough),
-        buildCriteriaRow("Contains upper and lower case letters", hasUpperLowerCase),
-        buildCriteriaRow("Contains at least one symbol", hasSymbol),
-      ],
     );
   }
 }
