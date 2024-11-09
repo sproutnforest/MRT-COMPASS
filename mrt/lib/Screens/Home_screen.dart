@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
               // Navigate to Profile Screen when Points are tapped
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => profile_screen()), // ProfileScreen
+                MaterialPageRoute(builder: (context) => ProfileScreen()), // ProfileScreen
               );
             },
             child: Container(
@@ -158,7 +158,7 @@ class HomePage extends StatelessWidget {
             case 3:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => profile_screen()), // Navigate to Profile Screen
+                MaterialPageRoute(builder: (context) => ProfileScreen()), // Navigate to Profile Screen
               );
               break;
           }

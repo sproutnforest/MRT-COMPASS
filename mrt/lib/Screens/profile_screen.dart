@@ -2,7 +2,23 @@ import 'package:flutter/material.dart';
 import 'edit_profile_screen.dart';
 import 'change_pass_screen.dart';
 
-class profile_screen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  String name = "Don Key";
+  String email = "donkey1@example.com";
+
+  // Fungsi untuk update profil
+  void updateProfile(String newName, String newEmail) {
+    setState(() {
+      name = newName;
+      email = newEmail;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,24 +31,33 @@ class profile_screen extends StatelessWidget {
           const SizedBox(height: 20),
           const CircleAvatar(
             radius: 50,
-            backgroundImage: AssetImage('assets/profile_image.png'), 
+            backgroundImage: AssetImage('assets/profile_image.png'),
           ),
           const SizedBox(height: 10),
           Text(
-            "Don Key",
+            name,
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           Text(
-            "donkey1@example.com",
+            email,
             style: TextStyle(color: Colors.grey[600]),
           ),
           SizedBox(height: 20),
           ElevatedButton(
-            onPressed: () {
-              Navigator.push(
+            onPressed: () async {
+              final result = await Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => edit_profile_screen()),
+                MaterialPageRoute(
+                  builder: (context) => EditProfileScreen(
+                    currentName: name,
+                    currentEmail: email,
+                  ),
+                ),
               );
+
+              if (result != null) {
+                updateProfile(result['name'], result['email']);
+              }
             },
             child: Text("Edit Profil"),
             style: ElevatedButton.styleFrom(
@@ -52,7 +77,9 @@ class profile_screen extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => change_pass_screen()),
+                      MaterialPageRoute(
+                        builder: (context) => change_pass_screen(),
+                      ),
                     );
                   },
                 ),
@@ -64,7 +91,7 @@ class profile_screen extends StatelessWidget {
                   text: "Logout",
                   iconColor: Colors.red,
                   onTap: () {
-                    
+                    // Aksi logout
                   },
                 ),
               ],
