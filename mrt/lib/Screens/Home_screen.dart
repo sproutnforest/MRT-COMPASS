@@ -152,7 +152,7 @@ class HomePage extends StatelessWidget {
             case 2:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const TicketScreen()), // Navigate to Ticket Screen
+                MaterialPageRoute(builder: (context) =>  TicketHistoryScreen()), // Navigate to Ticket Screen
               );
               break;
             case 3:
