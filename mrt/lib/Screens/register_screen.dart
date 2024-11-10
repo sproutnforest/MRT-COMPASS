@@ -10,12 +10,14 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class RegisterScreenState extends State<RegisterScreen> {
+  final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool _showPassword = false;
 
   @override
   void dispose() {
+    nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -97,9 +99,12 @@ class RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                buildTextField("Your Email", Icons.email, emailController, false),
+                buildTextField("Name", Icons.person, nameController, false),
+                const SizedBox(height: 20),
+                buildTextField("Email", Icons.email, emailController, false),
                 const SizedBox(height: 15),
-                buildTextField("Password", Icons.lock, passwordController, true),
+                buildTextField(
+                    "Password", Icons.lock, passwordController, true),
                 const SizedBox(height: 20),
                 buildRegisterButton(size),
                 const SizedBox(height: 20),
@@ -125,7 +130,8 @@ class RegisterScreenState extends State<RegisterScreen> {
         // Directly navigate to HomeScreen when the "Next" button is clicked
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()), // Direct navigation
+          MaterialPageRoute(
+              builder: (context) => const HomePage()), // Direct navigation
         );
       },
       child: Container(
@@ -142,7 +148,10 @@ class RegisterScreenState extends State<RegisterScreen> {
             SizedBox(width: 20),
             Text(
               "Skip",
-              style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -150,8 +159,9 @@ class RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  // Text field widget for email/password
-  Widget buildTextField(String hintText, IconData icon, TextEditingController controller, bool isPassword) {
+  // Text field widget for name/email/password
+  Widget buildTextField(String hintText, IconData icon,
+      TextEditingController controller, bool isPassword) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       width: 300,
@@ -176,7 +186,9 @@ class RegisterScreenState extends State<RegisterScreen> {
                 suffixIcon: isPassword
                     ? IconButton(
                         icon: Icon(
-                          _showPassword ? Icons.visibility : Icons.visibility_off,
+                          _showPassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
                           color: Colors.black,
                         ),
                         onPressed: () {
@@ -214,7 +226,10 @@ class RegisterScreenState extends State<RegisterScreen> {
             SizedBox(width: 20),
             Text(
               "Register",
-              style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -226,18 +241,23 @@ class RegisterScreenState extends State<RegisterScreen> {
   Widget buildLoginText() {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()));
       },
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             "Already have an Account? ",
-            style: TextStyle(color: Color.fromARGB(255, 92, 92, 92), fontSize: 14),
+            style:
+                TextStyle(color: Color.fromARGB(255, 92, 92, 92), fontSize: 14),
           ),
           Text(
             "Login",
-            style: TextStyle(color: Color.fromARGB(255, 92, 92, 92), fontSize: 14, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Color.fromARGB(255, 92, 92, 92),
+                fontSize: 14,
+                fontWeight: FontWeight.bold),
           ),
         ],
       ),
