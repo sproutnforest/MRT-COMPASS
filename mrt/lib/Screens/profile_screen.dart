@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mrt/Screens/Home_screen.dart';
-import 'package:mrt/constant.dart';
 import 'edit_profile_screen.dart';
 import 'change_pass_screen.dart';
-import 'feed_screen.dart';
-import 'ticket_screen.dart';
-import 'login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -150,46 +145,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         currentIndex: _selectedIndex,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.feed), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.confirmation_number), label: ''),
-          BottomNavigationBarItem(
-            icon: CircleAvatar(
-              radius: 12,
-              backgroundImage: AssetImage('assets/profile_image.png'),
-            ),
-            label: '',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.article), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.local_activity), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'Profile'),
         ],
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.grey,
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-          switch (index) {
-            case 0:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const HomePage()),
-              );
-              break;
-            case 1:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const FeedScreen()),
-              );
-              break;
-            case 2:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => TicketHistoryScreen()),
-              );
-              break;
-            case 3:
-              
-              break;
-          }
-        },
         showSelectedLabels: false,
         showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
@@ -212,10 +173,7 @@ class ProfileOptionTile extends StatelessWidget {
     required this.icon,
     required this.text,
     this.onTap,
-    this.iconColor = Colors.white,
-    this.backgroundColor = Colors.orange,
-    this.iconSize = 18.0,
-    this.textColor = Colors.black
+    this.iconColor,
   });
 
   @override

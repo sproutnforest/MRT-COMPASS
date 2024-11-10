@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mrt/constant.dart'; // Ensure this is where your colors and constants are defined
-import 'profile_screen.dart'; // Import the profile screen here
 import 'feed_screen.dart'; // Import Feed screen (Create this if needed)
+import 'profile_screen.dart'; // Import the profile screen here
+import 'schedule_screen.dart';
 import 'ticket_screen.dart'; // Import Ticket screen (Create this if needed)
 
 class HomePage extends StatelessWidget {
@@ -23,7 +24,8 @@ class HomePage extends StatelessWidget {
               // Navigate to Profile Screen when Points are tapped
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ProfileScreen()), // ProfileScreen
+                MaterialPageRoute(
+                    builder: (context) => ProfileScreen()), // ProfileScreen
               );
             },
             child: Container(
@@ -118,9 +120,34 @@ class HomePage extends StatelessWidget {
               crossAxisCount: 3,
               padding: const EdgeInsets.all(10),
               children: [
-                _buildInfoCard('Arah MRT', 'assets/icon_direction.png'), // Replace with appropriate icon
-                _buildInfoCard('Jadwal', 'assets/icon_schedule.png'),
-                _buildInfoCard('Panduan', 'assets/icon_guide.png'),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ScheduleScreen()),
+                    );
+                  },
+                  child:
+                      _buildInfoCard('Arah MRT', 'assets/icon_direction.png'),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ScheduleScreen()),
+                    );
+                  },
+                  child: _buildInfoCard('Jadwal', 'assets/icon_schedule.png'),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ScheduleScreen()),
+                    );
+                  },
+                  child: _buildInfoCard('Panduan', 'assets/icon_guide.png'),
+                ),
               ],
             ),
           ),
@@ -131,9 +158,13 @@ class HomePage extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.feed), label: 'Feed'), // Added Feed icon
-          BottomNavigationBarItem(icon: Icon(Icons.confirmation_number), label: 'Ticket'), // Added Ticket icon
-          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'Profile'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.feed), label: 'Feed'), // Added Feed icon
+          BottomNavigationBarItem(
+              icon: Icon(Icons.confirmation_number),
+              label: 'Ticket'), // Added Ticket icon
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle), label: 'Profile'),
         ],
         selectedItemColor: kPrimaryColor,
         unselectedItemColor: Colors.grey,
@@ -146,19 +177,25 @@ class HomePage extends StatelessWidget {
             case 1:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const FeedScreen()), // Navigate to Feed Screen
+                MaterialPageRoute(
+                    builder: (context) =>
+                        const FeedScreen()), // Navigate to Feed Screen
               );
               break;
             case 2:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) =>  TicketHistoryScreen()), // Navigate to Ticket Screen
+                MaterialPageRoute(
+                    builder: (context) =>
+                        TicketHistoryScreen()), // Navigate to Ticket Screen
               );
               break;
             case 3:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ProfileScreen()), // Navigate to Profile Screen
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ProfileScreen()), // Navigate to Profile Screen
               );
               break;
           }
@@ -168,7 +205,8 @@ class HomePage extends StatelessWidget {
   }
 
   // Card for Location Information
-  Widget _buildLocationCard(String title, String subtitle, IconData icon, Color color) {
+  Widget _buildLocationCard(
+      String title, String subtitle, IconData icon, Color color) {
     return Card(
       color: color,
       shape: RoundedRectangleBorder(
@@ -184,7 +222,10 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 10),
             Text(
               title,
-              style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 5),
             Text(
