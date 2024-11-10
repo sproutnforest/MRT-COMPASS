@@ -7,6 +7,7 @@ import 'feed_screen.dart'; // Import Feed screen (Create this if needed)
 import 'profile_screen.dart'; // Import the profile screen here
 import 'ticket_screen.dart';
 
+
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({super.key});
 
@@ -15,8 +16,9 @@ class ScheduleScreen extends StatefulWidget {
 }
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
-  String selectedStation = 'Bundaran HI Bank DKI';
+  String selectedStation = 'Bundaran HI Bank DKI'; // Default station
 
+  // Method untuk mendapatkan jadwal berdasarkan stasiun dan arah
   List<String> getSchedule(String stationName, String direction) {
     final station = stationSchedules.firstWhere(
       (s) => s.stationName == stationName,
@@ -82,6 +84,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             const SizedBox(height: 70),
             Row(
               children: [
+                // Kolom jadwal ke arah Lebak Bulus
                 Expanded(
                   child: Container(
                     padding: const EdgeInsets.all(8.0),
@@ -144,6 +147,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   ),
                 ),
                 const SizedBox(width: 16),
+                // Kolom jadwal ke arah Bundaran HI
                 Expanded(
                   child: Container(
                     padding: const EdgeInsets.all(8.0),
@@ -193,7 +197,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                                      padding: const EdgeInsets.all(9.0),
                                       child: Text(
                                         time,
                                         textAlign: TextAlign.center,
@@ -222,7 +226,12 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               icon: Icon(Icons.confirmation_number),
               label: 'Ticket'), // Added Ticket icon
           BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle), label: 'Profile'),
+            icon: CircleAvatar(
+              radius: 12,
+              backgroundImage: AssetImage('assets/profile_image.png'),
+            ),
+            label: '',
+          ),
         ],
         selectedItemColor: const Color.fromARGB(255, 255, 255, 255),
         unselectedItemColor: Colors.grey,
@@ -230,24 +239,30 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           // Handle bottom navigation actions here
           switch (index) {
             case 0:
+              // Navigate to Home (currently on Home page)
               break;
             case 1:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const FeedScreen()),
+                MaterialPageRoute(
+                    builder: (context) =>
+                        const FeedScreen()), // Navigate to Feed Screen
               );
               break;
             case 2:
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const TicketHistoryScreen()),
+                    builder: (context) =>
+                        const TicketHistoryScreen()), // Navigate to Ticket Screen
               );
               break;
             case 3:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ProfileScreen()),
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ProfileScreen()), // Navigate to Profile Screen
               );
               break;
           }
@@ -260,10 +275,11 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   void _showModalBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: lightblue,
+      backgroundColor: bluelight,
       builder: (BuildContext context) {
         return Column(
           children: [
+            // Bagian atas modal dengan icon close dan teks
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
@@ -271,7 +287,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   IconButton(
                     icon: const Icon(Icons.close),
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.pop(
+                          context); // Menutup modal jika ikon close ditekan
                     },
                   ),
                   const SizedBox(width: 8),
@@ -283,21 +300,27 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               ),
             ),
             const Divider(),
+            // Daftar stasiun
             Expanded(
               child: ListView(
                 children: stationSchedules.map((station) {
-                  bool isSelected = station.stationName == selectedStation;
+                  bool isSelected = station.stationName ==
+                      selectedStation; // Mengecek apakah stasiun dipilih
 
                   return ListTile(
                     title: Text(station.stationName),
                     trailing: isSelected
-                        ? const Icon(Icons.check_circle, color: tertiaryColor)
+                        ? const Icon(Icons.check_circle,
+                            color:
+                                tertiaryColor) // Menampilkan tanda checklist jika dipilih
                         : null,
                     onTap: () {
                       setState(() {
-                        selectedStation = station.stationName;
+                        selectedStation =
+                            station.stationName; // Memilih stasiun
                       });
-                      Navigator.pop(context);
+                      Navigator.pop(
+                          context); // Menutup modal setelah memilih stasiun
                     },
                   );
                 }).toList(),
@@ -309,3 +332,4 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     );
   }
 }
+
