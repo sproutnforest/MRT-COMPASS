@@ -1,29 +1,57 @@
 import 'package:flutter/material.dart';
-import 'package:mrt/constant.dart'; // Pastikan kPrimaryColor ada di sini
+import 'package:mrt/constant.dart'; // Ensure this is where your colors and constants are defined
+import 'feed_screen.dart'; // Import Feed screen (Create this if needed)
+import 'profile_screen.dart'; // Import the profile screen here
+import 'schedule_screen.dart';
+import 'ticket_screen.dart'; // Import Ticket screen (Create this if needed)
 
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Image.asset(
-          'assets/logo.png', // Ganti dengan path logo Anda
-          height: 30,
-        ),
-        centerTitle: true,
+        toolbarHeight: 0, // Hide app bar for custom top section
       ),
       body: Column(
         children: [
-          // Bagian Selamat Datang
+          // Top Points Section - Make this clickable to navigate to Profile
+          GestureDetector(
+            onTap: () {
+              // Navigate to Profile Screen when Points are tapped
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ProfileScreen()), // ProfileScreen
+              );
+            },
+            child: Container(
+              color: Colors.green,
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: const Center(
+                child: Text(
+                  '96000 Points',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          // Welcome Section
           Container(
-            color: Colors.blue.shade900,
-            padding: EdgeInsets.all(20),
+            color: kPrimaryColor,
+            padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Selamat datang teman MRT Compass!',
                   style: TextStyle(
                     color: Colors.white,
@@ -31,41 +59,51 @@ class HomePage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 5),
-                Text(
+                const SizedBox(height: 5),
+                const Text(
                   'Mau ke mana kita hari ini?',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _buildLocationCard('Tujuan Kamu', 'Set lokasi Anda', Icons.location_on, Colors.blue.shade800),
-                    _buildLocationCard('Hello, Budi', 'Saldo: Rp. 100.000', Icons.account_balance_wallet, Colors.green.shade800),
+                    _buildLocationCard(
+                      'Tujuan Kamu',
+                      'Kemana kita hari ini?',
+                      Icons.directions,
+                      Colors.blue.shade800,
+                    ),
+                    _buildLocationCard(
+                      'Halte & Rute',
+                      'Telusuri Halte dan Rute',
+                      Icons.map,
+                      Colors.orange.shade800,
+                    ),
                   ],
                 ),
               ],
             ),
           ),
-          
-          SizedBox(height: 20),
-          
-          // Tombol Beli Tiket
+
+          const SizedBox(height: 20),
+
+          // Ticket Purchase Button
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green, // Mengganti primary dengan backgroundColor
-              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+              backgroundColor: Colors.green,
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
             onPressed: () {
-              // Tambahkan aksi beli tiket
+              // Add ticket purchase action here
             },
-            child: Text(
+            child: const Text(
               'Beli Tiket',
               style: TextStyle(
                 color: Colors.white,
@@ -73,55 +111,126 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-          
-          SizedBox(height: 20),
-          
-          // Bagian Informasi
+
+          const SizedBox(height: 20),
+
+          // Information Section with Grid
           Expanded(
             child: GridView.count(
               crossAxisCount: 3,
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               children: [
-                _buildInfoCard('Arah MRT', 'assets/icon_direction.png'), // Ganti dengan ikon yang sesuai
-                _buildInfoCard('Jadwal', 'assets/icon_schedule.png'),
-                _buildInfoCard('Panduan', 'assets/icon_guide.png'),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ScheduleScreen()),
+                    );
+                  },
+                  child:
+                      _buildInfoCard('Arah MRT', 'assets/icon_direction.png'),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ScheduleScreen()),
+                    );
+                  },
+                  child: _buildInfoCard('Jadwal', 'assets/icon_schedule.png'),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ScheduleScreen()),
+                    );
+                  },
+                  child: _buildInfoCard('Panduan', 'assets/icon_guide.png'),
+                ),
               ],
             ),
           ),
         ],
       ),
-      
-      // Navigasi Bawah
+
+      // Bottom Navigation with 4 Items (Home, Feed, Ticket, Profile)
       bottomNavigationBar: BottomNavigationBar(
-        items: [
+        items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.train), label: 'Train'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.feed), label: 'Feed'), // Added Feed icon
+          BottomNavigationBarItem(
+              icon: Icon(Icons.confirmation_number),
+              label: 'Ticket'), // Added Ticket icon
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle), label: 'Profile'),
         ],
-        selectedItemColor: Colors.blue,
+        selectedItemColor: kPrimaryColor,
+        unselectedItemColor: Colors.grey,
+        onTap: (index) {
+          // Handle bottom navigation actions here
+          switch (index) {
+            case 0:
+              // Navigate to Home (currently on Home page)
+              break;
+            case 1:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        const FeedScreen()), // Navigate to Feed Screen
+              );
+              break;
+            case 2:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        TicketHistoryScreen()), // Navigate to Ticket Screen
+              );
+              break;
+            case 3:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ProfileScreen()), // Navigate to Profile Screen
+              );
+              break;
+          }
+        },
       ),
     );
   }
 
-  Widget _buildLocationCard(String title, String subtitle, IconData icon, Color color) {
+  // Card for Location Information
+  Widget _buildLocationCard(
+      String title, String subtitle, IconData icon, Color color) {
     return Card(
       color: color,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
       child: Container(
         width: 150,
-        padding: EdgeInsets.all(15),
+        padding: const EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Icon(icon, color: Colors.white, size: 30),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               title,
-              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Text(
               subtitle,
-              style: TextStyle(color: Colors.white, fontSize: 12),
+              style: const TextStyle(color: Colors.white, fontSize: 12),
             ),
           ],
         ),
@@ -129,9 +238,13 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  // Card for Additional Information
   Widget _buildInfoCard(String title, String imagePath) {
     return Card(
       elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -140,10 +253,10 @@ class HomePage extends StatelessWidget {
             height: 50,
             width: 50,
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Text(
             title,
-            style: TextStyle(fontSize: 14),
+            style: const TextStyle(fontSize: 14),
             textAlign: TextAlign.center,
           ),
         ],

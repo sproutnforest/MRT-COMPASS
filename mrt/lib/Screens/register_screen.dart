@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
-import 'first_screen.dart';
 
 class PasswordValidator {
   static bool isLongEnough(String password) => password.length >= 8;
@@ -21,13 +20,14 @@ class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
   @override
-  _RegisterScreenState createState() => _RegisterScreenState();
+  RegisterScreenState createState() => RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class RegisterScreenState extends State<RegisterScreen> {
+  final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  bool _showPassword = false;
+  bool showPassword = false;
   bool isLongEnough = false;
   bool hasUpperLowerCase = false;
   bool hasSymbol = false;
@@ -35,6 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   void dispose() {
+    nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -55,51 +56,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          _buildBackground(size),
-          Positioned(
-            top: 50,
-            left: 20,
-            right: 20,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const FirstScreen()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  child: const Text("Back"),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Aksi untuk tombol Next
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  child: const Text("Next"),
-                ),
-              ],
-            ),
-          ),
-          _buildRegisterForm(size),
+          buildBackground(size),
+          buildRegisterForm(size),
         ],
       ),
     );
   }
 
-  Widget _buildBackground(Size size) {
+  Widget buildBackground(Size size) {
     return Stack(
       children: [
         Positioned(
@@ -130,7 +94,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           bottom: 500,
           right: -180,
           child: Transform.rotate(
-            angle: 45 * 3.141592653589793238 / 180,
+            angle: 45 * 3.14 / 180,
             child: Image.asset(
               'assets/tangga.png',
               width: 650,
@@ -142,36 +106,50 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget _buildRegisterForm(Size size) {
+
+  Widget buildRegisterForm(Size size) {
     return Center(
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 0),
+        const SizedBox(height: 0),
             Transform.translate(
-              offset: const Offset(0, 50),
+                offset: const Offset(0, 50),
               child: const Text(
                 "Register",
                 style: TextStyle(fontSize: 50, fontWeight: FontWeight.w900),
               ),
+            ),  const SizedBox(height: 20),
+            Transform.translate(
+              offset: const Offset(0, 50),
+              child: buildTextField("Name", Icons.person, nameController, false),
             ),
             const SizedBox(height: 20),
-            buildTextField("Your Email", Icons.email, emailController, false),
+            Transform.translate(
+              offset: const Offset(0, 50),
+              child: buildTextField("Email", Icons.email, emailController, false),
+            ),
             const SizedBox(height: 15),
-            buildTextField("Password", Icons.lock, passwordController, true),
+            Transform.translate(
+              offset: const Offset(0, 50),
+              child: buildTextField("Password", Icons.lock, passwordController, true),
+            ),
             const SizedBox(height: 10),
-            if (isTyping)
-              PasswordCriteria(
-                isLongEnough: isLongEnough,
-                hasUpperLowerCase: hasUpperLowerCase,
-                hasSymbol: hasSymbol,
+            if (isTyping) 
+              Transform.translate(
+                offset: const Offset(40, 53),
+                child: PasswordCriteria(
+                  isLongEnough: isLongEnough,
+                  hasUpperLowerCase: hasUpperLowerCase,
+                  hasSymbol: hasSymbol,
+                ),
               ),
             const SizedBox(height: 20),
             buildRegisterButton(size),
             const SizedBox(height: 55),
-            _buildLoginText(),
+            buildLoginText(),
           ],
         ),
       ),
@@ -195,7 +173,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           Expanded(
             child: TextField(
               controller: controller,
-              obscureText: isPassword ? !_showPassword : false,
+              obscureText: isPassword ? !showPassword : false,
               onChanged: (value) {
                 if (isPassword) {
                   checkPasswordCriteria(value);
@@ -208,12 +186,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 suffixIcon: isPassword
                     ? IconButton(
                         icon: Icon(
-                          _showPassword ? Icons.visibility : Icons.visibility_off,
+                          showPassword ? Icons.visibility : Icons.visibility_off,
                           color: Colors.black,
                         ),
                         onPressed: () {
                           setState(() {
-                            _showPassword = !_showPassword;
+                            showPassword = !showPassword;
                           });
                         },
                       )
@@ -254,7 +232,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           }
         },
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
           width: 300,
           decoration: BoxDecoration(
             color: const Color(0xFF173156),
@@ -276,7 +254,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget _buildLoginText() {
+  Widget buildLoginText() {
     return GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
@@ -326,8 +304,8 @@ class PasswordCriteria extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         buildCriteriaRow("At least 8 characters", isLongEnough),
-        buildCriteriaRow("Contains upper and lower case letters", hasUpperLowerCase),
-        buildCriteriaRow("Contains at least one symbol", hasSymbol),
+        buildCriteriaRow("Contains uppercase and lowercase letters", hasUpperLowerCase),
+        buildCriteriaRow("Contains a symbol (!@#\$&*~)", hasSymbol),
       ],
     );
   }
