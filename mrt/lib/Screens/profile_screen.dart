@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mrt/Screens/Home_screen.dart';
+import 'package:mrt/Screens/home_screen.dart';
 
 import 'change_pass_screen.dart';
 import 'edit_profile_screen.dart';
