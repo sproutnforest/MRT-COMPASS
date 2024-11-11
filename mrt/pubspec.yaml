@@ -12,6 +12,8 @@ dependencies:
     sdk: flutter
   sizer: ^2.0.15
   shared_preferences: ^2.0.6
+  cupertino_icons: ^1.0.5
+  timeline_tile: ^2.0.0
   
 flutter_native_splash:
   color: "#ffffff" # Warna latar belakang splash screen
