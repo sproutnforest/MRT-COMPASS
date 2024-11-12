@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
+import 'package:mrt/constant.dart';
 
 class FirstScreen extends StatelessWidget {
   const FirstScreen({super.key});
@@ -11,16 +12,7 @@ class FirstScreen extends StatelessWidget {
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          Positioned(
-            child: Transform.translate(
-              offset: const Offset(80, -330),
-              child: Image.asset(
-                'assets/rmh2.png',
-                width: 320,
-                height: 320,
-              ),
-            ),
-          ),
+        
           Positioned(
             child: Transform.translate(
               offset: const Offset(0, -330),
@@ -38,7 +30,7 @@ class FirstScreen extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 1.3,
               height: MediaQuery.of(context).size.height * 0.4697,
               decoration: const BoxDecoration(
-                color: Color(0xFF173156),
+                color:kPrimaryColor,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(50)),
               ),
               child: ClipRRect(
@@ -51,18 +43,7 @@ class FirstScreen extends StatelessWidget {
               ),
             ),
           ),
-          Positioned(
-            bottom: 500,
-            right: -60,
-            child: Transform.rotate(
-              angle: 45 * 3.141592653589793238 / 180,
-              child: Image.asset(
-                'assets/tangga.png',
-                width: 250,
-                height: 520,
-              ),
-            ),
-          ),
+         
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -80,7 +61,7 @@ class FirstScreen extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 40,
                               fontWeight: FontWeight.w700,
-                              color: Color.fromARGB(255, 0, 0, 0),
+                              color: kPrimaryLightDark,
                               fontFamily: 'Montserrat',
                             ),
                           ),
@@ -98,20 +79,20 @@ class FirstScreen extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFFFAA00),
+                    backgroundColor: kSecondaryColor,
                     padding: const EdgeInsets.symmetric(horizontal: 110, vertical: 20),
                     textStyle: const TextStyle(fontSize: 25),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50),
                       side: const BorderSide(
-                        color: Color.fromARGB(255, 0, 0, 0),
+                        color: kPrimaryLightDark,
                         width: 1,
                       ),
                     ),
                     elevation: 5,
                   ),
                   child: const Text(
-                    'Login',
+                    'Sign In',
                     style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.bold,
@@ -128,24 +109,24 @@ class FirstScreen extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFFFAA00),
+                    backgroundColor: kPrimaryLightDark,
                     padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
                     textStyle: const TextStyle(fontSize: 25),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50),
                       side: const BorderSide(
-                        color: Color.fromARGB(255, 0, 0, 0),
+                        color: kPrimaryLightDark,
                         width: 1,
                       ),
                     ),
                     elevation: 5,
                   ),
                   child: const Text(
-                    'Register',
+                    'Sign Up',
                     style: TextStyle(
-                      fontFamily: 'Montserrat',
+                      fontFamily: 'Serif',
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: kPrimaryLightColor,
                     ),
                   ),
                 ),

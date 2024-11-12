@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'register_screen.dart';
-
+import 'package:mrt/constant.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -43,14 +43,7 @@ class LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Transform.translate(
-                offset: const Offset(-150, 430),
-                child: Image.asset(
-                  'assets/rmh2.png',
-                  fit: BoxFit.contain,
-                  width: size.width * 0.6,
-                ),
-              ),
+             
               const SizedBox(height: 10),
               Image.asset(
                 'assets/longtrain.png',
@@ -60,18 +53,7 @@ class LoginScreenState extends State<LoginScreen> {
             ],
           ),
         ),
-        Positioned(
-          bottom: 500,
-          right: -180,
-          child: Transform.rotate(
-            angle: 45 * 3.14 / 180,
-            child: Image.asset(
-              'assets/tangga.png',
-              width: 650,
-              height: 620,
-            ),
-          ),
-        ),
+        
       ],
     );
   }
@@ -86,7 +68,7 @@ class LoginScreenState extends State<LoginScreen> {
             Transform.translate(
               offset: const Offset(0, 0),
               child: const Text(
-                "Login",
+                "Sign In",
                 style: TextStyle(fontSize: 50, fontWeight: FontWeight.w900),
               ),
             ),
@@ -117,7 +99,7 @@ class LoginScreenState extends State<LoginScreen> {
             style: TextStyle(color: Color.fromARGB(255, 92, 92, 92), fontSize: 14),
           ),
           Text(
-            "Register",
+            "Sign Up",
             style: TextStyle(color: Color.fromARGB(255, 92, 92, 92), fontSize: 14, fontWeight: FontWeight.bold),
           ),
         ],
@@ -130,7 +112,7 @@ class LoginScreenState extends State<LoginScreen> {
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       width: 300,
       decoration: BoxDecoration(
-        color: const Color(0xFFFFAA00),
+        color: kSecondaryColor,
         borderRadius: BorderRadius.circular(50),
       ),
       child: Row(
@@ -180,7 +162,7 @@ class LoginScreenState extends State<LoginScreen> {
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Login successful")),
+            const SnackBar(content: Text("Sign In successful")),
           );
         }
       },
@@ -188,16 +170,16 @@ class LoginScreenState extends State<LoginScreen> {
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         width: 300,
         decoration: BoxDecoration(
-          color: const Color(0xFF173156),
-          borderRadius: BorderRadius.circular(50),
-        ),
+        color:kPrimaryColor,
+        borderRadius: BorderRadius.circular(50),
+      ),
         child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.login, color: Colors.white),
             SizedBox(width: 20),
             Text(
-              "Login",
+              "Sign In",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 18,

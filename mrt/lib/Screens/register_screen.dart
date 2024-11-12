@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
+import 'package:mrt/constant.dart';
 
 class PasswordValidator {
   static bool isLongEnough(String password) => password.length >= 8;
@@ -7,7 +8,8 @@ class PasswordValidator {
   static bool hasUpperLowerCase(String password) {
     final upperCaseRegex = RegExp(r'[A-Z]');
     final lowerCaseRegex = RegExp(r'[a-z]');
-    return upperCaseRegex.hasMatch(password) && lowerCaseRegex.hasMatch(password);
+    return upperCaseRegex.hasMatch(password) &&
+        lowerCaseRegex.hasMatch(password);
   }
 
   static bool hasSymbol(String password) {
@@ -73,14 +75,6 @@ class RegisterScreenState extends State<RegisterScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Transform.translate(
-                offset: const Offset(-150, 430),
-                child: Image.asset(
-                  'assets/rmh2.png',
-                  fit: BoxFit.contain,
-                  width: size.width * 0.6,
-                ),
-              ),
               const SizedBox(height: 10),
               Image.asset(
                 'assets/longtrain.png',
@@ -90,22 +84,9 @@ class RegisterScreenState extends State<RegisterScreen> {
             ],
           ),
         ),
-        Positioned(
-          bottom: 500,
-          right: -180,
-          child: Transform.rotate(
-            angle: 45 * 3.14 / 180,
-            child: Image.asset(
-              'assets/tangga.png',
-              width: 650,
-              height: 620,
-            ),
-          ),
-        ),
       ],
     );
   }
-
 
   Widget buildRegisterForm(Size size) {
     return Center(
@@ -114,30 +95,34 @@ class RegisterScreenState extends State<RegisterScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-        const SizedBox(height: 0),
-            Transform.translate(
-                offset: const Offset(0, 50),
-              child: const Text(
-                "Register",
-                style: TextStyle(fontSize: 50, fontWeight: FontWeight.w900),
-              ),
-            ),  const SizedBox(height: 20),
+            const SizedBox(height: 0),
             Transform.translate(
               offset: const Offset(0, 50),
-              child: buildTextField("Name", Icons.person, nameController, false),
+              child: const Text(
+                "Sign Up",
+                style: TextStyle(fontSize: 50, fontWeight: FontWeight.w900),
+              ),
             ),
             const SizedBox(height: 20),
             Transform.translate(
               offset: const Offset(0, 50),
-              child: buildTextField("Email", Icons.email, emailController, false),
+              child:
+                  buildTextField("Name", Icons.person, nameController, false),
+            ),
+            const SizedBox(height: 20),
+            Transform.translate(
+              offset: const Offset(0, 50),
+              child:
+                  buildTextField("Email", Icons.email, emailController, false),
             ),
             const SizedBox(height: 15),
             Transform.translate(
               offset: const Offset(0, 50),
-              child: buildTextField("Password", Icons.lock, passwordController, true),
+              child: buildTextField(
+                  "Password", Icons.lock, passwordController, true),
             ),
             const SizedBox(height: 10),
-            if (isTyping) 
+            if (isTyping)
               Transform.translate(
                 offset: const Offset(40, 53),
                 child: PasswordCriteria(
@@ -156,12 +141,13 @@ class RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget buildTextField(String hintText, IconData icon, TextEditingController controller, bool isPassword) {
+  Widget buildTextField(String hintText, IconData icon,
+      TextEditingController controller, bool isPassword) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       width: 300,
       decoration: BoxDecoration(
-        color: const Color(0xFFFFAA00),
+        color: kSecondaryColor,
         borderRadius: BorderRadius.circular(50),
       ),
       child: Row(
@@ -186,7 +172,9 @@ class RegisterScreenState extends State<RegisterScreen> {
                 suffixIcon: isPassword
                     ? IconButton(
                         icon: Icon(
-                          showPassword ? Icons.visibility : Icons.visibility_off,
+                          showPassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
                           color: Colors.black,
                         ),
                         onPressed: () {
@@ -214,8 +202,8 @@ class RegisterScreenState extends State<RegisterScreen> {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: const Text("Registration Successful"),
-                  content: const Text("You have registered successfully!"),
+                  title: const Text("Sign Up Successful"),
+                  content: const Text("You Have Sign Up Successfully!"),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.of(context).pop(),
@@ -227,25 +215,29 @@ class RegisterScreenState extends State<RegisterScreen> {
             );
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Please meet all password requirements.")),
+              const SnackBar(
+                  content: Text("Please meet all password requirements.")),
             );
           }
         },
         child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
           width: 300,
           decoration: BoxDecoration(
-            color: const Color(0xFF173156),
-            borderRadius: BorderRadius.circular(50),
-          ),
+        color:kPrimaryColor,
+        borderRadius: BorderRadius.circular(50),
+      ),
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.person_add, color: Colors.white),
               SizedBox(width: 20),
               Text(
-                "Register",
-                style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                "Sign Up",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -257,18 +249,23 @@ class RegisterScreenState extends State<RegisterScreen> {
   Widget buildLoginText() {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()));
       },
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             "Already have an Account? ",
-            style: TextStyle(color: Color.fromARGB(255, 92, 92, 92), fontSize: 14),
+            style:
+                TextStyle(color: Color.fromARGB(255, 92, 92, 92), fontSize: 14),
           ),
           Text(
-            "Login",
-            style: TextStyle(color: Color.fromARGB(255, 92, 92, 92), fontSize: 14, fontWeight: FontWeight.bold),
+            "Sign In",
+            style: TextStyle(
+                color: Color.fromARGB(255, 92, 92, 92),
+                fontSize: 14,
+                fontWeight: FontWeight.bold),
           ),
         ],
       ),
@@ -291,7 +288,8 @@ class PasswordCriteria extends StatelessWidget {
   Widget buildCriteriaRow(String criteria, bool isMet) {
     return Row(
       children: [
-        Icon(isMet ? Icons.check : Icons.close, color: isMet ? Colors.green : Colors.red, size: 20),
+        Icon(isMet ? Icons.check : Icons.close,
+            color: isMet ? Colors.green : Colors.red, size: 20),
         const SizedBox(width: 10),
         Text(criteria),
       ],
@@ -304,7 +302,8 @@ class PasswordCriteria extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         buildCriteriaRow("At least 8 characters", isLongEnough),
-        buildCriteriaRow("Contains uppercase and lowercase letters", hasUpperLowerCase),
+        buildCriteriaRow(
+            "Contains uppercase and lowercase letters", hasUpperLowerCase),
         buildCriteriaRow("Contains a symbol (!@#\$&*~)", hasSymbol),
       ],
     );

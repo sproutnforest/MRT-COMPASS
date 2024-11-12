@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "7046262947",
+    "project_id": "mrtcompass",
+    "storage_bucket": "mrtcompass.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:7046262947:android:37bbc30516d1ac1eec8f16",
+        "android_client_info": {
+          "package_name": "com.example.mrt"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlgqeRmra82M3nwtuFmBNGzSs1_xHoUbE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
