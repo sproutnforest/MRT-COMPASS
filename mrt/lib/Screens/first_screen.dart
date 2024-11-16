@@ -94,9 +94,9 @@ class FirstScreen extends StatelessWidget {
                   child: const Text(
                     'Sign In',
                     style: TextStyle(
-                      fontFamily: 'Montserrat',
+                      fontFamily: 'Serif',
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: Color.fromARGB(255, 0, 0, 0),
                     ),
                   ),
                 ),
@@ -109,7 +109,7 @@ class FirstScreen extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: kPrimaryLightDark,
+                    backgroundColor: kSecondaryColor,
                     padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
                     textStyle: const TextStyle(fontSize: 25),
                     shape: RoundedRectangleBorder(
@@ -126,7 +126,7 @@ class FirstScreen extends StatelessWidget {
                     style: TextStyle(
                       fontFamily: 'Serif',
                       fontWeight: FontWeight.bold,
-                      color: kPrimaryLightColor,
+                      color: Color.fromARGB(255, 0, 0, 0),
                     ),
                   ),
                 ),

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'register_screen.dart';
-import 'package:mrt/constant.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'home_screen.dart';  // Make sure you have a HomeScreen widget
+import 'register_screen.dart';  // For the "Sign Up" screen
+import "package:mrt/constant.dart";  // Replace with actual constants if needed
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -11,7 +14,42 @@ class LoginScreen extends StatefulWidget {
 class LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  bool _showPassword = false;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  bool showPassword = false;
+
+  // SignIn function
+  void signIn() async {
+    try {
+      // Attempt to sign in using the email and password entered by the user
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),  // Use email entered by the user
+        password: passwordController.text.trim(),  // Use password entered by the user
+      );
+      
+      // If sign-in is successful, navigate to the HomeScreen
+      if (mounted) {
+        print("Sign-in successful: ${userCredential.user}");
+
+        // Navigate to the home screen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()), 
+        );
+
+        // Clear the text fields after successful login
+        emailController.clear();
+        passwordController.clear();
+      }
+    } catch (e) {
+      // Handle sign-in errors (e.g., wrong email/password)
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Sign-in failed: $e')),
+        );
+      }
+      debugPrint("Sign-in failed with error: $e");
+    }
+  }
 
   @override
   void dispose() {
@@ -33,6 +71,7 @@ class LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  // Background widget
   Widget buildBackground(Size size) {
     return Stack(
       children: [
@@ -43,21 +82,20 @@ class LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-             
               const SizedBox(height: 10),
               Image.asset(
-                'assets/longtrain.png',
+                'assets/longtrain.png', // Replace with your actual asset
                 fit: BoxFit.contain,
                 width: size.width,
               ),
             ],
           ),
         ),
-        
       ],
     );
   }
 
+  // Login form widget
   Widget buildLoginForm(Size size) {
     return Center(
       child: SingleChildScrollView(
@@ -65,11 +103,13 @@ class LoginScreenState extends State<LoginScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Transform.translate(
-              offset: const Offset(0, 0),
-              child: const Text(
-                "Sign In",
-                style: TextStyle(fontSize: 50, fontWeight: FontWeight.w900),
+            const Text(
+              "Sign In",
+              style: TextStyle(
+                fontSize: 50,
+                fontFamily: 'Serif',
+                fontWeight: FontWeight.w900,
+                color: Color.fromARGB(255, 0, 0, 0),
               ),
             ),
             const SizedBox(height: 20),
@@ -77,7 +117,7 @@ class LoginScreenState extends State<LoginScreen> {
             const SizedBox(height: 15),
             buildTextField("Password", Icons.lock, passwordController, true),
             const SizedBox(height: 20),
-            buildLoginButton(size),
+            buildLoginButton(),
             const SizedBox(height: 15),
             buildRegisterText(),
           ],
@@ -86,28 +126,41 @@ class LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  // Register text to navigate to the register screen
   Widget buildRegisterText() {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterScreen()));
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const RegisterScreen()),
+        );
       },
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             "Don't have an Account? ",
-            style: TextStyle(color: Color.fromARGB(255, 92, 92, 92), fontSize: 14),
+            style: TextStyle(
+                color: Color.fromARGB(255, 0, 0, 0),
+                fontSize: 14.5,
+                fontFamily: 'Serif'),
           ),
           Text(
             "Sign Up",
-            style: TextStyle(color: Color.fromARGB(255, 92, 92, 92), fontSize: 14, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Color.fromARGB(255, 0, 0, 0),
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Serif'),
           ),
         ],
       ),
     );
   }
 
-  Widget buildTextField(String hintText, IconData icon, TextEditingController controller, bool isPassword) {
+  // TextField widget
+  Widget buildTextField(String hintText, IconData icon,
+      TextEditingController controller, bool isPassword) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       width: 300,
@@ -124,7 +177,7 @@ class LoginScreenState extends State<LoginScreen> {
           Expanded(
             child: TextField(
               controller: controller,
-              obscureText: isPassword ? !_showPassword : false,
+              obscureText: isPassword ? !showPassword : false,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: hintText,
@@ -132,12 +185,14 @@ class LoginScreenState extends State<LoginScreen> {
                 suffixIcon: isPassword
                     ? IconButton(
                         icon: Icon(
-                          _showPassword ? Icons.visibility : Icons.visibility_off,
+                          showPassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
                           color: Colors.black,
                         ),
                         onPressed: () {
                           setState(() {
-                            _showPassword = !_showPassword;
+                            showPassword = !showPassword;
                           });
                         },
                       )
@@ -150,29 +205,17 @@ class LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget buildLoginButton(Size size) {
+  // Login button widget
+  Widget buildLoginButton() {
     return GestureDetector(
-      onTap: () {
-        String email = emailController.text;
-        String password = passwordController.text;
-
-        if (email.isEmpty || password.isEmpty) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Please fill in both fields")),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Sign In successful")),
-          );
-        }
-      },
+      onTap: signIn, // Call the signIn method when the button is tapped
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         width: 300,
         decoration: BoxDecoration(
-        color:kPrimaryColor,
-        borderRadius: BorderRadius.circular(50),
-      ),
+          color: kPrimaryColor,
+          borderRadius: BorderRadius.circular(50),
+        ),
         child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -184,6 +227,7 @@ class LoginScreenState extends State<LoginScreen> {
                 color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
+                fontFamily: 'Serif',
               ),
             ),
           ],

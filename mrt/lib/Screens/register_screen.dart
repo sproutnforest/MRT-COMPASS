@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
 import 'package:mrt/constant.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class PasswordValidator {
   static bool isLongEnough(String password) => password.length >= 8;
@@ -29,6 +30,7 @@ class RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
   bool showPassword = false;
   bool isLongEnough = false;
   bool hasUpperLowerCase = false;
@@ -52,14 +54,47 @@ class RegisterScreenState extends State<RegisterScreen> {
     });
   }
 
+ // Fungsi registrasi dengan Firebase Auth
+  Future<void> registerWithEmailPassword() async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+
+      // Tampilkan pesan sukses
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Registrasi Berhasil")),
+      );
+
+      // Navigasi ke layar login
+      Navigator.push(
+        // ignore: use_build_context_synchronously
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      );
+    } on FirebaseAuthException catch (e) {
+      String errorMessage;
+      if (e.code == 'weak-password') {
+        errorMessage = 'Kata sandi terlalu lemah.';
+      } else if (e.code == 'email-already-in-use') {
+        errorMessage = 'Email sudah terdaftar.';
+      } else {
+        errorMessage = 'Terjadi kesalahan. Coba lagi.';
+      }
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(errorMessage)));
+    }
+  }
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    // Semua widget berada di sini
     return Scaffold(
       body: Stack(
         children: [
-          buildBackground(size),
-          buildRegisterForm(size),
+          buildBackground(MediaQuery.of(context).size),
+          buildRegisterForm(MediaQuery.of(context).size),
         ],
       ),
     );
@@ -95,44 +130,25 @@ class RegisterScreenState extends State<RegisterScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 0),
-            Transform.translate(
-              offset: const Offset(0, 50),
-              child: const Text(
-                "Sign Up",
-                style: TextStyle(fontSize: 50, fontWeight: FontWeight.w900),
-              ),
+            const Text(
+              "Sign Up",
+              style: TextStyle(fontSize: 50, fontWeight: FontWeight.w900, fontFamily: 'Serif'),
             ),
             const SizedBox(height: 20),
-            Transform.translate(
-              offset: const Offset(0, 50),
-              child:
-                  buildTextField("Name", Icons.person, nameController, false),
-            ),
+            buildTextField("Name", Icons.person, nameController, false),
             const SizedBox(height: 20),
-            Transform.translate(
-              offset: const Offset(0, 50),
-              child:
-                  buildTextField("Email", Icons.email, emailController, false),
-            ),
+            buildTextField("Email", Icons.email, emailController, false),
             const SizedBox(height: 15),
-            Transform.translate(
-              offset: const Offset(0, 50),
-              child: buildTextField(
-                  "Password", Icons.lock, passwordController, true),
-            ),
+            buildTextField("Password", Icons.lock, passwordController, true),
             const SizedBox(height: 10),
             if (isTyping)
-              Transform.translate(
-                offset: const Offset(40, 53),
-                child: PasswordCriteria(
-                  isLongEnough: isLongEnough,
-                  hasUpperLowerCase: hasUpperLowerCase,
-                  hasSymbol: hasSymbol,
-                ),
+              PasswordCriteria(
+                isLongEnough: isLongEnough,
+                hasUpperLowerCase: hasUpperLowerCase,
+                hasSymbol: hasSymbol,
               ),
             const SizedBox(height: 20),
-            buildRegisterButton(size),
+            buildRegisterButton(),
             const SizedBox(height: 55),
             buildLoginText(),
           ],
@@ -192,55 +208,39 @@ class RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget buildRegisterButton(Size size) {
-    return Transform.translate(
-      offset: const Offset(0, 40),
-      child: GestureDetector(
-        onTap: () {
-          if (isLongEnough && hasUpperLowerCase && hasSymbol) {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text("Sign Up Successful"),
-                  content: const Text("You Have Sign Up Successfully!"),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text("OK"),
-                    ),
-                  ],
-                );
-              },
-            );
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                  content: Text("Please meet all password requirements.")),
-            );
-          }
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-          width: 300,
-          decoration: BoxDecoration(
-        color:kPrimaryColor,
-        borderRadius: BorderRadius.circular(50),
-      ),
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.person_add, color: Colors.white),
-              SizedBox(width: 20),
-              Text(
-                "Sign Up",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
+  Widget buildRegisterButton() {
+    return GestureDetector(
+      onTap: () {
+        if (isLongEnough && hasUpperLowerCase && hasSymbol) {
+          registerWithEmailPassword();
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text("Mohon penuhi semua persyaratan kata sandi.")),
+          );
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+        width: 300,
+        decoration: BoxDecoration(
+          color: kPrimaryColor,
+          borderRadius: BorderRadius.circular(50),
+        ),
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.person_add, color: Colors.white),
+            SizedBox(width: 20),
+            Text(
+              "Sign Up",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontFamily: 'Serif',
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
         ),
       ),
     );
@@ -257,14 +257,14 @@ class RegisterScreenState extends State<RegisterScreen> {
         children: [
           Text(
             "Already have an Account? ",
-            style:
-                TextStyle(color: Color.fromARGB(255, 92, 92, 92), fontSize: 14),
+            style: TextStyle(color: Color.fromARGB(255, 92, 92, 92), fontSize: 14),
           ),
           Text(
             "Sign In",
             style: TextStyle(
                 color: Color.fromARGB(255, 92, 92, 92),
                 fontSize: 14,
+                fontFamily: 'Serif',
                 fontWeight: FontWeight.bold),
           ),
         ],
