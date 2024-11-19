@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mrt/Screens/Home_screen.dart';
+import 'package:mrt/auth/auth_service.dart';
 import 'register_screen.dart';
 import 'first_screen.dart';
 
@@ -21,6 +23,28 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  void login(BuildContext context) async {
+    final authService = AuthService();
+
+    try {
+      await authService.signInWithEmailPassword(
+          emailController.text, passwordController.text);
+          Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HomePage()),
+                    );
+
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: ((context) => AlertDialog(
+              title: Text(e.toString()),
+            )),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -39,7 +63,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const FirstScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => FirstScreen()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -51,7 +76,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: const Text("Back"),
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 255, 255, 255),
                     shape: RoundedRectangleBorder(
@@ -143,25 +170,31 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget buildRegisterText() {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterScreen()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const RegisterScreen()));
       },
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             "Don't have an Account? ",
-            style: TextStyle(color: Color.fromARGB(255, 92, 92, 92), fontSize: 14),
+            style:
+                TextStyle(color: Color.fromARGB(255, 92, 92, 92), fontSize: 14),
           ),
           Text(
             "Register",
-            style: TextStyle(color: Color.fromARGB(255, 92, 92, 92), fontSize: 14, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Color.fromARGB(255, 92, 92, 92),
+                fontSize: 14,
+                fontWeight: FontWeight.bold),
           ),
         ],
       ),
     );
   }
 
-  Widget buildTextField(String hintText, IconData icon, TextEditingController controller, bool isPassword) {
+  Widget buildTextField(String hintText, IconData icon,
+      TextEditingController controller, bool isPassword) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       width: 300,
@@ -186,7 +219,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 suffixIcon: isPassword
                     ? IconButton(
                         icon: Icon(
-                          _showPassword ? Icons.visibility : Icons.visibility_off,
+                          _showPassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
                           color: Colors.black,
                         ),
                         onPressed: () {
@@ -206,20 +241,21 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget buildLoginButton(Size size) {
     return GestureDetector(
-      onTap: () {
-        String email = emailController.text;
-        String password = passwordController.text;
+      onTap: () => login(context),
+      // {
+      //   // String email = emailController.text;
+      //   // String password = passwordController.text;
 
-        if (email.isEmpty || password.isEmpty) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Please fill in both fields")),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Login successful")),
-          );
-        }
-      },
+      //   // if (email.isEmpty || password.isEmpty) {
+      //   //   ScaffoldMessenger.of(context).showSnackBar(
+      //   //     const SnackBar(content: Text("Please fill in both fields")),
+      //   //   );
+      //   // } else {
+      //   //   ScaffoldMessenger.of(context).showSnackBar(
+      //   //     const SnackBar(content: Text("Login successful")),
+      //   //   );
+      //   // }
+      // },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         width: 300,

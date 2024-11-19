@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mrt/auth/auth_service.dart';
 import 'login_screen.dart';
 import 'first_screen.dart';
 
@@ -8,7 +9,8 @@ class PasswordValidator {
   static bool hasUpperLowerCase(String password) {
     final upperCaseRegex = RegExp(r'[A-Z]');
     final lowerCaseRegex = RegExp(r'[a-z]');
-    return upperCaseRegex.hasMatch(password) && lowerCaseRegex.hasMatch(password);
+    return upperCaseRegex.hasMatch(password) &&
+        lowerCaseRegex.hasMatch(password);
   }
 
   static bool hasSymbol(String password) {
@@ -40,6 +42,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
+  void register(BuildContext context) async {
+    final auth = AuthService();
+    if (isLongEnough && hasUpperLowerCase && hasSymbol) {
+            try {
+              await auth.signUpWithEmailPassword(
+                  emailController.text, passwordController.text);
+            } catch (e) {
+              showDialog(
+                context: context,
+                builder: ((context) => AlertDialog(
+                      title: Text(e.toString()),
+                    )),
+              );
+            }
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                  content: Text("Please meet all password requirements.")),
+            );
+          }
+  }
+
   void checkPasswordCriteria(String password) {
     setState(() {
       isTyping = password.isNotEmpty;
@@ -67,7 +91,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const FirstScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const FirstScreen()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -178,7 +203,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget buildTextField(String hintText, IconData icon, TextEditingController controller, bool isPassword) {
+  Widget buildTextField(String hintText, IconData icon,
+      TextEditingController controller, bool isPassword) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       width: 300,
@@ -208,7 +234,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 suffixIcon: isPassword
                     ? IconButton(
                         icon: Icon(
-                          _showPassword ? Icons.visibility : Icons.visibility_off,
+                          _showPassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
                           color: Colors.black,
                         ),
                         onPressed: () {
@@ -230,29 +258,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Transform.translate(
       offset: const Offset(0, 40),
       child: GestureDetector(
-        onTap: () {
-          if (isLongEnough && hasUpperLowerCase && hasSymbol) {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text("Registration Successful"),
-                  content: const Text("You have registered successfully!"),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text("OK"),
-                    ),
-                  ],
-                );
-              },
-            );
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Please meet all password requirements.")),
-            );
-          }
-        },
+        onTap: () => register(context),
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
           width: 300,
@@ -267,7 +273,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
               SizedBox(width: 20),
               Text(
                 "Register",
-                style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -279,18 +288,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget _buildLoginText() {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()));
       },
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             "Already have an Account? ",
-            style: TextStyle(color: Color.fromARGB(255, 92, 92, 92), fontSize: 14),
+            style:
+                TextStyle(color: Color.fromARGB(255, 92, 92, 92), fontSize: 14),
           ),
           Text(
             "Login",
-            style: TextStyle(color: Color.fromARGB(255, 92, 92, 92), fontSize: 14, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Color.fromARGB(255, 92, 92, 92),
+                fontSize: 14,
+                fontWeight: FontWeight.bold),
           ),
         ],
       ),
@@ -313,7 +327,8 @@ class PasswordCriteria extends StatelessWidget {
   Widget buildCriteriaRow(String criteria, bool isMet) {
     return Row(
       children: [
-        Icon(isMet ? Icons.check : Icons.close, color: isMet ? Colors.green : Colors.red, size: 20),
+        Icon(isMet ? Icons.check : Icons.close,
+            color: isMet ? Colors.green : Colors.red, size: 20),
         const SizedBox(width: 10),
         Text(criteria),
       ],
@@ -326,7 +341,8 @@ class PasswordCriteria extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         buildCriteriaRow("At least 8 characters", isLongEnough),
-        buildCriteriaRow("Contains upper and lower case letters", hasUpperLowerCase),
+        buildCriteriaRow(
+            "Contains upper and lower case letters", hasUpperLowerCase),
         buildCriteriaRow("Contains at least one symbol", hasSymbol),
       ],
     );
