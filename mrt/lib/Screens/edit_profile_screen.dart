@@ -4,7 +4,7 @@ class EditProfileScreen extends StatefulWidget {
   final String currentName;
   final String currentEmail;
 
-  EditProfileScreen({required this.currentName, required this.currentEmail});
+  const EditProfileScreen({super.key, required this.currentName, required this.currentEmail});
 
   @override
   _EditProfileScreenState createState() => _EditProfileScreenState();
@@ -33,7 +33,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("EDIT PROFIL"),
-        backgroundColor: Color(0xFF173156),
+        backgroundColor: const Color(0xFF173156),
         foregroundColor: Colors.white,
         centerTitle: true,
       ),
@@ -54,7 +54,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     onTap: () {
                       
                     },
-                    child: CircleAvatar(
+                    child: const CircleAvatar(
                       radius: 18,
                       backgroundColor: Colors.orange,
                       child: Icon(
@@ -70,12 +70,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             const SizedBox(height: 20),
             TextField(
               controller: nameController,
-              decoration: InputDecoration(labelText: "Nama"),
+              decoration: const InputDecoration(labelText: "Nama"),
             ),
             const SizedBox(height: 20),
             TextField(
               controller: emailController,
-              decoration: InputDecoration(labelText: "Email"),
+              decoration: const InputDecoration(labelText: "Email"),
             ),
             const SizedBox(height: 40),
             ElevatedButton(
@@ -85,14 +85,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   'email': emailController.text,
                 });
               },
-              child: Text("Save", style: TextStyle(color: Colors.white, fontSize: 16),),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
-                minimumSize: Size(150, 45),
+                minimumSize: const Size(150, 45),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18),
                 ),
               ),
+              child: Text("Save", style: TextStyle(color: Colors.white, fontSize: 16),),
             ),
           ],
         ),

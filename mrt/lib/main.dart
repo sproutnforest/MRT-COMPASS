@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         primaryColor: kPrimaryColor,
         scaffoldBackgroundColor: Colors.white,
       ),
-      initialRoute: '/home', // Route pertama yang akan dibuka
+      initialRoute: '/', // Route pertama yang akan dibuka
       routes: {
         '/': (context) => const SplashScreen(), // SplashScreen
         '/first': (context) => const FirstScreen(), // FirstScreen

@@ -8,6 +8,8 @@ import 'login_screen.dart';
 import 'ticket_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -27,22 +29,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Logout'),
-        content: Text('Are you sure you want to logout?'),
+        title: const Text('Logout'),
+        content: const Text('Are you sure you want to logout?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text('Cancel'),
+            child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
               );
             },
-            child: Text('Yes'),
+            child: const Text('Yes'),
           ),
         ],
       ),
@@ -53,10 +55,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("PROFIL"),
+        title: const Text("PROFIL"),
         foregroundColor: Colors.white,
         centerTitle: true,
-        backgroundColor: Color(0xFF173156),
+        backgroundColor: const Color(0xFF173156),
         automaticallyImplyLeading: false,
       ),
       body: Column(
@@ -69,13 +71,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(height: 10),
           Text(
             name,
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           Text(
             email,
             style: TextStyle(color: Colors.grey[600]),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           ElevatedButton(
             onPressed: () async {
               final result = await Navigator.push(
@@ -92,16 +94,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 updateProfile(result['name'], result['email']);
               }
             },
-            child: Text("Edit Profil", style: TextStyle(color: Colors.white)),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.blue,
-              minimumSize: Size(130, 40),
+              minimumSize: const Size(130, 40),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
             ),
+            child: Text("Edit Profil", style: TextStyle(color: Colors.white)),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Expanded(
             child: ListView(
               children: [
@@ -147,7 +149,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-        items: [
+        items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.feed), label: ''),
           BottomNavigationBarItem(
@@ -182,7 +184,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             case 2:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => TicketHistoryScreen()),
+                MaterialPageRoute(builder: (context) => const TicketHistoryScreen()),
               );
               break;
             case 3:
@@ -192,7 +194,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         showSelectedLabels: false,
         showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Color(0xFF173156),
+        backgroundColor: const Color(0xFF173156),
       ),
     );
   }
@@ -207,8 +209,8 @@ class ProfileOptionTile extends StatelessWidget {
   final double iconSize;
   final Color textColor;
 
-  ProfileOptionTile(
-      {required this.icon,
+  const ProfileOptionTile(
+      {super.key, required this.icon,
       required this.text,
       this.onTap,
       this.iconColor = Colors.white,

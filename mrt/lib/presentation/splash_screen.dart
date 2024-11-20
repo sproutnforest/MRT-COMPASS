@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:mrt/constant.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -28,10 +29,10 @@ class SplashScreenState extends State<SplashScreen> {
             child: Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 1,
-              color: const Color(0xFFFFAA00),
+              color:kPrimaryColor,
               child: Opacity(
                 opacity:
-                    0.5, // Ganti nilai ini untuk mengatur tingkat opacity (0.0 - 1.0)
+                    0, 
                 child: Image.asset(
                   'assets/pt1.png',
                   fit: BoxFit.cover,
@@ -60,7 +61,7 @@ class SplashScreenState extends State<SplashScreen> {
                     style: TextStyle(
                       fontSize: 45,
                       fontWeight: FontWeight.w800,
-                      color: Color(0xFF173156),
+                      color: kPrimaryLightColor,
                       fontFamily: 'Montserrat',
                     ),
                   ),
