@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:mrt/Screens/first_screen.dart';
-import 'package:mrt/Screens/home_screen.dart';
-import 'package:mrt/constant.dart'; // Pastikan kPrimaryColor ada di sini
-import 'package:mrt/presentation/splash_screen.dart';
+import 'package:mrt/Screens/Home_screen.dart';
 import 'package:mrt/Screens/Routes.dart';
+import 'package:mrt/Screens/login_screen.dart';
+import 'package:mrt/auth/auth_gate.dart';
+import 'package:mrt/constant.dart'; // Pastikan kPrimaryColor ada di sini
+import 'package:mrt/Screens/first_screen.dart';
+import 'package:mrt/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:mrt/presentation/splash_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -22,11 +28,12 @@ class MyApp extends StatelessWidget {
         primaryColor: kPrimaryColor,
         scaffoldBackgroundColor: Colors.white,
       ),
-      initialRoute: '/', // Route pertama yang akan dibuka
+      initialRoute: '/home', // Route pertama yang akan dibuka
       routes: {
         '/': (context) => const SplashScreen(), // SplashScreen
         '/first': (context) => const FirstScreen(), // FirstScreen
-        '/home': (context) => const HomePage(), // HomePage as route
+        '/home': (context) => HomePage(), // HomePage route
+        '/login': (context) => const LoginScreen(), // LoginPage route (for when the user is not logged in)
       },
     );
   }
@@ -37,13 +44,8 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Home Page"),
-      ),
-      body: const Center(
-        child: Text("This is the Home Page!"),
-      ),
+    return const MaterialApp(
+      // home: AuthGate()
     );
   }
 }

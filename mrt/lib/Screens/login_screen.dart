@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:mrt/Screens/Home_screen.dart';
+import 'package:mrt/auth/auth_service.dart';
 import 'register_screen.dart';
+import 'first_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  LoginScreenState createState() => LoginScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool _showPassword = false;
@@ -20,20 +23,80 @@ class LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  void login(BuildContext context) async {
+    final authService = AuthService();
+
+    try {
+      await authService.signInWithEmailPassword(
+          emailController.text, passwordController.text);
+          Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HomePage()),
+                    );
+
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: ((context) => AlertDialog(
+              title: Text(e.toString()),
+            )),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(
         children: [
-          buildBackground(size),
-          buildLoginForm(size),
+          _buildBackground(size),
+          Positioned(
+            top: 50,
+            left: 20,
+            right: 20,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => FirstScreen()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  child: const Text("Back"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  child: const Text("Next"),
+                ),
+              ],
+            ),
+          ),
+          _buildLoginForm(size),
         ],
       ),
     );
   }
 
-  Widget buildBackground(Size size) {
+  Widget _buildBackground(Size size) {
     return Stack(
       children: [
         Positioned(
@@ -76,7 +139,7 @@ class LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget buildLoginForm(Size size) {
+  Widget _buildLoginForm(Size size) {
     return Center(
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -107,25 +170,31 @@ class LoginScreenState extends State<LoginScreen> {
   Widget buildRegisterText() {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterScreen()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const RegisterScreen()));
       },
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             "Don't have an Account? ",
-            style: TextStyle(color: Color.fromARGB(255, 92, 92, 92), fontSize: 14),
+            style:
+                TextStyle(color: Color.fromARGB(255, 92, 92, 92), fontSize: 14),
           ),
           Text(
             "Register",
-            style: TextStyle(color: Color.fromARGB(255, 92, 92, 92), fontSize: 14, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Color.fromARGB(255, 92, 92, 92),
+                fontSize: 14,
+                fontWeight: FontWeight.bold),
           ),
         ],
       ),
     );
   }
 
-  Widget buildTextField(String hintText, IconData icon, TextEditingController controller, bool isPassword) {
+  Widget buildTextField(String hintText, IconData icon,
+      TextEditingController controller, bool isPassword) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       width: 300,
@@ -150,7 +219,9 @@ class LoginScreenState extends State<LoginScreen> {
                 suffixIcon: isPassword
                     ? IconButton(
                         icon: Icon(
-                          _showPassword ? Icons.visibility : Icons.visibility_off,
+                          _showPassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
                           color: Colors.black,
                         ),
                         onPressed: () {
@@ -170,20 +241,21 @@ class LoginScreenState extends State<LoginScreen> {
 
   Widget buildLoginButton(Size size) {
     return GestureDetector(
-      onTap: () {
-        String email = emailController.text;
-        String password = passwordController.text;
+      onTap: () => login(context),
+      // {
+      //   // String email = emailController.text;
+      //   // String password = passwordController.text;
 
-        if (email.isEmpty || password.isEmpty) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Please fill in both fields")),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Login successful")),
-          );
-        }
-      },
+      //   // if (email.isEmpty || password.isEmpty) {
+      //   //   ScaffoldMessenger.of(context).showSnackBar(
+      //   //     const SnackBar(content: Text("Please fill in both fields")),
+      //   //   );
+      //   // } else {
+      //   //   ScaffoldMessenger.of(context).showSnackBar(
+      //   //     const SnackBar(content: Text("Login successful")),
+      //   //   );
+      //   // }
+      // },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         width: 300,
