@@ -37,7 +37,7 @@ class change_pass_screen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(18),
                 ),
               ),
-              child: Text("Save", style: TextStyle(color: Colors.white, fontSize: 16),),
+              child: const Text("Save", style: TextStyle(color: Colors.white, fontSize: 16),),
             ),
           ],
         ),

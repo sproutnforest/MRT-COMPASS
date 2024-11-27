@@ -45,30 +45,30 @@ class SplashScreenState extends State<SplashScreen> {
             offset: const Offset(125, 350),
             child: Image.asset(
               'assets/tr1.png',
-              width: 200,
-              height: 200,
+              width: 100,
+              height: 100,
             ),
           ),
-          Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(height: 50),
-                Transform.translate(
-                  offset: const Offset(0, -165),
-                  child: const Text(
-                    "MRT COMPASS",
-                    style: TextStyle(
-                      fontSize: 45,
-                      fontWeight: FontWeight.w800,
-                      color: kPrimaryLightColor,
-                      fontFamily: 'Montserrat',
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // Center(
+          //   child: Column(
+          //     mainAxisSize: MainAxisSize.min,
+          //     children: [
+          //       const SizedBox(height: 50),
+          //       Transform.translate(
+          //         offset: const Offset(0, -165),
+          //         child: const Text(
+          //           "MRT COMPASS",
+          //           style: TextStyle(
+          //             fontSize: 45,
+          //             fontWeight: FontWeight.w800,
+          //             color: kPrimaryLightColor,
+          //             fontFamily: 'Montserrat',
+          //           ),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );

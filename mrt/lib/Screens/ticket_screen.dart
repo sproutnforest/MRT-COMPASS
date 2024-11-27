@@ -55,7 +55,7 @@ class _TicketHistoryScreenState extends State<TicketHistoryScreen> {
           } else if (_currentIndex == 3) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => ProfileScreen()),
+              MaterialPageRoute(builder: (context) => const ProfileScreen()),
             );
           }
         },

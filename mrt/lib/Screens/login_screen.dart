@@ -51,7 +51,7 @@ class LoginScreenState extends State<LoginScreen> {
       throw 'Login gagal, coba lagi';
     }
   } catch (error) {
-    // Handle login errors
+    // Handle login error
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Sign-in failed: ${error.toString()}')),
     );

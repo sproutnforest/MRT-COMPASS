@@ -40,7 +40,9 @@ flutter:
   assets:
     - assets/pt1.png
     - assets/tr1.png
-    - assets/rmh2.png
-    - assets/tangga.png
     - assets/longtrain.png
     - assets/profile_image.png
+    - assets/icon_direction.png
+    - assets/icon_schedule.png
+    - assets/icon_guide.png
+

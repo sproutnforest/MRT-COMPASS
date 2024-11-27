@@ -262,7 +262,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        ProfileScreen()), // Navigate to Profile Screen
+                        const ProfileScreen()), // Navigate to Profile Screen
               );
               break;
           }

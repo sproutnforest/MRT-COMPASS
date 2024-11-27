@@ -25,7 +25,7 @@ class HomePage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => ProfileScreen()), // ProfileScreen
+                    builder: (context) => const ProfileScreen()), // ProfileScreen
               );
             },
             child: Container(
@@ -195,7 +195,7 @@ class HomePage extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        ProfileScreen()), // Navigate to Profile Screen
+                        const ProfileScreen()), // Navigate to Profile Screen
               );
               break;
           }

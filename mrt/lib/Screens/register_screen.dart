@@ -63,6 +63,7 @@ class RegisterScreenState extends State<RegisterScreen> {
       );
 
       // Tampilkan pesan sukses
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Registrasi Berhasil")),
       );
