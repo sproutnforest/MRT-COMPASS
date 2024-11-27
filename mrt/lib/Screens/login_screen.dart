@@ -19,37 +19,46 @@ class LoginScreenState extends State<LoginScreen> {
 
   // SignIn function
   void signIn() async {
-    try {
-      // Attempt to sign in using the email and password entered by the user
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text.trim(),  // Use email entered by the user
-        password: passwordController.text.trim(),  // Use password entered by the user
-      );
-      
-      // If sign-in is successful, navigate to the HomeScreen
-      if (mounted) {
-        print("Sign-in successful: ${userCredential.user}");
+  final email = emailController.text.trim();
+  final password = passwordController.text.trim();
 
-        // Navigate to the home screen
+  if (email.isEmpty || password.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Email dan password tidak boleh kosong')),
+    );
+    return;
+  }
+
+  try {
+    // Sign in with Firebase
+    final userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    // Navigate to the HomePage
+    if (userCredential.user != null) {
+      emailController.clear();
+      passwordController.clear();
+
+      if (mounted) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()), 
-        );
-
-        // Clear the text fields after successful login
-        emailController.clear();
-        passwordController.clear();
-      }
-    } catch (e) {
-      // Handle sign-in errors (e.g., wrong email/password)
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Sign-in failed: $e')),
+          MaterialPageRoute(builder: (_) => const HomePage()),
         );
       }
-      debugPrint("Sign-in failed with error: $e");
+    } else {
+      throw 'Login gagal, coba lagi';
     }
+  } catch (error) {
+    // Handle login errors
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Sign-in failed: ${error.toString()}')),
+    );
+    debugPrint('Error during sign-in: $error');
   }
+}
+
 
   @override
   void dispose() {
