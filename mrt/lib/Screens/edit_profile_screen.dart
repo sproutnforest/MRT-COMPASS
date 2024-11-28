@@ -4,7 +4,8 @@ class EditProfileScreen extends StatefulWidget {
   final String currentName;
   final String currentEmail;
 
-  const EditProfileScreen({super.key, required this.currentName, required this.currentEmail});
+  const EditProfileScreen(
+      {super.key, required this.currentName, required this.currentEmail});
 
   @override
   _EditProfileScreenState createState() => _EditProfileScreenState();
@@ -51,9 +52,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   bottom: 5,
                   right: 5,
                   child: GestureDetector(
-                    onTap: () {
-                      
-                    },
+                    onTap: () {},
                     child: const CircleAvatar(
                       radius: 18,
                       backgroundColor: Colors.orange,
@@ -73,9 +72,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               decoration: const InputDecoration(labelText: "Nama"),
             ),
             const SizedBox(height: 20),
+            // Mengatur email agar tidak dapat diedit
             TextField(
               controller: emailController,
               decoration: const InputDecoration(labelText: "Email"),
+              enabled: false, // Membuat TextField email tidak bisa diedit
             ),
             const SizedBox(height: 40),
             ElevatedButton(
@@ -92,7 +93,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   borderRadius: BorderRadius.circular(18),
                 ),
               ),
-              child: const Text("Save", style: TextStyle(color: Colors.white, fontSize: 16),),
+              child: const Text(
+                "Save",
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
             ),
           ],
         ),
