@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart'; 
 import 'profile_screen.dart'; 
-import 'feed_screen.dart';
-
 
 class TicketHistoryScreen extends StatefulWidget {
   const TicketHistoryScreen({super.key});
@@ -25,32 +23,26 @@ class _TicketHistoryScreenState extends State<TicketHistoryScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); // Go back to the previous screen
+            Navigator.pop(context);
           },
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex, // Set the active tab
-        selectedItemColor: Colors.blue, // Active tab color
-        unselectedItemColor: Colors.grey, // Inactive tab color
+        currentIndex: _currentIndex, 
+        selectedItemColor: Colors.blue, 
+        unselectedItemColor: Colors.grey, 
         showUnselectedLabels: false,
         showSelectedLabels: false,
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
           setState(() {
-            _currentIndex = index; // Update the active tab index
+            _currentIndex = index;
           });
 
-          // Navigate based on selected tab
           if (_currentIndex == 0) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => const HomePage()),
-            );
-          } else if (_currentIndex == 1) {
-              Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const FeedScreen()),
             );
           } else if (_currentIndex == 3) {
             Navigator.pushReplacement(
@@ -63,10 +55,6 @@ class _TicketHistoryScreenState extends State<TicketHistoryScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.article),
-            label: 'Feed',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.confirmation_num),
@@ -88,7 +76,7 @@ class _TicketHistoryScreenState extends State<TicketHistoryScreen> {
     );
   }
 
-  // Function to build the ticket card
+  // Function ticket card
   Widget _buildTicketCard() {
     return Card(
       color: Colors.grey.shade800,

@@ -5,8 +5,8 @@ import 'change_pass_screen.dart';
 import 'edit_profile_screen.dart';
 import 'feed_screen.dart';
 import 'login_screen.dart';
-import 'ticket_screen.dart';
 import 'package:mrt/constant.dart';
+import 'ticket_screen_history.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -207,10 +207,18 @@ Future<void> _deleteAccount(BuildContext context) async {
                   text: "Favorit",
                   backgroundColor: kSecondaryColor,
                 ),
-                const ProfileOptionTile(
-                  icon: Icons.history,
+                ProfileOptionTile(
+                  icon: Icons.lock,
                   text: "History",
                   backgroundColor: kSecondaryColor,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const TicketHistoryScreen(),
+                      ),
+                    );
+                  },
                 ),
                 ProfileOptionTile(
                   icon: Icons.logout,
@@ -266,12 +274,12 @@ Future<void> _deleteAccount(BuildContext context) async {
                 MaterialPageRoute(builder: (context) => const FeedScreen()),
               );
               break;
-            case 2:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const TicketHistoryScreen()),
-              );
-              break;
+            // case 2:
+            //   Navigator.push(
+            //     context,
+            //     MaterialPageRoute(builder: (context) => const TicketHistoryScreen()),
+            //   );
+            //   break;
             case 3:
               break;
           }

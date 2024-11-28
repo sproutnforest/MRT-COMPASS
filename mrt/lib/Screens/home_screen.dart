@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mrt/constant.dart'; // Ensure this is where your colors and constants are defined
-import 'feed_screen.dart'; // Import Feed screen (Create this if needed)
-import 'profile_screen.dart'; // Import the profile screen here
+import 'package:mrt/constant.dart';
+import 'profile_screen.dart'; 
 import 'schedule_screen.dart';
-import 'ticket_screen.dart'; // Import Ticket screen (Create this if needed)
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -18,32 +16,6 @@ class HomePage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // Top Points Section - Make this clickable to navigate to Profile
-          GestureDetector(
-            onTap: () {
-              // Navigate to Profile Screen when Points are tapped
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const ProfileScreen()), // ProfileScreen
-              );
-            },
-            child: Container(
-              color: Colors.green,
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: const Center(
-                child: Text(
-                  '96000 Points',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-          ),
-
           // Welcome Section
           Container(
             color: kPrimaryColor,
@@ -154,15 +126,13 @@ class HomePage extends StatelessWidget {
         ],
       ),
 
-      // Bottom Navigation with 4 Items (Home, Feed, Ticket, Profile)
+      // Bottom Navigation with 4 Items (Home, Ticket, Profile)
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.feed), label: 'Feed'), // Added Feed icon
-          BottomNavigationBarItem(
               icon: Icon(Icons.confirmation_number),
-              label: 'Ticket'), // Added Ticket icon
+              label: 'Ticket'),
           BottomNavigationBarItem(
               icon: Icon(Icons.account_circle), label: 'Profile'),
         ],
@@ -174,23 +144,15 @@ class HomePage extends StatelessWidget {
             case 0:
               // Navigate to Home (currently on Home page)
               break;
-            case 1:
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        const FeedScreen()), // Navigate to Feed Screen
-              );
-              break;
+            // case 1:
+            //   Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (context) =>
+            //             const //()), // Navigate to Ticket Screen
+            //   );
+            //   break;
             case 2:
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        const TicketHistoryScreen()), // Navigate to Ticket Screen
-              );
-              break;
-            case 3:
               Navigator.push(
                 context,
                 MaterialPageRoute(
