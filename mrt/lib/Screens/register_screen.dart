@@ -56,38 +56,40 @@ class RegisterScreenState extends State<RegisterScreen> {
 
  // Fungsi registrasi dengan Firebase Auth
   Future<void> registerWithEmailPassword() async {
-    try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
+  try {
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    );
 
-      // Tampilkan pesan sukses
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Registrasi Berhasil")),
-      );
+ 
+    await FirebaseAuth.instance.currentUser!.updateDisplayName(nameController.text.trim());
+    await FirebaseAuth.instance.currentUser!.reload();
 
-      // Navigasi ke layar login
-      Navigator.push(
-        // ignore: use_build_context_synchronously
-        context,
-        MaterialPageRoute(builder: (context) => const LoginScreen()),
-      );
-    } on FirebaseAuthException catch (e) {
-      String errorMessage;
-      if (e.code == 'weak-password') {
-        errorMessage = 'Kata sandi terlalu lemah.';
-      } else if (e.code == 'email-already-in-use') {
-        errorMessage = 'Email sudah terdaftar.';
-      } else {
-        errorMessage = 'Terjadi kesalahan. Coba lagi.';
-      }
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(errorMessage)));
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Registrasi Berhasil")),
+    );
+
+    // Navigasi ke layar login
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
+    );
+  } on FirebaseAuthException catch (e) {
+    String errorMessage;
+    if (e.code == 'weak-password') {
+      errorMessage = 'Kata sandi terlalu lemah.';
+    } else if (e.code == 'email-already-in-use') {
+      errorMessage = 'Email sudah terdaftar.';
+    } else {
+      errorMessage = 'Terjadi kesalahan. Coba lagi.';
     }
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(errorMessage)));
   }
+}
+
   @override
   Widget build(BuildContext context) {
     // Semua widget berada di sini
