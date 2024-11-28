@@ -3,7 +3,6 @@ import 'package:mrt/Screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'change_pass_screen.dart';
 import 'edit_profile_screen.dart';
-import 'feed_screen.dart';
 import 'login_screen.dart';
 import 'package:mrt/constant.dart';
 import 'ticket_screen_history.dart';
@@ -18,7 +17,8 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   String name = "Don Key";
   String email = "donkey1@example.com";
-  int _selectedIndex = 3;
+  int _selectedIndex = 2;  // Set initial selected index to 2 (Profile tab)
+
   void updateProfile(String newName, String newEmail) {
     setState(() {
       name = newName;
@@ -52,81 +52,78 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-void _showDeleteAccountConfirmation(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: const Text('Hapus Akun'),
-      content: const Text('Apakah Anda yakin ingin menghapus akun ini? Tindakan ini tidak dapat dibatalkan.'),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(), 
-          child: const Text('Batal'),
-        ),
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop(); 
-            _confirmDeleteAccount(context);
-          },
-          child: const Text('Ya, Hapus Akun'),
-        ),
-      ],
-    ),
-  );
-}
-
-
-void _confirmDeleteAccount(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: const Text('Konfirmasi Penghapusan Akun'),
-      content: const Text('Apakah Anda benar-benar yakin ingin menghapus akun ini? Akun tidak dapat dipulihkan setelah dihapus.'),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(), 
-          child: const Text('Batal'),
-        ),
-        TextButton(
-          onPressed: () async {
-            Navigator.of(context).pop(); 
-            await _deleteAccount(context);
-          },
-          child: const Text('Ya, Hapus Akun'),
-        ),
-      ],
-    ),
-  );
-}
-
-Future<void> _deleteAccount(BuildContext context) async {
-  try {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-
-      await user.delete(); 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginScreen()), 
-      );
-    }
-  } catch (e) {
+  void _showDeleteAccountConfirmation(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Kesalahan'),
-        content: Text('Terjadi kesalahan: ${e.toString()}'),
+        title: const Text('Hapus Akun'),
+        content: const Text('Apakah Anda yakin ingin menghapus akun ini? Tindakan ini tidak dapat dibatalkan.'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Tutup'),
+            onPressed: () => Navigator.of(context).pop(), 
+            child: const Text('Batal'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); 
+              _confirmDeleteAccount(context);
+            },
+            child: const Text('Ya, Hapus Akun'),
           ),
         ],
       ),
     );
   }
-}
 
+  void _confirmDeleteAccount(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Konfirmasi Penghapusan Akun'),
+        content: const Text('Apakah Anda benar-benar yakin ingin menghapus akun ini? Akun tidak dapat dipulihkan setelah dihapus.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(), 
+            child: const Text('Batal'),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.of(context).pop(); 
+              await _deleteAccount(context);
+            },
+            child: const Text('Ya, Hapus Akun'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _deleteAccount(BuildContext context) async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await user.delete(); 
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()), 
+        );
+      }
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Kesalahan'),
+          content: Text('Terjadi kesalahan: ${e.toString()}'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Tutup'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -234,19 +231,16 @@ Future<void> _deleteAccount(BuildContext context) async {
                   backgroundColor: tertiaryColor,
                   onTap: () => _showDeleteAccountConfirmation(context), 
                 ),
-
               ],
             ),
           ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
+        currentIndex: _selectedIndex,  // Current index is set to 2 (Profile tab)
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.feed), label: ''),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.confirmation_number), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.confirmation_number), label: ''),
           BottomNavigationBarItem(
             icon: CircleAvatar(
               radius: 12,
@@ -268,20 +262,8 @@ Future<void> _deleteAccount(BuildContext context) async {
                 MaterialPageRoute(builder: (context) => const HomePage()),
               );
               break;
-            case 1:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const FeedScreen()),
-              );
-              break;
-            // case 2:
-            //   Navigator.push(
-            //     context,
-            //     MaterialPageRoute(builder: (context) => const TicketHistoryScreen()),
-            //   );
-            //   break;
-            case 3:
-              break;
+            case 2:
+              break;  // Profile page doesn't need navigation
           }
         },
         showSelectedLabels: false,
