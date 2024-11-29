@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mrt/auth/auth_service.dart';
 import 'login_screen.dart';
-import 'first_screen.dart';
+import 'package:mrt/constant.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PasswordValidator {
   static bool isLongEnough(String password) => password.length >= 8;
@@ -23,13 +24,17 @@ class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
   @override
-  _RegisterScreenState createState() => _RegisterScreenState();
+  RegisterScreenState createState() => RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class RegisterScreenState extends State<RegisterScreen> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  bool _showPassword = false;
+  
+
+  bool showPassword = false;
   bool isLongEnough = false;
   bool hasUpperLowerCase = false;
   bool hasSymbol = false;
@@ -37,31 +42,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   void dispose() {
+    nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
-  }
-
-  void register(BuildContext context) async {
-    final auth = AuthService();
-    if (isLongEnough && hasUpperLowerCase && hasSymbol) {
-            try {
-              await auth.signUpWithEmailPassword(
-                  emailController.text, passwordController.text);
-            } catch (e) {
-              showDialog(
-                context: context,
-                builder: ((context) => AlertDialog(
-                      title: Text(e.toString()),
-                    )),
-              );
-            }
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                  content: Text("Please meet all password requirements.")),
-            );
-          }
   }
 
   void checkPasswordCriteria(String password) {
@@ -73,58 +57,66 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
   }
 
+  // Fungsi registrasi dengan Firebase Auth
+  Future<void> registerWithEmailPassword() async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+
+      await FirebaseAuth.instance.currentUser!
+          .updateDisplayName(nameController.text.trim());
+      await FirebaseAuth.instance.currentUser!.reload();
+
+      // Add a new document to the 'testCollection'
+      await _firestore.collection('Users').add({
+        'email': emailController.text.trim(),
+        'name': nameController.text.trim(),
+        'password': passwordController.text.trim(),
+        'points': 0,
+        'profil': "",
+        'saldo': 0,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Registrasi Berhasil")),
+      );
+
+      // Navigasi ke layar login
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      );
+    } on FirebaseAuthException catch (e) {
+      String errorMessage;
+      if (e.code == 'weak-password') {
+        errorMessage = 'Kata sandi terlalu lemah.';
+      } else if (e.code == 'email-already-in-use') {
+        errorMessage = 'Email sudah terdaftar.';
+      } else {
+        errorMessage = 'Terjadi kesalahan. Coba lagi.';
+      }
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(errorMessage)));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    // Semua widget berada di sini
     return Scaffold(
       body: Stack(
         children: [
-          _buildBackground(size),
-          Positioned(
-            top: 50,
-            left: 20,
-            right: 20,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const FirstScreen()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  child: const Text("Back"),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Aksi untuk tombol Next
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  child: const Text("Next"),
-                ),
-              ],
-            ),
-          ),
-          _buildRegisterForm(size),
+          buildBackground(MediaQuery.of(context).size),
+          buildRegisterForm(MediaQuery.of(context).size),
         ],
       ),
     );
   }
 
-  Widget _buildBackground(Size size) {
+  Widget buildBackground(Size size) {
     return Stack(
       children: [
         Positioned(
@@ -134,14 +126,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Transform.translate(
-                offset: const Offset(-150, 430),
-                child: Image.asset(
-                  'assets/rmh2.png',
-                  fit: BoxFit.contain,
-                  width: size.width * 0.6,
-                ),
-              ),
               const SizedBox(height: 10),
               Image.asset(
                 'assets/longtrain.png',
@@ -151,39 +135,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ],
           ),
         ),
-        Positioned(
-          bottom: 500,
-          right: -180,
-          child: Transform.rotate(
-            angle: 45 * 3.141592653589793238 / 180,
-            child: Image.asset(
-              'assets/tangga.png',
-              width: 650,
-              height: 620,
-            ),
-          ),
-        ),
       ],
     );
   }
 
-  Widget _buildRegisterForm(Size size) {
+  Widget buildRegisterForm(Size size) {
     return Center(
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 0),
-            Transform.translate(
-              offset: const Offset(0, 50),
-              child: const Text(
-                "Register",
-                style: TextStyle(fontSize: 50, fontWeight: FontWeight.w900),
-              ),
+            const Text(
+              "Sign Up",
+              style: TextStyle(
+                  fontSize: 50,
+                  fontWeight: FontWeight.w900,
+                  fontFamily: 'Serif'),
             ),
             const SizedBox(height: 20),
-            buildTextField("Your Email", Icons.email, emailController, false),
+            buildTextField("Name", Icons.person, nameController, false),
+            const SizedBox(height: 20),
+            buildTextField("Email", Icons.email, emailController, false),
             const SizedBox(height: 15),
             buildTextField("Password", Icons.lock, passwordController, true),
             const SizedBox(height: 10),
@@ -194,9 +167,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 hasSymbol: hasSymbol,
               ),
             const SizedBox(height: 20),
-            buildRegisterButton(size),
+            buildRegisterButton(),
             const SizedBox(height: 55),
-            _buildLoginText(),
+            buildLoginText(),
           ],
         ),
       ),
@@ -209,7 +182,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       width: 300,
       decoration: BoxDecoration(
-        color: const Color(0xFFFFAA00),
+        color: kSecondaryColor,
         borderRadius: BorderRadius.circular(50),
       ),
       child: Row(
@@ -221,7 +194,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           Expanded(
             child: TextField(
               controller: controller,
-              obscureText: isPassword ? !_showPassword : false,
+              obscureText: isPassword ? !showPassword : false,
               onChanged: (value) {
                 if (isPassword) {
                   checkPasswordCriteria(value);
@@ -234,14 +207,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 suffixIcon: isPassword
                     ? IconButton(
                         icon: Icon(
-                          _showPassword
+                          showPassword
                               ? Icons.visibility
                               : Icons.visibility_off,
                           color: Colors.black,
                         ),
                         onPressed: () {
                           setState(() {
-                            _showPassword = !_showPassword;
+                            showPassword = !showPassword;
                           });
                         },
                       )
@@ -254,38 +227,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget buildRegisterButton(Size size) {
-    return Transform.translate(
-      offset: const Offset(0, 40),
-      child: GestureDetector(
-        onTap: () => register(context),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-          width: 300,
-          decoration: BoxDecoration(
-            color: const Color(0xFF173156),
-            borderRadius: BorderRadius.circular(50),
-          ),
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.person_add, color: Colors.white),
-              SizedBox(width: 20),
-              Text(
-                "Register",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
+  Widget buildRegisterButton() {
+    return GestureDetector(
+      onTap: () {
+        if (isLongEnough && hasUpperLowerCase && hasSymbol) {
+          registerWithEmailPassword();
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text("Mohon penuhi semua persyaratan kata sandi.")),
+          );
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+        width: 300,
+        decoration: BoxDecoration(
+          color: kPrimaryColor,
+          borderRadius: BorderRadius.circular(50),
+        ),
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.person_add, color: Colors.white),
+            SizedBox(width: 20),
+            Text(
+              "Sign Up",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontFamily: 'Serif',
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildLoginText() {
+  Widget buildLoginText() {
     return GestureDetector(
       onTap: () {
         Navigator.push(context,
@@ -300,10 +280,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 TextStyle(color: Color.fromARGB(255, 92, 92, 92), fontSize: 14),
           ),
           Text(
-            "Login",
+            "Sign In",
             style: TextStyle(
                 color: Color.fromARGB(255, 92, 92, 92),
                 fontSize: 14,
+                fontFamily: 'Serif',
                 fontWeight: FontWeight.bold),
           ),
         ],
@@ -342,8 +323,8 @@ class PasswordCriteria extends StatelessWidget {
       children: [
         buildCriteriaRow("At least 8 characters", isLongEnough),
         buildCriteriaRow(
-            "Contains upper and lower case letters", hasUpperLowerCase),
-        buildCriteriaRow("Contains at least one symbol", hasSymbol),
+            "Contains uppercase and lowercase letters", hasUpperLowerCase),
+        buildCriteriaRow("Contains a symbol (!@#\$&*~)", hasSymbol),
       ],
     );
   }

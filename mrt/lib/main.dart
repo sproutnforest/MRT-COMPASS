@@ -8,6 +8,7 @@ import 'package:mrt/Screens/first_screen.dart';
 import 'package:mrt/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mrt/presentation/splash_screen.dart';
+import 'package:mrt/Screens/ticket_screen_history.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +35,8 @@ class MyApp extends StatelessWidget {
         '/first': (context) => const FirstScreen(), // FirstScreen
         '/home': (context) => HomePage(), // HomePage route
         '/login': (context) => const LoginScreen(), // LoginPage route (for when the user is not logged in)
+        '/home': (context) => const HomePage(), // HomePage as route
+        '/ticket': (context) => const TicketHistoryScreen() //History Tiket
       },
     );
   }

@@ -5,9 +5,9 @@ import '../data/station_schedule_data.dart'; // Pastikan data stasiun diimpor
 import '../models/station_schedule.dart';
 import 'feed_screen.dart'; // Import Feed screen (Create this if needed)
 import 'profile_screen.dart'; // Import the profile screen here
-import 'ticket_screen.dart';
+import 'ticket_screen_history.dart';
 
-
+  
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({super.key});
 
@@ -262,7 +262,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        ProfileScreen()), // Navigate to Profile Screen
+                        const ProfileScreen()), // Navigate to Profile Screen
               );
               break;
           }
