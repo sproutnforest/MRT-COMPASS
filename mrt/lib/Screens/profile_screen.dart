@@ -253,10 +253,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   text: "Favorit",
                   backgroundColor: kSecondaryColor,
                 ),
-                const ProfileOptionTile(
-                  icon: Icons.history,
+               ProfileOptionTile(
+                  icon: Icons.lock,
                   text: "History",
                   backgroundColor: kSecondaryColor,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TicketHistoryScreen(),
+                      ),
+                    );
+                  },
                 ),
                 ProfileOptionTile(
                   icon: Icons.logout,
