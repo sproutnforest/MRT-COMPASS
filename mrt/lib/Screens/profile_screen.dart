@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mrt/Screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mrt/Screens/ticket_screen_history.dart';
 import 'change_pass_screen.dart';
 import 'edit_profile_screen.dart';
 import 'feed_screen.dart';
 import 'login_screen.dart';
 import 'package:mrt/constant.dart';
-import 'ticket_screen_history.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -16,14 +16,135 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  String name = "Don Key";
-  String email = "donkey1@example.com";
+  User? user;
+  String name = "Loading...";
+  String email = "Loading...";
   int _selectedIndex = 3;
-  void updateProfile(String newName, String newEmail) {
-    setState(() {
-      name = newName;
-      email = newEmail;
-    });
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  void _loadUserData() {
+    user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      setState(() {
+        name = user!.displayName ?? "No Name";
+        email = user!.email ?? "No Email";
+      });
+    }
+  }
+
+  void updateProfile(String newName, String newEmail) async {
+    try {
+      if (user != null) {
+        await user!.updateDisplayName(newName);
+        // await user!.updateEmail(newEmail);
+        await user!.reload();
+        user = FirebaseAuth.instance.currentUser;
+
+        setState(() {
+          name = user!.displayName ?? "No Name";
+          email = user!.email ?? "No Email";
+        });
+      }
+    } catch (e) {
+      _showErrorDialog('Error updating profile: ${e.toString()}');
+    }
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Error'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Close'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showInfoDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Info'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showDeleteAccountConfirmation() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Hapus Akun'),
+        content: const Text(
+            'Apakah Anda yakin ingin menghapus akun ini? Tindakan ini tidak bisa dibatalkan.'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Menutup dialog
+            },
+            child: const Text('Batal'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Menutup dialog
+              _deleteAccount(); // Menghapus akun
+            },
+            child: const Text('Hapus'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _deleteAccount() async {
+    try {
+      // Pastikan pengguna sedang login
+      if (user == null) {
+        throw Exception('Tidak ada pengguna yang login.');
+      }
+
+      // Menghapus akun pengguna
+      await user!.delete();
+
+      // Jika widget masih terpasang di widget tree, tampilkan SnackBar dan navigasikan ke halaman login
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Akun berhasil dihapus.')),
+        );
+
+        // Arahkan pengguna ke halaman login setelah 2 detik
+        await Future.delayed(const Duration(seconds: 2));
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+        );
+      }
+    } catch (e) {
+      // Jika ada error, tampilkan pesan error di SnackBar
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Gagal menghapus akun: $e')),
+        );
+      }
+    }
   }
 
   void _showLogoutConfirmation() {
@@ -39,7 +160,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              FirebaseAuth.instance.signOut();
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => const LoginScreen()),
@@ -52,82 +173,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-void _showDeleteAccountConfirmation(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: const Text('Hapus Akun'),
-      content: const Text('Apakah Anda yakin ingin menghapus akun ini? Tindakan ini tidak dapat dibatalkan.'),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(), 
-          child: const Text('Batal'),
-        ),
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop(); 
-            _confirmDeleteAccount(context);
-          },
-          child: const Text('Ya, Hapus Akun'),
-        ),
-      ],
-    ),
-  );
-}
-
-
-void _confirmDeleteAccount(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: const Text('Konfirmasi Penghapusan Akun'),
-      content: const Text('Apakah Anda benar-benar yakin ingin menghapus akun ini? Akun tidak dapat dipulihkan setelah dihapus.'),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(), 
-          child: const Text('Batal'),
-        ),
-        TextButton(
-          onPressed: () async {
-            Navigator.of(context).pop(); 
-            await _deleteAccount(context);
-          },
-          child: const Text('Ya, Hapus Akun'),
-        ),
-      ],
-    ),
-  );
-}
-
-Future<void> _deleteAccount(BuildContext context) async {
-  try {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-
-      await user.delete(); 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginScreen()), 
-      );
-    }
-  } catch (e) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Kesalahan'),
-        content: Text('Terjadi kesalahan: ${e.toString()}'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Tutup'),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,7 +180,7 @@ Future<void> _deleteAccount(BuildContext context) async {
         title: const Text("PROFIL"),
         foregroundColor: Colors.white,
         centerTitle: true,
-        backgroundColor: const Color(0xFF173156),
+        backgroundColor: kPrimaryColor,
         automaticallyImplyLeading: false,
       ),
       body: Column(
@@ -178,7 +223,8 @@ Future<void> _deleteAccount(BuildContext context) async {
                 borderRadius: BorderRadius.circular(16),
               ),
             ),
-            child: const Text("Edit Profil", style: TextStyle(color: Colors.white)),
+            child: const Text("Edit Profil",
+                style: TextStyle(color: Colors.white)),
           ),
           const SizedBox(height: 20),
           Expanded(
@@ -192,7 +238,7 @@ Future<void> _deleteAccount(BuildContext context) async {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const change_pass_screen(),
+                        builder: (context) => ChangePassScreen(),
                       ),
                     );
                   },
@@ -207,7 +253,7 @@ Future<void> _deleteAccount(BuildContext context) async {
                   text: "Favorit",
                   backgroundColor: kSecondaryColor,
                 ),
-                ProfileOptionTile(
+               ProfileOptionTile(
                   icon: Icons.lock,
                   text: "History",
                   backgroundColor: kSecondaryColor,
@@ -215,7 +261,7 @@ Future<void> _deleteAccount(BuildContext context) async {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const TicketHistoryScreen(),
+                        builder: (context) => TicketHistoryScreen(),
                       ),
                     );
                   },
@@ -223,18 +269,17 @@ Future<void> _deleteAccount(BuildContext context) async {
                 ProfileOptionTile(
                   icon: Icons.logout,
                   text: "Logout",
-                  textColor: Colors.black,
+                  textColor: tertiaryColor,
                   backgroundColor: tertiaryColor,
                   onTap: _showLogoutConfirmation,
                 ),
                 ProfileOptionTile(
                   icon: Icons.delete_forever,
                   text: "Hapus Akun",
-                  textColor: Colors.black,
+                  textColor: tertiaryColor,
                   backgroundColor: tertiaryColor,
-                  onTap: () => _showDeleteAccountConfirmation(context), 
+                  onTap: _showDeleteAccountConfirmation,
                 ),
-
               ],
             ),
           ),
@@ -274,12 +319,13 @@ Future<void> _deleteAccount(BuildContext context) async {
                 MaterialPageRoute(builder: (context) => const FeedScreen()),
               );
               break;
-            // case 2:
-            //   Navigator.push(
-            //     context,
-            //     MaterialPageRoute(builder: (context) => const TicketHistoryScreen()),
-            //   );
-            //   break;
+            case 2:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TicketHistoryScreen()),
+              );
+              break;
             case 3:
               break;
           }
@@ -287,7 +333,7 @@ Future<void> _deleteAccount(BuildContext context) async {
         showSelectedLabels: false,
         showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: const Color(0xFF173156),
+        backgroundColor: kPrimaryColor,
       ),
     );
   }
@@ -302,14 +348,16 @@ class ProfileOptionTile extends StatelessWidget {
   final double iconSize;
   final Color textColor;
 
-  const ProfileOptionTile(
-      {super.key, required this.icon,
-      required this.text,
-      this.onTap,
-      this.iconColor = Colors.white,
-      this.backgroundColor = kSecondaryColor,
-      this.iconSize = 18.0,
-      this.textColor = Colors.black});
+  const ProfileOptionTile({
+    super.key,
+    required this.icon,
+    required this.text,
+    this.onTap,
+    this.iconColor = Colors.white,
+    this.backgroundColor = kSecondaryColor,
+    this.iconSize = 18.0,
+    this.textColor = Colors.black,
+  });
 
   @override
   Widget build(BuildContext context) {

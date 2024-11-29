@@ -9,8 +9,8 @@ environment:
 
 dependencies:
   cloud_firestore: ^5.5.0
-  firebase_auth: ^5.3.3  # Gunakan versi terbaru yang stabil
-  firebase_core: ^3.8.0   # Pastikan ini sesuai dengan firebase_auth terbaru
+  firebase_auth: ^5.3.3
+  firebase_core: ^3.8.0  
   flutter:
     sdk: flutter
   sizer: ^2.0.15
@@ -46,4 +46,3 @@ flutter:
     - assets/icon_direction.png
     - assets/icon_schedule.png
     - assets/icon_guide.png
-
