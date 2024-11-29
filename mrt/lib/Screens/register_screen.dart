@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'login_screen.dart';
 import 'package:mrt/constant.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PasswordValidator {
   static bool isLongEnough(String password) => password.length >= 8;
@@ -27,9 +28,11 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class RegisterScreenState extends State<RegisterScreen> {
-  final TextEditingController nameController = TextEditingController();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  
 
   bool showPassword = false;
   bool isLongEnough = false;
@@ -54,41 +57,51 @@ class RegisterScreenState extends State<RegisterScreen> {
     });
   }
 
- // Fungsi registrasi dengan Firebase Auth
+  // Fungsi registrasi dengan Firebase Auth
   Future<void> registerWithEmailPassword() async {
-  try {
-    await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: emailController.text.trim(),
-      password: passwordController.text.trim(),
-    );
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
 
- 
-    await FirebaseAuth.instance.currentUser!.updateDisplayName(nameController.text.trim());
-    await FirebaseAuth.instance.currentUser!.reload();
+      await FirebaseAuth.instance.currentUser!
+          .updateDisplayName(nameController.text.trim());
+      await FirebaseAuth.instance.currentUser!.reload();
 
+      // Add a new document to the 'testCollection'
+      await _firestore.collection('Users').add({
+        'email': emailController.text.trim(),
+        'name': nameController.text.trim(),
+        'password': passwordController.text.trim(),
+        'points': 0,
+        'profil': "",
+        'saldo': 0,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Registrasi Berhasil")),
-    );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Registrasi Berhasil")),
+      );
 
-    // Navigasi ke layar login
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginScreen()),
-    );
-  } on FirebaseAuthException catch (e) {
-    String errorMessage;
-    if (e.code == 'weak-password') {
-      errorMessage = 'Kata sandi terlalu lemah.';
-    } else if (e.code == 'email-already-in-use') {
-      errorMessage = 'Email sudah terdaftar.';
-    } else {
-      errorMessage = 'Terjadi kesalahan. Coba lagi.';
+      // Navigasi ke layar login
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      );
+    } on FirebaseAuthException catch (e) {
+      String errorMessage;
+      if (e.code == 'weak-password') {
+        errorMessage = 'Kata sandi terlalu lemah.';
+      } else if (e.code == 'email-already-in-use') {
+        errorMessage = 'Email sudah terdaftar.';
+      } else {
+        errorMessage = 'Terjadi kesalahan. Coba lagi.';
+      }
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(errorMessage)));
     }
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(errorMessage)));
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +148,10 @@ class RegisterScreenState extends State<RegisterScreen> {
           children: [
             const Text(
               "Sign Up",
-              style: TextStyle(fontSize: 50, fontWeight: FontWeight.w900, fontFamily: 'Serif'),
+              style: TextStyle(
+                  fontSize: 50,
+                  fontWeight: FontWeight.w900,
+                  fontFamily: 'Serif'),
             ),
             const SizedBox(height: 20),
             buildTextField("Name", Icons.person, nameController, false),
@@ -260,7 +276,8 @@ class RegisterScreenState extends State<RegisterScreen> {
         children: [
           Text(
             "Already have an Account? ",
-            style: TextStyle(color: Color.fromARGB(255, 92, 92, 92), fontSize: 14),
+            style:
+                TextStyle(color: Color.fromARGB(255, 92, 92, 92), fontSize: 14),
           ),
           Text(
             "Sign In",
