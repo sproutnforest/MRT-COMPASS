@@ -8,14 +8,10 @@ class Points extends StatefulWidget {
 }
 
 class _PointsState extends State<Points> {
-  int userPoints = 2650;
+  int userPoints = 2;
   int buttonValue1 = 2000;
-  int buttonValue2 = 1000;
-  int buttonValue3 = 5000;
-
-  User? user;
-  String name = "No Name";
-  String email = "No Email";
+  int buttonValue2 = 4000;
+  int buttonValue3 = 7000;
 
   @override
   void initState() {
@@ -23,12 +19,82 @@ class _PointsState extends State<Points> {
     _loadUserData();
   }
 
-  void _loadUserData() {
-    user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
+  void addPoints(int many) async {
+    var user = FirebaseAuth.instance.currentUser;
+
+    if (user != null && user.email != null) {
+      String email = user.email!;
+      print('User email: $email');
+
+      CollectionReference usersCollection =
+          FirebaseFirestore.instance.collection('Users');
+      try {
+        QuerySnapshot querySnapshot =
+            await usersCollection.where('email', isEqualTo: email).get();
+        if (querySnapshot.docs.isNotEmpty) {
+          DocumentSnapshot document = querySnapshot.docs.first;
+          int currentPoints = document['points'];
+          int newPoints = currentPoints + many;
+          await document.reference.update({'points': newPoints});
+          print('User points updated to: $newPoints');
+          setState(() {
+            userPoints = newPoints;
+          });
+        } else {
+          print('User document not found.');
+          setState(() {
+            userPoints = 1;
+          });
+        }
+      } catch (e) {
+        print('Error fetching user data: $e');
+        setState(() {
+          userPoints = 1;
+        });
+      }
+    } else {
+      print('No user is currently logged in or user email is null.');
       setState(() {
-        name = user!.displayName ?? "No Name";
-        email = user!.email ?? "No Email";
+        userPoints = 1; // Set a default value when the user is not logged in
+      });
+    }
+  }
+
+  void _loadUserData() async {
+    var user = FirebaseAuth.instance.currentUser;
+
+    if (user != null && user.email != null) {
+      String email = user.email!;
+      print('User email: $email');
+
+      CollectionReference usersCollection =
+          FirebaseFirestore.instance.collection('Users');
+      try {
+        QuerySnapshot querySnapshot =
+            await usersCollection.where('email', isEqualTo: email).get();
+        if (querySnapshot.docs.isNotEmpty) {
+          DocumentSnapshot document = querySnapshot.docs.first;
+          print('Document data: ${document.data()}');
+          setState(() {
+            userPoints = document['points'];
+          });
+          print('User points updated to: $userPoints');
+        } else {
+          print('User document not found.');
+          setState(() {
+            userPoints = 1;
+          });
+        }
+      } catch (e) {
+        print('Error fetching user data: $e');
+        setState(() {
+          userPoints = 1;
+        });
+      }
+    } else {
+      print('No user is currently logged in or user email is null.');
+      setState(() {
+        userPoints = 1; // Set a default value when the user is not logged in
       });
     }
   }
@@ -81,13 +147,9 @@ class _PointsState extends State<Points> {
                   const SizedBox(width: 20),
                   Padding(
                     padding: const EdgeInsets.only(right: 35.0),
-                    child: Container(
-                      width: 125,
-                      height: 125,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                      ),
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: AssetImage('assets/profile_image.png'),
                     ),
                   ),
                 ],
@@ -125,7 +187,12 @@ class _PointsState extends State<Points> {
                   Padding(
                     padding: const EdgeInsets.only(right: 12.0),
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: buttonColor1 == Colors.grey
+                          ? null
+                          : () {
+                              // Add your action for when the button is clicked here
+                              print('Button 1 pressed');
+                            },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
@@ -155,7 +222,7 @@ class _PointsState extends State<Points> {
                   Padding(
                     padding: const EdgeInsets.only(left: 12.0),
                     child: Text(
-                      'Diskon tiket 50%',
+                      '3 tiket gratis kemana aja',
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 18,
@@ -165,7 +232,12 @@ class _PointsState extends State<Points> {
                   Padding(
                     padding: const EdgeInsets.only(right: 12.0),
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: buttonColor2 == Colors.grey
+                          ? null
+                          : () {
+                              // Add your action for when the button is clicked here
+                              print('Button 2 pressed');
+                            },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
@@ -205,7 +277,12 @@ class _PointsState extends State<Points> {
                   Padding(
                     padding: const EdgeInsets.only(right: 12.0),
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: buttonColor3 == Colors.grey
+                          ? null
+                          : () {
+                              // Add your action for when the button is clicked here
+                              print('Button 3 pressed');
+                            },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),

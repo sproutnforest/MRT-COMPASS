@@ -12,7 +12,9 @@ import 'package:mrt/Screens/ticket_screen_history.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  if (Firebase.apps.isEmpty) {
+    await Firebase.initializeApp();
+  }
   runApp(const MyApp());
 }
 
@@ -48,7 +50,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      // home: AuthGate()
-    );
+        // home: AuthGate()
+        );
   }
 }

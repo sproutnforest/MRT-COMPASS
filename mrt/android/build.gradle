@@ -1,6 +1,17 @@
+buildscript {
+    repositories {
+        google()  // Ensure this is here
+        mavenCentral()
+    }
+    dependencies {
+        // Add the classpath for the Google Services plugin
+        classpath 'com.google.gms:google-services:4.3.15'  // Specify the version you need
+    }
+}
+
 allprojects {
     repositories {
-        google()
+        google()  // Ensure this is here as well
         mavenCentral()
     }
 }
