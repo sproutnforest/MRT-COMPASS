@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mrt/Screens/ticket_screen_history.dart';
 import 'change_pass_screen.dart';
 import 'edit_profile_screen.dart';
-import 'feed_screen.dart';
 import 'login_screen.dart';
 import 'package:mrt/constant.dart';
 
@@ -19,7 +18,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   User? user;
   String name = "Loading...";
   String email = "Loading...";
-  int _selectedIndex = 3;
+  int _selectedIndex = 2;
 
   @override
   void initState() {
@@ -41,7 +40,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     try {
       if (user != null) {
         await user!.updateDisplayName(newName);
-        // await user!.updateEmail(newEmail);
         await user!.reload();
         user = FirebaseAuth.instance.currentUser;
 
@@ -115,21 +113,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _deleteAccount() async {
     try {
-      // Pastikan pengguna sedang login
       if (user == null) {
         throw Exception('Tidak ada pengguna yang login.');
       }
 
-      // Menghapus akun pengguna
       await user!.delete();
 
-      // Jika widget masih terpasang di widget tree, tampilkan SnackBar dan navigasikan ke halaman login
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Akun berhasil dihapus.')),
         );
 
-        // Arahkan pengguna ke halaman login setelah 2 detik
         await Future.delayed(const Duration(seconds: 2));
 
         Navigator.pushReplacement(
@@ -138,7 +132,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         );
       }
     } catch (e) {
-      // Jika ada error, tampilkan pesan error di SnackBar
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Gagal menghapus akun: $e')),
@@ -238,7 +231,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ChangePassScreen(),
+                        builder: (context) => const ChangePassScreen(),
                       ),
                     );
                   },
@@ -253,7 +246,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   text: "Favorit",
                   backgroundColor: kSecondaryColor,
                 ),
-               ProfileOptionTile(
+                ProfileOptionTile(
                   icon: Icons.lock,
                   text: "History",
                   backgroundColor: kSecondaryColor,
@@ -261,7 +254,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => TicketHistoryScreen(),
+                        builder: (context) => const TicketHistoryScreen(),
                       ),
                     );
                   },
@@ -289,7 +282,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         currentIndex: _selectedIndex,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.feed), label: ''),
           BottomNavigationBarItem(
               icon: Icon(Icons.confirmation_number), label: ''),
           BottomNavigationBarItem(
@@ -316,17 +308,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             case 1:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const FeedScreen()),
-              );
-              break;
-            case 2:
-              Navigator.push(
-                context,
                 MaterialPageRoute(
                     builder: (context) => const TicketHistoryScreen()),
               );
               break;
-            case 3:
+            case 2:
               break;
           }
         },
