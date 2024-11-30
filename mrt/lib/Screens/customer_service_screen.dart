@@ -90,7 +90,7 @@ class CustomerServiceScreen extends StatelessWidget {
                         const SizedBox(height: 20),
                         ElevatedButton(
                           onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Terima kasih telah menghubungi kami!")));
+                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Terima kasih telah menghubungi kami!")));
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: kSecondaryColor,

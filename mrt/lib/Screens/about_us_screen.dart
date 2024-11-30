@@ -88,26 +88,36 @@ class AboutUsScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 40),
-                  _buildSectionTitle("Tim Kami"),
+                  const SizedBox(height: 30),
+                  
+                  // New Grid Section for Team Members
+                  const Text(
+                    "Meet the Team",
+                    style: TextStyle(
+                      fontFamily: 'serif',
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                   const SizedBox(height: 20),
-                  // Menampilkan anggota tim secara manual
-                  _buildTeamMember("Eryca 1", 'assets/person1.jpg'),
-                  const SizedBox(height: 20),
-                  _buildTeamMember("Eryca 2", 'assets/person2.jpg'),
-                  const SizedBox(height: 20),
-                  _buildTeamMember("Eryca 3", 'assets/person3.jpg'),
-                  const SizedBox(height: 20),
-                  _buildTeamMember("Eryca 4", 'assets/person4.jpg'),
-                  const SizedBox(height: 20),
-                  _buildTeamMember("Eryca 5", 'assets/person5.jpg'),
-                  const SizedBox(height: 20),
-                  _buildTeamMember("Eryca 6", 'assets/person6.jpg'),
-                  const SizedBox(height: 40),
-                  _buildSectionTitle("Connect With Us"),
-                  const SizedBox(height: 10),
-                  _buildTextField("Masukkan alamat email Anda"),
-                  const SizedBox(height: 20),
+                  GridView.count(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    children: [
+                      // Manually created team members (without images)
+                      _buildTeamMember('Eryca'),
+                      _buildTeamMember('Brenda'),
+                      _buildTeamMember('Maycheren'),
+                      _buildTeamMember('Chela'),
+                      _buildTeamMember('Georgia'),
+                      _buildTeamMember('Lusy'),
+                    ],
+                  ),
+                  
                   ElevatedButton(
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Anda telah terdaftar untuk menerima pembaruan!")));
@@ -176,45 +186,29 @@ class AboutUsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField(String label, {int maxLines = 1}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 11.5),
-      child: TextField(
-        maxLines: maxLines,
-        decoration: InputDecoration(
-          labelText: label,
-          border: const OutlineInputBorder(),
-        ),
-        textAlign: TextAlign.center,
+  // Manually create each team member's card without images
+  Widget _buildTeamMember(String name) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
       ),
-    );
-  }
-
-  // Menampilkan anggota tim secara manual
-  Widget _buildTeamMember(String name, String imagePath) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: Image.asset(
-            imagePath, // Path gambar anggota tim
-            width: 100,
-            height: 100,
-            fit: BoxFit.cover,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Instead of an image, just show the name
+          const SizedBox(height: 10),
+          Text(
+            name,
+            style: const TextStyle(
+              fontFamily: 'serif',
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+            textAlign: TextAlign.center,
           ),
-        ),
-        const SizedBox(height: 10),
-        Text(
-          name, // Nama anggota tim
-          style: const TextStyle(
-            fontFamily: 'serif',
-            fontWeight: FontWeight.bold,
-            fontSize: 14,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

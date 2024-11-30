@@ -80,17 +80,6 @@ class RegisterScreenState extends State<RegisterScreen> {
         'saldo': 0,
         'timestamp': FieldValue.serverTimestamp(),
       });
-      Future<void> someAsyncFunction(BuildContext context) async {
-        // Some async operation
-        await Future.delayed(const Duration(seconds: 1));
-
-        // Check if the widget is still mounted before using the BuildContext
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Registrasi Berhasil")),
-          );
-        }
-      }
 
 
       // Navigasi ke layar login
