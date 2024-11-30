@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mrt/constant.dart';
 import 'profile_screen.dart'; 
 import 'schedule_screen.dart';
+import 'ticket.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -135,10 +136,16 @@ class HomePage extends StatelessWidget {
         selectedItemColor: kPrimaryColor,
         unselectedItemColor: Colors.grey,
         onTap: (index) {
-          // Handle bottom navigation actions here
           switch (index) {
             case 0:
               // Navigate to Home (currently on Home page)
+              break;
+            case 1:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TicketScreen()),
+              );
               break;
             case 2:
               Navigator.push(
