@@ -8,6 +8,8 @@ import 'edit_profile_screen.dart';
 import 'login_screen.dart';
 import 'package:mrt/constant.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../Screens/customer_service_screen.dart';
+
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -36,6 +38,14 @@ class ProfileScreenState extends State<ProfileScreen> {
         email = user!.email ?? "No Email";
       });
     }
+  }
+  void _showCustomerService(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CustomerServiceScreen(), // Membuka halaman Customer Service
+      ),
+    );
   }
 
   void updateProfile(String newName, String newEmail) async {
@@ -257,11 +267,6 @@ Future<void> _deleteAccount() async {
                   text: "MRT-points",
                   backgroundColor: kSecondaryColor,
                 ),
-                const ProfileOptionTile(
-                  icon: Icons.favorite,
-                  text: "Favorit",
-                  backgroundColor: kSecondaryColor,
-                ),
                 ProfileOptionTile(
                   icon: Icons.lock,
                   text: "History",
@@ -274,6 +279,13 @@ Future<void> _deleteAccount() async {
                       ),
                     );
                   },
+                ),
+                        ProfileOptionTile(
+                  icon: Icons.headset_mic, // Mengganti ikon logout dengan ikon headset untuk Customer Service
+                  text: "Customer Service",
+                  textColor: Colors.black,
+                  backgroundColor: kSecondaryColor,
+                  onTap: () => _showCustomerService(context),
                 ),
                 ProfileOptionTile(
                   icon: Icons.logout,
