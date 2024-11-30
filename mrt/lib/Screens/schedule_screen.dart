@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-
 import '/constant.dart';
 import '../data/station_schedule_data.dart'; // Pastikan data stasiun diimpor
 import '../models/station_schedule.dart';
-import 'feed_screen.dart'; // Import Feed screen (Create this if needed)
 import 'profile_screen.dart'; // Import the profile screen here
-import 'ticket_screen_history.dart';
+import 'ticket.dart';
+import 'home_screen.dart';
 
   
 class ScheduleScreen extends StatefulWidget {
@@ -221,10 +220,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.feed), label: 'Feed'), // Added Feed icon
-          BottomNavigationBarItem(
               icon: Icon(Icons.confirmation_number),
-              label: 'Ticket'), // Added Ticket icon
+              label: 'Ticket'),
           BottomNavigationBarItem(
             icon: CircleAvatar(
               radius: 12,
@@ -239,25 +236,20 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           // Handle bottom navigation actions here
           switch (index) {
             case 0:
-              // Navigate to Home (currently on Home page)
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage()),
+              );
               break;
             case 1:
               Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        const FeedScreen()), // Navigate to Feed Screen
+                        const TicketScreen()),
               );
               break;
             case 2:
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        const TicketHistoryScreen()), // Navigate to Ticket Screen
-              );
-              break;
-            case 3:
               Navigator.push(
                 context,
                 MaterialPageRoute(
