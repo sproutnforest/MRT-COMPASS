@@ -53,7 +53,7 @@ class ProfileScreenState extends State<ProfileScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AboutUsScreen(),
+        builder: (context) => const AboutUsScreen(),
       ),
     );
   }
