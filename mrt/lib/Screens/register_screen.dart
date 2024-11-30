@@ -71,6 +71,7 @@ class RegisterScreenState extends State<RegisterScreen> {
 
       // Add a new document to the 'testCollection'
       await _firestore.collection('Users').add({
+        
         'email': emailController.text.trim(),
         'name': nameController.text.trim(),
         'password': passwordController.text.trim(),
@@ -79,23 +80,24 @@ class RegisterScreenState extends State<RegisterScreen> {
         'saldo': 0,
         'timestamp': FieldValue.serverTimestamp(),
       });
-    //     Future<void> someAsyncFunction(BuildContext context) async {
-    //  if (mounted) {
-    //         ScaffoldMessenger.of(context).showSnackBar(
-    //           const SnackBar(content: Text("Registrasi Berhasil")),
-    //         );
-    //       }
-    //     }
+      Future<void> someAsyncFunction(BuildContext context) async {
+        // Some async operation
+        await Future.delayed(Duration(seconds: 1));
+
+        // Check if the widget is still mounted before using the BuildContext
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Registrasi Berhasil")),
+          );
+        }
+      }
 
 
       // Navigasi ke layar login
-  if (mounted) {
-    // Navigasi ke layar login
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginScreen()),
-    );
-  }
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      );
     } on FirebaseAuthException catch (e) {
       String errorMessage;
       if (e.code == 'weak-password') {

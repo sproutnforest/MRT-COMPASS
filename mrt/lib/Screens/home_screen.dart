@@ -157,7 +157,7 @@ class HomePage extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        const ProfileScreen()), // Navigate to Profile Screen
+                         ProfileScreen()), // Navigate to Profile Screen
               );
               break;
           }

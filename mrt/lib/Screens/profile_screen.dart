@@ -115,53 +115,46 @@ class ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+Future<void> _deleteAccount() async {
+  try {
+    User? user = FirebaseAuth.instance.currentUser;
 
-  Future<void> _deleteAccount() async {
-    try {
-      if (user == null) {
-        throw Exception('Tidak ada pengguna yang login.');
-      }
-
-      // Delete user data from Firestore
-      await FirebaseFirestore.instance.collection('Users').doc(user!.uid).delete();
-
-      // Delete user from Firebase Authentication
-      await user!.delete();
-
+    if (user != null) {
+      String uid = user.uid;  // UID yang digunakan untuk mengakses Firestore
+      debugPrint("UID yang digunakan untuk menghapus data: $uid");
+      await FirebaseFirestore.instance.collection('Users').doc(uid).delete();
+      debugPrint("Data pengguna berhasil dihapus dari Firestore");
+      await user.delete();
+      debugPrint("Akun pengguna berhasil dihapus dari Firebase Authentication");
+      await FirebaseAuth.instance.signOut();
+      debugPrint("Pengguna berhasil keluar dari Firebase Auth");
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Akun berhasil dihapus.')),
-        );
-
-        await Future.delayed(const Duration(seconds: 2));
-
-        // Redirect to login screen
-        if (mounted) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const LoginScreen()),
-          );
-        }
-      }
-    } catch (e) {
-      debugPrint("Error: $e");
-      if (mounted) {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Kesalahan'),
-            content: Text('Terjadi kesalahan: ${e.toString()}'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Tutup'),
-              ),
-            ],
-          ),
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
         );
       }
+    } else {
+      print("Tidak ada pengguna yang terautentikasi");
     }
+  } on FirebaseAuthException catch (e) {
+    String errorMessage;
+    if (e.code == 'requires-recent-login') {
+      errorMessage = 'Tolong login kembali untuk menghapus akun Anda.';
+    } else {
+      errorMessage = 'Terjadi kesalahan saat menghapus akun: ${e.message}';
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(errorMessage)),
+    );
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Terjadi kesalahan saat menghapus akun.')),
+    );
   }
+}
+
+
 
   void _showLogoutConfirmation() {
     showDialog(

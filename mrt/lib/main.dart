@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mrt/Screens/Home_screen.dart';
 import 'package:mrt/Screens/Routes.dart';
 import 'package:mrt/Screens/login_screen.dart';
-import 'package:mrt/auth/auth_gate.dart';
 import 'package:mrt/constant.dart'; // Pastikan kPrimaryColor ada di sini
 import 'package:mrt/Screens/first_screen.dart';
 import 'package:mrt/firebase_options.dart';
@@ -35,9 +34,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const SplashScreen(), // SplashScreen
         '/first': (context) => const FirstScreen(), // FirstScreen
-        '/home': (context) => HomePage(), // HomePage route
+        '/home': (context) => const HomePage(), // HomePage route
         '/login': (context) => const LoginScreen(), // LoginPage route (for when the user is not logged in)
-        '/home': (context) => const HomePage(), // HomePage as route
         '/ticket': (context) => const TicketHistoryScreen() //History Tiket
       },
     );
