@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mrt/Screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mrt/Screens/ticket.dart';
 import 'package:mrt/Screens/ticket_screen_history.dart';
 import 'change_pass_screen.dart';
 import 'edit_profile_screen.dart';
@@ -325,7 +326,7 @@ Future<void> _deleteAccount() async {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const TicketHistoryScreen()),
+                    builder: (context) => const TicketScreen()),
               );
               break;
             case 2:

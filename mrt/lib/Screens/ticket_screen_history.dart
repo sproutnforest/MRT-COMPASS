@@ -10,7 +10,6 @@ class TicketHistoryScreen extends StatefulWidget {
 }
 
 class _TicketHistoryScreenState extends State<TicketHistoryScreen> {
-  int _currentIndex = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -25,33 +24,6 @@ class _TicketHistoryScreenState extends State<TicketHistoryScreen> {
             Navigator.pop(context);
           },
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: false,
-        showSelectedLabels: false,
-        type: BottomNavigationBarType.fixed,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.confirmation_num),
-            label: 'Tiket',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Profile',
-          ),
-        ],
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
