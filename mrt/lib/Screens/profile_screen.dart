@@ -9,6 +9,7 @@ import 'login_screen.dart';
 import 'package:mrt/constant.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../Screens/customer_service_screen.dart';
+import 'about_us_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -43,8 +44,16 @@ class ProfileScreenState extends State<ProfileScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            CustomerServiceScreen(), // Membuka halaman Customer Service
+        builder: (context) => CustomerServiceScreen(),
+      ),
+    );
+  }
+
+  void _showAboutUs(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AboutUsScreen(),
       ),
     );
   }
@@ -52,25 +61,19 @@ class ProfileScreenState extends State<ProfileScreen> {
   void updateProfile(String newName, String newEmail) async {
     try {
       if (user != null) {
-        // Memperbarui nama di Firebase Authentication
         await user!.updateDisplayName(newName);
 
-        // Mencari dokumen berdasarkan email di Firestore dan memperbarui nama
         final querySnapshot = await FirebaseFirestore.instance
             .collection('Users')
-            .where('email',
-                isEqualTo: user!.email) // Mencari dokumen berdasarkan email
+            .where('email', isEqualTo: user!.email)
             .get();
 
-        // Jika dokumen ditemukan, perbarui field 'name'
         if (querySnapshot.docs.isNotEmpty) {
           final doc = querySnapshot.docs.first;
           await doc.reference.update({
-            'name':
-                newName, // Menyimpan nama yang baru ke dalam dokumen Firestore
+            'name': newName,
           });
 
-          // Reload user data untuk memperbarui tampilan
           await user!.reload();
           user = FirebaseAuth.instance.currentUser;
 
@@ -132,14 +135,14 @@ class ProfileScreenState extends State<ProfileScreen> {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop(); // Menutup dialog
+              Navigator.of(context).pop();
             },
             child: const Text('Batal'),
           ),
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop(); // Menutup dialog
-              _deleteAccount(); // Menghapus akun
+              Navigator.of(context).pop();
+              _deleteAccount();
             },
             child: const Text('Hapus'),
           ),
@@ -150,18 +153,15 @@ class ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> deleteUserDataByEmail(String email) async {
     try {
-      // Cari dokumen pengguna berdasarkan email
       final querySnapshot = await FirebaseFirestore.instance
           .collection('Users')
           .where('email', isEqualTo: email)
           .get();
 
-      // Periksa apakah dokumen ditemukan
       if (querySnapshot.docs.isEmpty) {
         throw Exception('Data pengguna dengan email $email tidak ditemukan.');
       }
 
-      // Hapus dokumen
       for (var doc in querySnapshot.docs) {
         await doc.reference.delete();
         print('Data pengguna dengan ID dokumen ${doc.id} berhasil dihapus.');
@@ -179,12 +179,10 @@ class ProfileScreenState extends State<ProfileScreen> {
 
       final email = user!.email;
 
-      // Hapus data pengguna di Firestore
       if (email != null) {
-        await deleteUserDataByEmail(email); // Menghapus data berdasarkan email
+        await deleteUserDataByEmail(email);
       }
 
-      // Hapus akun dari Firebase Authentication
       await user!.delete();
 
       if (mounted) {
@@ -328,11 +326,11 @@ class ProfileScreenState extends State<ProfileScreen> {
                   onTap: () => _showCustomerService(context),
                 ),
                 ProfileOptionTile(
-                  icon: Icons.info_outline, // Ikon info untuk About Us
+                  icon: Icons.info_outline,
                   text: "About Us",
                   textColor: Colors.black,
                   backgroundColor: kSecondaryColor,
-                  // onTap: () => _showAboutUs(context),
+                  onTap: () => _showAboutUs(context),
                 ),
                 ProfileOptionTile(
                   icon: Icons.logout,
