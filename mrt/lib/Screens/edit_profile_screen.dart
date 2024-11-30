@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mrt/constant.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final String currentName;
   final String currentEmail;
-  final String? currentImagePath; // Add this to pass the current image path
+  final String? currentImagePath;
 
   const EditProfileScreen(
       {super.key,
@@ -24,7 +23,7 @@ class EditProfileScreen extends StatefulWidget {
 class _EditProfileScreenState extends State<EditProfileScreen> {
   late TextEditingController nameController;
   late TextEditingController emailController;
-  File? _profileImage; // Variable to store the profile image locally
+  File? _profileImage;
 
   @override
   void initState() {
@@ -33,7 +32,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     emailController = TextEditingController(text: widget.currentEmail);
     if (widget.currentImagePath != null) {
       _profileImage =
-          File(widget.currentImagePath!); // Load the current image path
+          File(widget.currentImagePath!);
     }
   }
 
@@ -44,14 +43,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     super.dispose();
   }
 
-  // Function to pick an image from the gallery
   Future<void> _pickImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       setState(() {
-        _profileImage = File(pickedFile.path); // Save the image in File
+        _profileImage = File(pickedFile.path);
       });
     }
   }
@@ -74,18 +72,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 CircleAvatar(
                   radius: 70,
                   backgroundImage: _profileImage != null
-                      ? FileImage(_profileImage!) // If there's a selected image
+                      ? FileImage(_profileImage!)
                       : widget.currentImagePath != null
                           ? FileImage(File(widget
-                              .currentImagePath!)) // If there's a path already
+                              .currentImagePath!))
                           : const AssetImage('assets/blank-profile.png')
-                              as ImageProvider, // Default image
+                              as ImageProvider,
                 ),
                 Positioned(
                   bottom: 5,
                   right: 5,
                   child: GestureDetector(
-                    onTap: _pickImage, // Pick an image when button is pressed
+                    onTap: _pickImage,
                     child: const CircleAvatar(
                       radius: 18,
                       backgroundColor: kSecondaryColor,
@@ -108,7 +106,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             TextField(
               controller: emailController,
               decoration: const InputDecoration(labelText: "Email"),
-              enabled: false, // Email cannot be edited
+              enabled: false,
             ),
             const SizedBox(height: 40),
             ElevatedButton(
@@ -116,7 +114,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 Navigator.pop(context, {
                   'name': nameController.text,
                   'email': emailController.text,
-                  'profileImage': _profileImage?.path, // Send image path
+                  'profileImage': _profileImage?.path,
                 });
               },
               style: ElevatedButton.styleFrom(

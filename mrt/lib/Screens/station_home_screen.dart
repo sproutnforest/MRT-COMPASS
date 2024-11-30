@@ -34,15 +34,16 @@ class _StationDetailHomeScreenState extends State<StationDetailHomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'INFO PINTU KELUAR',
+          'PANDUAN PINTU KELUAR',
           style: TextStyle(
-            color: Colors.white,
+            color: kPrimaryLightColor,
+            fontFamily: 'serif',
           ),
         ),
         centerTitle: true,
         backgroundColor: kPrimaryColor,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back, color: kPrimaryLightColor),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -60,7 +61,7 @@ class _StationDetailHomeScreenState extends State<StationDetailHomeScreen> {
                   borderRadius: BorderRadius.circular(12.0),
                 ),
               ),
-              onChanged: _filterStations, // Filter data saat teks berubah
+              onChanged: _filterStations,
             ),
           ),
           Expanded(
@@ -73,7 +74,7 @@ class _StationDetailHomeScreenState extends State<StationDetailHomeScreen> {
                       horizontal: 8.0, vertical: 4.0),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: kPrimaryLightColor,
                       borderRadius: BorderRadius.circular(12.0),
                       border: Border.all(
                         color: Colors.grey,
@@ -85,7 +86,7 @@ class _StationDetailHomeScreenState extends State<StationDetailHomeScreen> {
                         backgroundColor: kPrimaryHoverColor,
                         child: Icon(
                           Icons.train,
-                          color: Colors.white,
+                          color: kPrimaryLightColor,
                         ),
                       ),
                       title: Text(
@@ -93,6 +94,7 @@ class _StationDetailHomeScreenState extends State<StationDetailHomeScreen> {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
+                          fontFamily: 'serif',
                         ),
                       ),
                       trailing: Icon(Icons.chevron_right),
