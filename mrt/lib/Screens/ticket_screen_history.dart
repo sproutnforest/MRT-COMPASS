@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class TicketHistoryScreen extends StatefulWidget {
   const TicketHistoryScreen({super.key});
@@ -16,7 +17,7 @@ class _TicketHistoryScreenState extends State<TicketHistoryScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Tiket Saya'),
+        title: const Text('Riwayat Transaksi'),
         backgroundColor: Colors.grey.shade900,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -53,29 +54,45 @@ class _TicketHistoryScreenState extends State<TicketHistoryScreen> {
         ],
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('tickets').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('riwayat_transaksi')
+            .where('email', isEqualTo: 'Ucup@gmail.com') // Ganti dengan email dinamis jika perlu
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text('Tidak ada data tiket.'));
+            return const Center(child: Text('Tidak ada riwayat transaksi.'));
           }
 
-          final tickets = snapshot.data!.docs;
+          final transactions = snapshot.data!.docs;
 
           return ListView.builder(
             padding: const EdgeInsets.all(16),
-            itemCount: tickets.length,
+            itemCount: transactions.length,
             itemBuilder: (context, index) {
-              final ticket = tickets[index];
-              return _buildTicketCard(
-                title: ticket['title'],
-                number: ticket['number'],
-                service: ticket['service'],
-                points: ticket['points'],
-                expiry: ticket['expiry'],
+              final transaction = transactions[index];
+              final transactionData = transaction.data() as Map<String, dynamic>?;
+
+              // Safely access fields with fallback values
+              final idTransaksi = transactionData?['id_transaksi'] ?? 0;
+              final ticketNumber = transactionData?['number'] ?? 'Unknown';
+              final service = transactionData?['service'] ?? 'Unknown';
+              final points = transactionData?['points'] ?? 0;
+              final expiry = transactionData?['expiry'] ?? 'Unknown';
+              final waktuTransaksi = transactionData?['waktu_transaksi'] != null
+                  ? _formatTimestamp(transactionData!['waktu_transaksi'])
+                  : 'Unknown';
+
+              return _buildTransactionCard(
+                idTransaksi: idTransaksi,
+                waktuTransaksi: waktuTransaksi,
+                ticketNumber: ticketNumber,
+                service: service,
+                points: points,
+                expiry: expiry,
               );
             },
           );
@@ -84,9 +101,17 @@ class _TicketHistoryScreenState extends State<TicketHistoryScreen> {
     );
   }
 
-  Widget _buildTicketCard({
-    required String title,
-    required String number,
+  // Function to format the Timestamp as a string
+  String _formatTimestamp(Timestamp timestamp) {
+    final dateTime = timestamp.toDate();
+    final formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
+    return formatter.format(dateTime);
+  }
+
+  Widget _buildTransactionCard({
+    required int idTransaksi,
+    required String waktuTransaksi,
+    required String ticketNumber,
     required String service,
     required int points,
     required String expiry,
@@ -103,36 +128,45 @@ class _TicketHistoryScreenState extends State<TicketHistoryScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.directions_bus,
-                  color: Colors.blue.shade300,
-                  size: 30,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
+            Text(
+              'ID Transaksi: $idTransaksi',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 8),
             Text(
-              number,
+              'Waktu: $waktuTransaksi', // Display the formatted timestamp
               style: TextStyle(
                 color: Colors.grey.shade400,
                 fontSize: 14,
               ),
             ),
-            const SizedBox(height: 8),
+            const Divider(color: Colors.grey),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Tiket No.',
+                      style: TextStyle(
+                        color: Colors.grey.shade500,
+                        fontSize: 12,
+                      ),
+                    ),
+                    Text(
+                      ticketNumber,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -156,7 +190,7 @@ class _TicketHistoryScreenState extends State<TicketHistoryScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Poin Diperoleh',
+                      'Poin',
                       style: TextStyle(
                         color: Colors.grey.shade500,
                         fontSize: 12,
@@ -185,7 +219,7 @@ class _TicketHistoryScreenState extends State<TicketHistoryScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Tiket Kadaluwarsa Dalam',
+                      'Status',
                       style: TextStyle(
                         color: Colors.grey.shade500,
                         fontSize: 12,

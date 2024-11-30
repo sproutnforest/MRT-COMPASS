@@ -8,7 +8,6 @@ import 'login_screen.dart';
 import 'package:mrt/constant.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -71,23 +70,7 @@ class ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  // void _showInfoDialog(String message) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) => AlertDialog(
-  //       title: const Text('Info'),
-  //       content: Text(message),
-  //       actions: [
-  //         TextButton(
-  //           onPressed: () => Navigator.of(context).pop(),
-  //           child: const Text('OK'),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-   void _showDeleteAccountConfirmation(BuildContext context) {
+  void _showDeleteAccountConfirmation(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -109,7 +92,6 @@ class ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-
 
   void _confirmDeleteAccount(BuildContext context) {
     showDialog(
@@ -134,16 +116,16 @@ class ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-Future<void> _deleteAccount() async {
-
-    User? user = FirebaseAuth.instance.currentUser;
-
-  void _deleteAccount() async {
+  Future<void> _deleteAccount() async {
     try {
       if (user == null) {
         throw Exception('Tidak ada pengguna yang login.');
       }
 
+      // Delete user data from Firestore
+      await FirebaseFirestore.instance.collection('Users').doc(user!.uid).delete();
+
+      // Delete user from Firebase Authentication
       await user!.delete();
 
       if (mounted) {
@@ -153,45 +135,34 @@ Future<void> _deleteAccount() async {
 
         await Future.delayed(const Duration(seconds: 2));
 
-    if (user != null) {
-      await FirebaseFirestore.instance.collection('Users').doc(user.uid).delete();
-      await user.delete();
-     if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
-        );
+        // Redirect to login screen
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()),
+          );
+        }
       }
-
-    }
-  } catch (e) {
-    debugPrint("Error: $e");
-    if (mounted) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Kesalahan'),
-          content: Text('Terjadi kesalahan: ${e.toString()}'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Tutup'),
-            ),
-          ],
-        ),
-      );
     } catch (e) {
+      debugPrint("Error: $e");
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Gagal menghapus akun: $e')),
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Kesalahan'),
+            content: Text('Terjadi kesalahan: ${e.toString()}'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Tutup'),
+              ),
+            ],
+          ),
         );
       }
-
     }
   }
-}
 
-    
   void _showLogoutConfirmation() {
     showDialog(
       context: context,
@@ -268,8 +239,7 @@ Future<void> _deleteAccount() async {
                 borderRadius: BorderRadius.circular(16),
               ),
             ),
-            child: const Text("Edit Profil",
-                style: TextStyle(color: Colors.white)),
+            child: const Text("Edit Profil", style: TextStyle(color: Colors.white)),
           ),
           const SizedBox(height: 20),
           Expanded(
@@ -318,13 +288,13 @@ Future<void> _deleteAccount() async {
                   backgroundColor: tertiaryColor,
                   onTap: _showLogoutConfirmation,
                 ),
-               ProfileOptionTile(
+                ProfileOptionTile(
                   icon: Icons.delete_forever,
                   text: "Hapus Akun",
                   textColor: tertiaryColor,
                   backgroundColor: tertiaryColor,
                   onTap: () {
-                    _showDeleteAccountConfirmation(context); // Passing the context here
+                    _showDeleteAccountConfirmation(context);
                   },
                 ),
               ],
@@ -336,8 +306,7 @@ Future<void> _deleteAccount() async {
         currentIndex: _selectedIndex,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.confirmation_number), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.confirmation_number), label: ''),
           BottomNavigationBarItem(
             icon: CircleAvatar(
               radius: 12,
