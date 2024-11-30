@@ -42,7 +42,7 @@ class _StationDetailHomeScreenState extends State<StationDetailHomeScreen> {
         centerTitle: true,
         backgroundColor: kPrimaryColor,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white), // Ikon back
+          icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -73,16 +73,16 @@ class _StationDetailHomeScreenState extends State<StationDetailHomeScreen> {
                       horizontal: 8.0, vertical: 4.0),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.white, // Latar belakang putih
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(12.0),
                       border: Border.all(
-                        color: Colors.grey, // Border hitam
+                        color: Colors.grey,
                         width: 1.0,
                       ),
                     ),
                     child: ListTile(
                       leading: CircleAvatar(
-                        backgroundColor: kPrimaryHoverColor, // Warna biru ikon
+                        backgroundColor: kPrimaryHoverColor,
                         child: Icon(
                           Icons.train,
                           color: Colors.white,
@@ -92,7 +92,7 @@ class _StationDetailHomeScreenState extends State<StationDetailHomeScreen> {
                         station['name'],
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.black, // Teks hitam
+                          color: Colors.black,
                         ),
                       ),
                       trailing: Icon(Icons.chevron_right),
