@@ -41,8 +41,10 @@ class Routes extends StatelessWidget {
                     const SizedBox(height: 20),
                     TimelineTile(
                       isFirst: true,
-                      beforeLineStyle: const LineStyle(color: Color(0xFF173156)),
-                      indicatorStyle: const IndicatorStyle(color: Color(0xFF173156)),
+                      beforeLineStyle:
+                          const LineStyle(color: Color(0xFF173156)),
+                      indicatorStyle:
+                          const IndicatorStyle(color: Color(0xFF173156)),
                       endChild: Container(
                         margin: const EdgeInsets.all(25),
                         child: ElevatedButton(
@@ -50,13 +52,14 @@ class Routes extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    const RoutesDetail(routes: "Lebak Bulus Grab"),
+                                builder: (context) => const RoutesDetail(
+                                    routes: "Lebak Bulus Grab"),
                               ),
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFFFAA00), // Button color
+                            backgroundColor:
+                                const Color(0xFFFFAA00), // Button color
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 15), // Button size
                             shape: RoundedRectangleBorder(
@@ -76,8 +79,10 @@ class Routes extends StatelessWidget {
                       ),
                     ),
                     TimelineTile(
-                      beforeLineStyle: const LineStyle(color: Color(0xFF173156)),
-                      indicatorStyle: const IndicatorStyle(color: Color(0xFF173156)),
+                      beforeLineStyle:
+                          const LineStyle(color: Color(0xFF173156)),
+                      indicatorStyle:
+                          const IndicatorStyle(color: Color(0xFF173156)),
                       endChild: Container(
                         margin: const EdgeInsets.all(25),
                         child: ElevatedButton(
@@ -85,13 +90,14 @@ class Routes extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    const RoutesDetail(routes: "Fatmawati Indomaret"),
+                                builder: (context) => const RoutesDetail(
+                                    routes: "Fatmawati Indomaret"),
                               ),
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFFFAA00), // Button color
+                            backgroundColor:
+                                const Color(0xFFFFAA00), // Button color
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 15), // Button size
                             shape: RoundedRectangleBorder(
@@ -111,8 +117,10 @@ class Routes extends StatelessWidget {
                       ),
                     ),
                     TimelineTile(
-                      beforeLineStyle: const LineStyle(color: Color(0xFF173156)),
-                      indicatorStyle: const IndicatorStyle(color: Color(0xFF173156)),
+                      beforeLineStyle:
+                          const LineStyle(color: Color(0xFF173156)),
+                      indicatorStyle:
+                          const IndicatorStyle(color: Color(0xFF173156)),
                       endChild: Container(
                         margin: const EdgeInsets.all(25),
                         child: ElevatedButton(
@@ -126,7 +134,8 @@ class Routes extends StatelessWidget {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFFFAA00), // Button color
+                            backgroundColor:
+                                const Color(0xFFFFAA00), // Button color
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 15), // Button size
                             shape: RoundedRectangleBorder(
@@ -146,8 +155,10 @@ class Routes extends StatelessWidget {
                       ),
                     ),
                     TimelineTile(
-                      beforeLineStyle: const LineStyle(color: Color(0xFF173156)),
-                      indicatorStyle: const IndicatorStyle(color: Color(0xFF173156)),
+                      beforeLineStyle:
+                          const LineStyle(color: Color(0xFF173156)),
+                      indicatorStyle:
+                          const IndicatorStyle(color: Color(0xFF173156)),
                       endChild: Container(
                         margin: const EdgeInsets.all(25),
                         child: ElevatedButton(
@@ -161,7 +172,8 @@ class Routes extends StatelessWidget {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFFFAA00), // Button color
+                            backgroundColor:
+                                const Color(0xFFFFAA00), // Button color
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 15), // Button size
                             shape: RoundedRectangleBorder(
@@ -181,8 +193,10 @@ class Routes extends StatelessWidget {
                       ),
                     ),
                     TimelineTile(
-                      beforeLineStyle: const LineStyle(color: Color(0xFF173156)),
-                      indicatorStyle: const IndicatorStyle(color: Color(0xFF173156)),
+                      beforeLineStyle:
+                          const LineStyle(color: Color(0xFF173156)),
+                      indicatorStyle:
+                          const IndicatorStyle(color: Color(0xFF173156)),
                       endChild: Container(
                         margin: const EdgeInsets.all(25),
                         child: ElevatedButton(
@@ -196,7 +210,8 @@ class Routes extends StatelessWidget {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFFFAA00), // Button color
+                            backgroundColor:
+                                const Color(0xFFFFAA00), // Button color
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 15), // Button size
                             shape: RoundedRectangleBorder(
@@ -216,8 +231,10 @@ class Routes extends StatelessWidget {
                       ),
                     ),
                     TimelineTile(
-                      beforeLineStyle: const LineStyle(color: Color(0xFF173156)),
-                      indicatorStyle: const IndicatorStyle(color: Color(0xFF173156)),
+                      beforeLineStyle:
+                          const LineStyle(color: Color(0xFF173156)),
+                      indicatorStyle:
+                          const IndicatorStyle(color: Color(0xFF173156)),
                       endChild: Container(
                         margin: const EdgeInsets.all(25),
                         child: ElevatedButton(
@@ -231,7 +248,8 @@ class Routes extends StatelessWidget {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFFFAA00), // Button color
+                            backgroundColor:
+                                const Color(0xFFFFAA00), // Button color
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 15), // Button size
                             shape: RoundedRectangleBorder(
@@ -251,8 +269,10 @@ class Routes extends StatelessWidget {
                       ),
                     ),
                     TimelineTile(
-                      beforeLineStyle: const LineStyle(color: Color(0xFF173156)),
-                      indicatorStyle: const IndicatorStyle(color: Color(0xFF173156)),
+                      beforeLineStyle:
+                          const LineStyle(color: Color(0xFF173156)),
+                      indicatorStyle:
+                          const IndicatorStyle(color: Color(0xFF173156)),
                       endChild: Container(
                         margin: const EdgeInsets.all(25),
                         child: ElevatedButton(
@@ -266,7 +286,8 @@ class Routes extends StatelessWidget {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFFFAA00), // Button color
+                            backgroundColor:
+                                const Color(0xFFFFAA00), // Button color
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 15), // Button size
                             shape: RoundedRectangleBorder(
@@ -286,9 +307,233 @@ class Routes extends StatelessWidget {
                       ),
                     ),
                     TimelineTile(
+                      beforeLineStyle:
+                          const LineStyle(color: Color(0xFF173156)),
+                      indicatorStyle:
+                          const IndicatorStyle(color: Color(0xFF173156)),
+                      endChild: Container(
+                        margin: const EdgeInsets.all(25),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const RoutesDetail(routes: "Senayan"),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color(0xFFFFAA00), // Button color
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 15), // Button size
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(5), // Rounded corners
+                            ),
+                          ),
+                          child: const Text(
+                            'Senayan',
+                            style: TextStyle(
+                              fontSize: 18, // Text size
+                              fontWeight: FontWeight.bold, // Bold text
+                              color: Colors.white, // Text color
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    TimelineTile(
+                      beforeLineStyle:
+                          const LineStyle(color: Color(0xFF173156)),
+                      indicatorStyle:
+                          const IndicatorStyle(color: Color(0xFF173156)),
+                      endChild: Container(
+                        margin: const EdgeInsets.all(25),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const RoutesDetail(
+                                    routes: "Istora Mandiri"),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color(0xFFFFAA00), // Button color
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 15), // Button size
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(5), // Rounded corners
+                            ),
+                          ),
+                          child: const Text(
+                            'Istora Mandiri',
+                            style: TextStyle(
+                              fontSize: 18, // Text size
+                              fontWeight: FontWeight.bold, // Bold text
+                              color: Colors.white, // Text color
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    TimelineTile(
+                      beforeLineStyle:
+                          const LineStyle(color: Color(0xFF173156)),
+                      indicatorStyle:
+                          const IndicatorStyle(color: Color(0xFF173156)),
+                      endChild: Container(
+                        margin: const EdgeInsets.all(25),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const RoutesDetail(
+                                    routes: "Bendungan Hilir"),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color(0xFFFFAA00), // Button color
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 15), // Button size
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(5), // Rounded corners
+                            ),
+                          ),
+                          child: const Text(
+                            'Bendungan Hilir',
+                            style: TextStyle(
+                              fontSize: 18, // Text size
+                              fontWeight: FontWeight.bold, // Bold text
+                              color: Colors.white, // Text color
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    TimelineTile(
+                      beforeLineStyle:
+                          const LineStyle(color: Color(0xFF173156)),
+                      indicatorStyle:
+                          const IndicatorStyle(color: Color(0xFF173156)),
+                      endChild: Container(
+                        margin: const EdgeInsets.all(25),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const RoutesDetail(
+                                    routes: "Setiabudi Astra"),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color(0xFFFFAA00), // Button color
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 15), // Button size
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(5), // Rounded corners
+                            ),
+                          ),
+                          child: const Text(
+                            'Setiabudi Astra',
+                            style: TextStyle(
+                              fontSize: 18, // Text size
+                              fontWeight: FontWeight.bold, // Bold text
+                              color: Colors.white, // Text color
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    TimelineTile(
+                      beforeLineStyle:
+                          const LineStyle(color: Color(0xFF173156)),
+                      indicatorStyle:
+                          const IndicatorStyle(color: Color(0xFF173156)),
+                      endChild: Container(
+                        margin: const EdgeInsets.all(25),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const RoutesDetail(
+                                    routes: "Dukuh Atas BNI"),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color(0xFFFFAA00), // Button color
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 15), // Button size
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(5), // Rounded corners
+                            ),
+                          ),
+                          child: const Text(
+                            'Dukuh Atas BNI',
+                            style: TextStyle(
+                              fontSize: 18, // Text size
+                              fontWeight: FontWeight.bold, // Bold text
+                              color: Colors.white, // Text color
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    TimelineTile(
                       isLast: true,
-                      beforeLineStyle: const LineStyle(color: Color(0xFF173156)),
-                      indicatorStyle: const IndicatorStyle(color: Color(0xFF173156)),
+                      beforeLineStyle:
+                          const LineStyle(color: Color(0xFF173156)),
+                      indicatorStyle:
+                          const IndicatorStyle(color: Color(0xFF173156)),
+                      endChild: Container(
+                        margin: const EdgeInsets.all(25),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const RoutesDetail(routes: "Bundaran HI"),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color(0xFFFFAA00), // Button color
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 15), // Button size
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(5), // Rounded corners
+                            ),
+                          ),
+                          child: const Text(
+                            'Bundaran HI',
+                            style: TextStyle(
+                              fontSize: 18, // Text size
+                              fontWeight: FontWeight.bold, // Bold text
+                              color: Colors.white, // Text color
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
