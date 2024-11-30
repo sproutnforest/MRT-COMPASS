@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mrt/Screens/profile_screen.dart';
+import 'package:mrt/constant.dart';
 
 class ChangePassScreen extends StatefulWidget {
   const ChangePassScreen({super.key});
@@ -34,23 +35,6 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
       ),
     );
   }
-
-  // Show success dialog
-  // void _showSuccessDialog(String message) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) => AlertDialog(
-  //       title: const Text('Success'),
-  //       content: Text(message),
-  //       actions: [
-  //         TextButton(
-  //           onPressed: () => Navigator.of(context).pop(),
-  //           child: const Text('OK'),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 
   // Function to check password validity
   bool _isPasswordValid(String password) {
@@ -94,12 +78,10 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
 
       await user.reauthenticateWithCredential(credential);
 
-      // Now update the password
       await user.updatePassword(newPassword);
       await user.reload();
       final User? updatedUser = _auth.currentUser;
 
-      // Update user information in Firestore if needed (e.g., name, email, etc.)
       final email = updatedUser?.email;
       if (email != null) {
         final querySnapshot = await FirebaseFirestore.instance
@@ -111,7 +93,7 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
           final doc = querySnapshot.docs.first;
           await doc.reference.update({
             'password':
-                newPassword, // Not recommended to store password, but for the sake of this example
+                newPassword,
           });
         }
       }
@@ -140,7 +122,7 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        ProfileScreen()), // Ganti ProfileScreen() dengan halaman profil yang sesuai
+                        ProfileScreen()),
               );
             },
             child: const Text('OK'),
@@ -157,7 +139,7 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
         title: const Text("UBAH PASSWORD"),
         foregroundColor: Colors.white,
         centerTitle: true,
-        backgroundColor: const Color(0xFF173156),
+        backgroundColor: kPrimaryColor,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),

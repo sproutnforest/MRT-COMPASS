@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:mrt/Screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mrt/Screens/ticket.dart';
+import 'package:mrt/Screens/ticket_screen_history.dart';
 import 'change_pass_screen.dart';
 import 'edit_profile_screen.dart';
-import 'feed_screen.dart';
 import 'login_screen.dart';
-import 'ticket_screen_history.dart';
 import 'package:mrt/constant.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../Screens/customer_service_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  ProfileScreenState createState() => ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class ProfileScreenState extends State<ProfileScreen> {
   User? user;
   String name = "Loading...";
   String email = "Loading...";
-  int _selectedIndex = 3;
+  int _selectedIndex = 2;
 
   @override
   void initState() {
@@ -36,6 +37,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
         email = user!.email ?? "No Email";
       });
     }
+  }
+
+  void _showCustomerService(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            CustomerServiceScreen(), // Membuka halaman Customer Service
+      ),
+    );
   }
 
   void updateProfile(String newName, String newEmail) async {
@@ -79,22 +90,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Error'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
-          ),
-        ],
-      ),
-    );
-  }
-
   void _showInfoDialog(String message) {
     showDialog(
       context: context,
@@ -105,6 +100,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
             child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Error'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Close'),
           ),
         ],
       ),
@@ -286,7 +297,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ChangePassScreen(),
+                        builder: (context) => const ChangePassScreen(),
                       ),
                     );
                   },
@@ -296,15 +307,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   text: "MRT-points",
                   backgroundColor: kSecondaryColor,
                 ),
-                const ProfileOptionTile(
-                  icon: Icons.favorite,
-                  text: "Favorit",
-                  backgroundColor: kSecondaryColor,
-                ),
-                const ProfileOptionTile(
-                  icon: Icons.history,
+                ProfileOptionTile(
+                  icon: Icons.lock,
                   text: "History",
                   backgroundColor: kSecondaryColor,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const TicketHistoryScreen(),
+                      ),
+                    );
+                  },
+                ),
+                ProfileOptionTile(
+                  icon: Icons.headset_mic,
+                  text: "Customer Service",
+                  textColor: Colors.black,
+                  backgroundColor: kSecondaryColor,
+                  onTap: () => _showCustomerService(context),
+                ),
+                ProfileOptionTile(
+                  icon: Icons.info_outline, // Ikon info untuk About Us
+                  text: "About Us",
+                  textColor: Colors.black,
+                  backgroundColor: kSecondaryColor,
+                  // onTap: () => _showAboutUs(context),
                 ),
                 ProfileOptionTile(
                   icon: Icons.logout,
@@ -329,7 +357,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         currentIndex: _selectedIndex,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.feed), label: ''),
           BottomNavigationBarItem(
               icon: Icon(Icons.confirmation_number), label: ''),
           BottomNavigationBarItem(
@@ -356,17 +383,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             case 1:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const FeedScreen()),
+                MaterialPageRoute(builder: (context) => const TicketScreen()),
               );
               break;
             case 2:
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const TicketHistoryScreen()),
-              );
-              break;
-            case 3:
               break;
           }
         },

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mrt/constant.dart';
 import 'profile_screen.dart'; 
 import 'schedule_screen.dart';
+import 'ticket.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -12,11 +13,10 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        toolbarHeight: 0, // Hide app bar for custom top section
+        toolbarHeight: 0, 
       ),
       body: Column(
         children: [
-          // Welcome Section
           Container(
             color: kPrimaryColor,
             padding: const EdgeInsets.all(20),
@@ -63,7 +63,6 @@ class HomePage extends StatelessWidget {
 
           const SizedBox(height: 20),
 
-          // Ticket Purchase Button
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.green,
@@ -73,7 +72,6 @@ class HomePage extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              // Add ticket purchase action here
             },
             child: const Text(
               'Beli Tiket',
@@ -126,7 +124,6 @@ class HomePage extends StatelessWidget {
         ],
       ),
 
-      // Bottom Navigation with 4 Items (Home, Ticket, Profile)
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
@@ -139,25 +136,23 @@ class HomePage extends StatelessWidget {
         selectedItemColor: kPrimaryColor,
         unselectedItemColor: Colors.grey,
         onTap: (index) {
-          // Handle bottom navigation actions here
           switch (index) {
             case 0:
               // Navigate to Home (currently on Home page)
               break;
-            // case 1:
-            //   Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) =>
-            //             const //()), // Navigate to Ticket Screen
-            //   );
-            //   break;
+            case 1:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TicketScreen()),
+              );
+              break;
             case 2:
               Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                         ProfileScreen()), // Navigate to Profile Screen
+                         const ProfileScreen()), // Navigate to Profile Screen
               );
               break;
           }
@@ -166,7 +161,6 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // Card for Location Information
   Widget _buildLocationCard(
       String title, String subtitle, IconData icon, Color color) {
     return Card(
