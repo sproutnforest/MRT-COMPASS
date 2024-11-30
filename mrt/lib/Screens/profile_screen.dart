@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:mrt/Screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,6 +25,7 @@ class ProfileScreenState extends State<ProfileScreen> {
   String name = "Loading...";
   String email = "Loading...";
   int _selectedIndex = 2;
+  String? profileImageUrl;
 
   @override
   void initState() {
@@ -30,15 +33,28 @@ class ProfileScreenState extends State<ProfileScreen> {
     _loadUserData();
   }
 
-  void _loadUserData() {
-    user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
+  void _loadUserData() async {
+  user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    setState(() {
+      name = user!.displayName ?? "No Name";
+      email = user!.email ?? "No Email";
+    });
+
+    // Muat URL foto profil dari Firestore
+    final doc = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(user!.email)
+        .get();
+
+    if (doc.exists && doc.data() != null) {
       setState(() {
-        name = user!.displayName ?? "No Name";
-        email = user!.email ?? "No Email";
+        profileImageUrl = doc.data()!['profil'] ?? null;
       });
     }
   }
+}
+
 
   void _showCustomerService(BuildContext context) {
     Navigator.push(
@@ -58,11 +74,13 @@ class ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  void updateProfile(String newName, String newEmail) async {
+  void updateProfile(String newName, String? newProfileImageUrl) async {
     try {
       if (user != null) {
+        // Update display name
         await user!.updateDisplayName(newName);
 
+        // Update the profile image if provided
         final querySnapshot = await FirebaseFirestore.instance
             .collection('Users')
             .where('email', isEqualTo: user!.email)
@@ -72,6 +90,7 @@ class ProfileScreenState extends State<ProfileScreen> {
           final doc = querySnapshot.docs.first;
           await doc.reference.update({
             'name': newName,
+            if (newProfileImageUrl != null) 'profil': newProfileImageUrl,
           });
 
           await user!.reload();
@@ -80,6 +99,7 @@ class ProfileScreenState extends State<ProfileScreen> {
           setState(() {
             name = user!.displayName ?? "No Name";
             email = user!.email ?? "No Email";
+            profileImageUrl = newProfileImageUrl;
           });
 
           _showInfoDialog("Profil berhasil diperbarui.");
@@ -243,10 +263,14 @@ class ProfileScreenState extends State<ProfileScreen> {
       body: Column(
         children: [
           const SizedBox(height: 20),
-          const CircleAvatar(
-            radius: 50,
-            backgroundImage: AssetImage('assets/profile_image.png'),
-          ),
+          CircleAvatar(
+  radius: 50,
+  backgroundImage: profileImageUrl != null
+      ? FileImage(File(profileImageUrl!)) // Gunakan path gambar dari Firestore
+      : const AssetImage('assets/profile_image.png')
+          as ImageProvider, // Default gambar
+),
+
           const SizedBox(height: 10),
           Text(
             name,
@@ -270,7 +294,7 @@ class ProfileScreenState extends State<ProfileScreen> {
               );
 
               if (result != null) {
-                updateProfile(result['name'], result['email']);
+                updateProfile(result['name'], result['profil']);
               }
             },
             style: ElevatedButton.styleFrom(
