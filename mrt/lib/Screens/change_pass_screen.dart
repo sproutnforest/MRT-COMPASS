@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mrt/Screens/profile_screen.dart';
+import 'package:mrt/constant.dart';
 
 class ChangePassScreen extends StatefulWidget {
   const ChangePassScreen({super.key});
@@ -138,7 +139,7 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
         title: const Text("UBAH PASSWORD"),
         foregroundColor: Colors.white,
         centerTitle: true,
-        backgroundColor: const Color(0xFF173156),
+        backgroundColor: kPrimaryColor,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),

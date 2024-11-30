@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mrt/constant.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final String currentName;
@@ -34,7 +35,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("EDIT PROFIL"),
-        backgroundColor: const Color(0xFF173156),
+        backgroundColor: kPrimaryColor,
         foregroundColor: Colors.white,
         centerTitle: true,
       ),
@@ -55,7 +56,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     onTap: () {},
                     child: const CircleAvatar(
                       radius: 18,
-                      backgroundColor: Colors.orange,
+                      backgroundColor: kSecondaryColor,
                       child: Icon(
                         Icons.camera_alt,
                         color: Colors.white,

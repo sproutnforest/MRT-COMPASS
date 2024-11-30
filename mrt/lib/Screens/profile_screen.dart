@@ -10,7 +10,6 @@ import 'package:mrt/constant.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../Screens/customer_service_screen.dart';
 
-
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -39,11 +38,13 @@ class ProfileScreenState extends State<ProfileScreen> {
       });
     }
   }
+
   void _showCustomerService(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CustomerServiceScreen(), // Membuka halaman Customer Service
+        builder: (context) =>
+            CustomerServiceScreen(), // Membuka halaman Customer Service
       ),
     );
   }
@@ -120,7 +121,6 @@ class ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-
 
   void _showDeleteAccountConfirmation() {
     showDialog(
@@ -206,7 +206,6 @@ class ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-
   void _showLogoutConfirmation() {
     showDialog(
       context: context,
@@ -283,7 +282,8 @@ class ProfileScreenState extends State<ProfileScreen> {
                 borderRadius: BorderRadius.circular(16),
               ),
             ),
-            child: const Text("Edit Profil", style: TextStyle(color: Colors.white)),
+            child: const Text("Edit Profil",
+                style: TextStyle(color: Colors.white)),
           ),
           const SizedBox(height: 20),
           Expanded(
@@ -320,12 +320,19 @@ class ProfileScreenState extends State<ProfileScreen> {
                     );
                   },
                 ),
-                        ProfileOptionTile(
-                  icon: Icons.headset_mic, // Mengganti ikon logout dengan ikon headset untuk Customer Service
+                ProfileOptionTile(
+                  icon: Icons.headset_mic,
                   text: "Customer Service",
                   textColor: Colors.black,
                   backgroundColor: kSecondaryColor,
                   onTap: () => _showCustomerService(context),
+                ),
+                ProfileOptionTile(
+                  icon: Icons.info_outline, // Ikon info untuk About Us
+                  text: "About Us",
+                  textColor: Colors.black,
+                  backgroundColor: kSecondaryColor,
+                  // onTap: () => _showAboutUs(context),
                 ),
                 ProfileOptionTile(
                   icon: Icons.logout,
@@ -350,7 +357,8 @@ class ProfileScreenState extends State<ProfileScreen> {
         currentIndex: _selectedIndex,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.confirmation_number), label: ''),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.confirmation_number), label: ''),
           BottomNavigationBarItem(
             icon: CircleAvatar(
               radius: 12,
@@ -375,8 +383,7 @@ class ProfileScreenState extends State<ProfileScreen> {
             case 1:
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => const TicketScreen()),
+                MaterialPageRoute(builder: (context) => const TicketScreen()),
               );
               break;
             case 2:
