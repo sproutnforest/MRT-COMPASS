@@ -79,16 +79,23 @@ class RegisterScreenState extends State<RegisterScreen> {
         'saldo': 0,
         'timestamp': FieldValue.serverTimestamp(),
       });
+    //     Future<void> someAsyncFunction(BuildContext context) async {
+    //  if (mounted) {
+    //         ScaffoldMessenger.of(context).showSnackBar(
+    //           const SnackBar(content: Text("Registrasi Berhasil")),
+    //         );
+    //       }
+    //     }
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Registrasi Berhasil")),
-      );
 
       // Navigasi ke layar login
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginScreen()),
-      );
+  if (mounted) {
+    // Navigasi ke layar login
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
+    );
+  }
     } on FirebaseAuthException catch (e) {
       String errorMessage;
       if (e.code == 'weak-password') {

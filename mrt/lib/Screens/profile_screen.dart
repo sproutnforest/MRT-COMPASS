@@ -7,15 +7,17 @@ import 'edit_profile_screen.dart';
 import 'feed_screen.dart';
 import 'login_screen.dart';
 import 'package:mrt/constant.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  ProfileScreenState createState() => ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class ProfileScreenState extends State<ProfileScreen> {
   User? user;
   String name = "Loading...";
   String email = "Loading...";
@@ -71,82 +73,103 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  void _showInfoDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Info'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
-  }
+  // void _showInfoDialog(String message) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => AlertDialog(
+  //       title: const Text('Info'),
+  //       content: Text(message),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () => Navigator.of(context).pop(),
+  //           child: const Text('OK'),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  void _showDeleteAccountConfirmation() {
+   void _showDeleteAccountConfirmation(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Hapus Akun'),
-        content: const Text(
-            'Apakah Anda yakin ingin menghapus akun ini? Tindakan ini tidak bisa dibatalkan.'),
+        content: const Text('Apakah Anda yakin ingin menghapus akun ini? Tindakan ini tidak dapat dibatalkan.'),
         actions: [
           TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(); // Menutup dialog
-            },
+            onPressed: () => Navigator.of(context).pop(),
             child: const Text('Batal'),
           ),
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop(); // Menutup dialog
-              _deleteAccount(); // Menghapus akun
+              Navigator.of(context).pop();
+              _confirmDeleteAccount(context);
             },
-            child: const Text('Hapus'),
+            child: const Text('Ya, Hapus Akun'),
           ),
         ],
       ),
     );
   }
 
-  void _deleteAccount() async {
-    try {
-      // Pastikan pengguna sedang login
-      if (user == null) {
-        throw Exception('Tidak ada pengguna yang login.');
-      }
+  void _confirmDeleteAccount(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Konfirmasi Penghapusan Akun'),
+        content: const Text('Apakah Anda benar-benar yakin ingin menghapus akun ini? Akun tidak dapat dipulihkan setelah dihapus.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Batal'),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.of(context).pop();
+              await _deleteAccount();
+            },
+            child: const Text('Ya, Hapus Akun'),
+          ),
+        ],
+      ),
+    );
+  }
 
-      // Menghapus akun pengguna
-      await user!.delete();
+Future<void> _deleteAccount() async {
+  try {
+    User? user = FirebaseAuth.instance.currentUser;
 
-      // Jika widget masih terpasang di widget tree, tampilkan SnackBar dan navigasikan ke halaman login
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Akun berhasil dihapus.')),
-        );
-
-        // Arahkan pengguna ke halaman login setelah 2 detik
-        await Future.delayed(const Duration(seconds: 2));
-
+    if (user != null) {
+      await FirebaseFirestore.instance.collection('Users').doc(user.uid).delete();
+      await user.delete();
+     if (mounted) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const LoginScreen()),
         );
       }
-    } catch (e) {
-      // Jika ada error, tampilkan pesan error di SnackBar
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Gagal menghapus akun: $e')),
-        );
-      }
+    }
+  } catch (e) {
+    debugPrint("Error: $e");
+    if (mounted) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Kesalahan'),
+          content: Text('Terjadi kesalahan: ${e.toString()}'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Tutup'),
+            ),
+          ],
+        ),
+      );
     }
   }
+}
 
+    
   void _showLogoutConfirmation() {
     showDialog(
       context: context,
@@ -238,7 +261,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ChangePassScreen(),
+                        builder: (context) => const ChangePassScreen(),
                       ),
                     );
                   },
@@ -261,7 +284,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => TicketHistoryScreen(),
+                        builder: (context) => const TicketHistoryScreen(),
                       ),
                     );
                   },
@@ -273,12 +296,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   backgroundColor: tertiaryColor,
                   onTap: _showLogoutConfirmation,
                 ),
-                ProfileOptionTile(
+               ProfileOptionTile(
                   icon: Icons.delete_forever,
                   text: "Hapus Akun",
                   textColor: tertiaryColor,
                   backgroundColor: tertiaryColor,
-                  onTap: _showDeleteAccountConfirmation,
+                  onTap: () {
+                    _showDeleteAccountConfirmation(context); // Passing the context here
+                  },
                 ),
               ],
             ),

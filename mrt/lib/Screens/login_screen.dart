@@ -50,13 +50,19 @@ class LoginScreenState extends State<LoginScreen> {
     } else {
       throw 'Login gagal, coba lagi';
     }
-  } catch (error) {
-    // Handle login error
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Sign-in failed: ${error.toString()}')),
-    );
-    debugPrint('Error during sign-in: $error');
-  }
+
+      // Some async operation
+    } catch (error) {
+      // Handle login error
+      if (mounted) {  // Check if the widget is still in the widget tree
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Sign-in failed: ${error.toString()}')),
+        );
+      }
+
+      debugPrint('Error during sign-in: $error');
+    }
+
 }
 
 
