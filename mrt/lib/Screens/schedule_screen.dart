@@ -1,5 +1,7 @@
 import 'dart:async'; // Untuk Timer
+
 import 'package:flutter/material.dart';
+
 import '/constant.dart';
 import '../data/station_schedule_data.dart'; // Data stasiun
 import '../models/station_schedule.dart';
@@ -85,20 +87,20 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
         title: const Text(
           'JADWAL',
           style: TextStyle(
-            fontWeight: FontWeight.bold,
+            fontFamily: 'serif',
             color: Colors.white,
           ),
         ),
         backgroundColor: kPrimaryColor,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back, color: kPrimaryLightColor),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
         centerTitle: true,
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: kPrimaryLightColor,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -110,7 +112,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 children: [
                   Flexible(
                     child: const Text('Jadwal Keberangkatan Dari',
-                        style: TextStyle(fontSize: 14, color: Colors.grey)),
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'serif',
+                            color: Colors.grey)),
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -125,6 +130,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
+                        fontFamily: 'serif',
                       ),
                     ),
                   ),
@@ -134,7 +140,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 selectedStation,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: 25,
+                  fontFamily: 'serif',
                 ),
               ),
               const Divider(
@@ -148,7 +155,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   Expanded(
                     child: _buildScheduleColumn(
                       'Ke arah Lebak Bulus',
-                      Colors.blue,
+                      bluelight,
                       getSchedule(selectedStation, 'Lebak Bulus'),
                     ),
                   ),
@@ -183,7 +190,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             label: '',
           ),
         ],
-        selectedItemColor: const Color.fromARGB(255, 255, 255, 255),
+        selectedItemColor: kPrimaryLightColor,
         unselectedItemColor: Colors.grey,
         onTap: (index) {
           // Handle bottom navigation actions here
@@ -238,17 +245,26 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               const SizedBox(width: 8),
               Text(
                 title,
-                style: TextStyle(color: color, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: color,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
           const SizedBox(height: 8),
           Text(
             schedules.isNotEmpty ? schedules[0] : '--:--',
-            style: TextStyle(fontSize: 32, color: color),
+            style: TextStyle(fontSize: 35, color: color, fontFamily: 'serif'),
           ),
           const SizedBox(height: 8),
-          const Text('Keberangkatan selanjutnya', textAlign: TextAlign.center),
+          const Text(
+            'Keberangkatan selanjutnya',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'serif',
+            ),
+          ),
           // Menampilkan semua jadwal, termasuk placeholder
           ...schedules.skip(1).map((time) => Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -292,7 +308,11 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   const SizedBox(width: 8),
                   const Text(
                     "Pilih Stasiun",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'serif',
+                    ),
                   ),
                 ],
               ),

@@ -73,7 +73,7 @@ class ProfileScreenState extends State<ProfileScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CustomerServiceScreen(),
+        builder: (context) => const CustomerServiceScreen(),
       ),
     );
   }
@@ -189,10 +189,10 @@ class ProfileScreenState extends State<ProfileScreen> {
 
       for (var doc in querySnapshot.docs) {
         await doc.reference.delete();
-        print('Data pengguna dengan ID dokumen ${doc.id} berhasil dihapus.');
+        debugPrint('Data pengguna dengan ID dokumen ${doc.id} berhasil dihapus.');
       }
     } catch (e) {
-      print('Gagal menghapus data pengguna: $e');
+     debugPrint('Gagal menghapus data pengguna: $e');
     }
   }
 
