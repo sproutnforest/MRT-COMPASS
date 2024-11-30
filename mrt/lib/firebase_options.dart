@@ -41,48 +41,46 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCGYkgreAe5IuwLOsfzDb6-pCAxoCXGqCo',
-    appId: '1:7046262947:web:99538d3e18f8357eec8f16',
-    messagingSenderId: '7046262947',
-    projectId: 'mrtcompass',
-    authDomain: 'mrtcompass.firebaseapp.com',
-    storageBucket: 'mrtcompass.firebasestorage.app',
-    measurementId: 'G-4P33XRR2P1',
+    apiKey: 'AIzaSyDcaE2cb1NZZBF__lsSklOWwbyYnqVo4oo',
+    appId: '1:991751588190:web:ca650d684c536d934f67cf',
+    messagingSenderId: '991751588190',
+    projectId: 'mrt-compass',
+    authDomain: 'mrt-compass.firebaseapp.com',
+    storageBucket: 'mrt-compass.firebasestorage.app',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAlgqeRmra82M3nwtuFmBNGzSs1_xHoUbE',
-    appId: '1:7046262947:android:37bbc30516d1ac1eec8f16',
-    messagingSenderId: '7046262947',
-    projectId: 'mrtcompass',
-    storageBucket: 'mrtcompass.firebasestorage.app',
+    apiKey: 'AIzaSyDWJcgyUoubTzn-QShjRl6Y-d-l_Dcszl0',
+    appId: '1:991751588190:android:eae772b6c954e68c4f67cf',
+    messagingSenderId: '991751588190',
+    projectId: 'mrt-compass',
+    storageBucket: 'mrt-compass.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyByi1BpwBq8tcCi2kFWiVtSeAJRjbw293s',
-    appId: '1:7046262947:ios:4ad6b7c9268d5f8eec8f16',
-    messagingSenderId: '7046262947',
-    projectId: 'mrtcompass',
-    storageBucket: 'mrtcompass.firebasestorage.app',
+    apiKey: 'AIzaSyDC91CmBhnrLb2dywF-DTMvXpzeA7iX4gs',
+    appId: '1:991751588190:ios:1833a597d53040f04f67cf',
+    messagingSenderId: '991751588190',
+    projectId: 'mrt-compass',
+    storageBucket: 'mrt-compass.firebasestorage.app',
     iosBundleId: 'com.example.mrt',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyByi1BpwBq8tcCi2kFWiVtSeAJRjbw293s',
-    appId: '1:7046262947:ios:4ad6b7c9268d5f8eec8f16',
-    messagingSenderId: '7046262947',
-    projectId: 'mrtcompass',
-    storageBucket: 'mrtcompass.firebasestorage.app',
+    apiKey: 'AIzaSyDC91CmBhnrLb2dywF-DTMvXpzeA7iX4gs',
+    appId: '1:991751588190:ios:1833a597d53040f04f67cf',
+    messagingSenderId: '991751588190',
+    projectId: 'mrt-compass',
+    storageBucket: 'mrt-compass.firebasestorage.app',
     iosBundleId: 'com.example.mrt',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCGYkgreAe5IuwLOsfzDb6-pCAxoCXGqCo',
-    appId: '1:7046262947:web:59c0afea5d91e4d8ec8f16',
-    messagingSenderId: '7046262947',
-    projectId: 'mrtcompass',
-    authDomain: 'mrtcompass.firebaseapp.com',
-    storageBucket: 'mrtcompass.firebasestorage.app',
-    measurementId: 'G-Q599LEVRR9',
+    apiKey: 'AIzaSyDcaE2cb1NZZBF__lsSklOWwbyYnqVo4oo',
+    appId: '1:991751588190:web:d26b3d94376151014f67cf',
+    messagingSenderId: '991751588190',
+    projectId: 'mrt-compass',
+    authDomain: 'mrt-compass.firebaseapp.com',
+    storageBucket: 'mrt-compass.firebasestorage.app',
   );
 }

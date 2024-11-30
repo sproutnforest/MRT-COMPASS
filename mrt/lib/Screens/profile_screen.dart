@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mrt/Screens/ticket_screen_history.dart';
 import 'change_pass_screen.dart';
 import 'edit_profile_screen.dart';
-import 'feed_screen.dart';
 import 'login_screen.dart';
 import 'package:mrt/constant.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,7 +20,7 @@ class ProfileScreenState extends State<ProfileScreen> {
   User? user;
   String name = "Loading...";
   String email = "Loading...";
-  int _selectedIndex = 3;
+  int _selectedIndex = 2;
 
   @override
   void initState() {
@@ -43,7 +42,6 @@ class ProfileScreenState extends State<ProfileScreen> {
     try {
       if (user != null) {
         await user!.updateDisplayName(newName);
-        // await user!.updateEmail(newEmail);
         await user!.reload();
         user = FirebaseAuth.instance.currentUser;
 
@@ -112,6 +110,7 @@ class ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+
   void _confirmDeleteAccount(BuildContext context) {
     showDialog(
       context: context,
@@ -136,8 +135,23 @@ class ProfileScreenState extends State<ProfileScreen> {
   }
 
 Future<void> _deleteAccount() async {
-  try {
+
     User? user = FirebaseAuth.instance.currentUser;
+
+  void _deleteAccount() async {
+    try {
+      if (user == null) {
+        throw Exception('Tidak ada pengguna yang login.');
+      }
+
+      await user!.delete();
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Akun berhasil dihapus.')),
+        );
+
+        await Future.delayed(const Duration(seconds: 2));
 
     if (user != null) {
       await FirebaseFirestore.instance.collection('Users').doc(user.uid).delete();
@@ -148,6 +162,7 @@ Future<void> _deleteAccount() async {
           MaterialPageRoute(builder: (context) => const LoginScreen()),
         );
       }
+
     }
   } catch (e) {
     debugPrint("Error: $e");
@@ -165,6 +180,13 @@ Future<void> _deleteAccount() async {
           ],
         ),
       );
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Gagal menghapus akun: $e')),
+        );
+      }
+
     }
   }
 }
@@ -276,7 +298,7 @@ Future<void> _deleteAccount() async {
                   text: "Favorit",
                   backgroundColor: kSecondaryColor,
                 ),
-               ProfileOptionTile(
+                ProfileOptionTile(
                   icon: Icons.lock,
                   text: "History",
                   backgroundColor: kSecondaryColor,
@@ -314,7 +336,6 @@ Future<void> _deleteAccount() async {
         currentIndex: _selectedIndex,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.feed), label: ''),
           BottomNavigationBarItem(
               icon: Icon(Icons.confirmation_number), label: ''),
           BottomNavigationBarItem(
@@ -341,17 +362,11 @@ Future<void> _deleteAccount() async {
             case 1:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const FeedScreen()),
-              );
-              break;
-            case 2:
-              Navigator.push(
-                context,
                 MaterialPageRoute(
                     builder: (context) => const TicketHistoryScreen()),
               );
               break;
-            case 3:
+            case 2:
               break;
           }
         },
