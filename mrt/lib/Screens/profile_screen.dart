@@ -38,7 +38,6 @@ class ProfileScreenState extends State<ProfileScreen> {
       setState(() {
         name = user!.displayName ?? "No Name";
         email = user!.email ?? "No Email";
-        // Load the profile image path from Firestore
         _loadProfileImagePath();
       });
     }
@@ -51,19 +50,16 @@ class ProfileScreenState extends State<ProfileScreen> {
         .get();
 
     if (querySnapshot.docs.isNotEmpty) {
-      // Get the first document from the snapshot
       final doc = querySnapshot.docs.first;
 
-      // Check if the profileImage field exists in the document
       if (doc.exists && doc.data().containsKey('profileImage')) {
         setState(() {
           profileImagePath =
-              doc['profileImage']; // Get the image path if it exists
+              doc['profileImage'];
         });
       } else {
-        // Handle the case where profileImage does not exist
         setState(() {
-          profileImagePath = null; // Or set to default image path if needed
+          profileImagePath = null;
         });
       }
     }
@@ -93,7 +89,7 @@ class ProfileScreenState extends State<ProfileScreen> {
           final doc = querySnapshot.docs.first;
           await doc.reference.update({
             'name': newName,
-            'profileImage': newImagePath, // Update the profile image path
+            'profileImage': newImagePath,
           });
 
           await user!.reload();
@@ -103,7 +99,7 @@ class ProfileScreenState extends State<ProfileScreen> {
             name = user!.displayName ?? "No Name";
             email = user!.email ?? "No Email";
             if (newImagePath != null) {
-              profileImagePath = newImagePath; // Update image path
+              profileImagePath = newImagePath;
             }
           });
 
@@ -271,7 +267,7 @@ class ProfileScreenState extends State<ProfileScreen> {
           CircleAvatar(
             radius: 50,
             backgroundImage: profileImagePath != null
-                ? FileImage(File(profileImagePath!)) // Display image from path
+                ? FileImage(File(profileImagePath!))
                 : const AssetImage('assets/blank-profile.png') as ImageProvider,
           ),
           const SizedBox(height: 10),
@@ -301,7 +297,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                 updateProfile(
                   result['name'],
                   result['email'],
-                  result['profileImage'], // Receive image path
+                  result['profileImage'],
                 );
               }
             },
@@ -398,7 +394,7 @@ class ProfileScreenState extends State<ProfileScreen> {
               radius: 12,
               backgroundImage: profileImagePath != null
                   ? FileImage(
-                      File(profileImagePath!)) // Display image from path
+                      File(profileImagePath!))
                   : const AssetImage('assets/blank-profile.png')
                       as ImageProvider,
             ),
