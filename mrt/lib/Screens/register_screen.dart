@@ -82,7 +82,7 @@ class RegisterScreenState extends State<RegisterScreen> {
       });
       Future<void> someAsyncFunction(BuildContext context) async {
         // Some async operation
-        await Future.delayed(Duration(seconds: 1));
+        await Future.delayed(const Duration(seconds: 1));
 
         // Check if the widget is still mounted before using the BuildContext
         if (mounted) {
