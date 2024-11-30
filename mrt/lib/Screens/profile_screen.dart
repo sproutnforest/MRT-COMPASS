@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mrt/Screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:mrt/Screens/ticket_screen_history.dart';
 import 'change_pass_screen.dart';
 import 'edit_profile_screen.dart';
+import 'feed_screen.dart';
 import 'login_screen.dart';
+import 'ticket_screen_history.dart';
 import 'package:mrt/constant.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -12,14 +13,14 @@ class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  ProfileScreenState createState() => ProfileScreenState();
+  _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends State<ProfileScreen> {
   User? user;
   String name = "Loading...";
   String email = "Loading...";
-  int _selectedIndex = 2;
+  int _selectedIndex = 3;
 
   @override
   void initState() {
@@ -40,14 +41,38 @@ class ProfileScreenState extends State<ProfileScreen> {
   void updateProfile(String newName, String newEmail) async {
     try {
       if (user != null) {
+        // Memperbarui nama di Firebase Authentication
         await user!.updateDisplayName(newName);
-        await user!.reload();
-        user = FirebaseAuth.instance.currentUser;
 
-        setState(() {
-          name = user!.displayName ?? "No Name";
-          email = user!.email ?? "No Email";
-        });
+        // Mencari dokumen berdasarkan email di Firestore dan memperbarui nama
+        final querySnapshot = await FirebaseFirestore.instance
+            .collection('Users')
+            .where('email',
+                isEqualTo: user!.email) // Mencari dokumen berdasarkan email
+            .get();
+
+        // Jika dokumen ditemukan, perbarui field 'name'
+        if (querySnapshot.docs.isNotEmpty) {
+          final doc = querySnapshot.docs.first;
+          await doc.reference.update({
+            'name':
+                newName, // Menyimpan nama yang baru ke dalam dokumen Firestore
+          });
+
+          // Reload user data untuk memperbarui tampilan
+          await user!.reload();
+          user = FirebaseAuth.instance.currentUser;
+
+          setState(() {
+            name = user!.displayName ?? "No Name";
+            email = user!.email ?? "No Email";
+          });
+
+          _showInfoDialog("Profil berhasil diperbarui.");
+        } else {
+          _showErrorDialog(
+              "Pengguna dengan email ${user!.email} tidak ditemukan di Firestore.");
+        }
       }
     } catch (e) {
       _showErrorDialog('Error updating profile: ${e.toString()}');
@@ -70,91 +95,105 @@ class ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  void _showDeleteAccountConfirmation(BuildContext context) {
+  void _showInfoDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Info'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showDeleteAccountConfirmation() {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Hapus Akun'),
-        content: const Text('Apakah Anda yakin ingin menghapus akun ini? Tindakan ini tidak dapat dibatalkan.'),
+        content: const Text(
+            'Apakah Anda yakin ingin menghapus akun ini? Tindakan ini tidak bisa dibatalkan.'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () {
+              Navigator.of(context).pop(); // Menutup dialog
+            },
             child: const Text('Batal'),
           ),
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop();
-              _confirmDeleteAccount(context);
+              Navigator.of(context).pop(); // Menutup dialog
+              _deleteAccount(); // Menghapus akun
             },
-            child: const Text('Ya, Hapus Akun'),
+            child: const Text('Hapus'),
           ),
         ],
       ),
     );
   }
 
-  void _confirmDeleteAccount(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Konfirmasi Penghapusan Akun'),
-        content: const Text('Apakah Anda benar-benar yakin ingin menghapus akun ini? Akun tidak dapat dipulihkan setelah dihapus.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Batal'),
-          ),
-          TextButton(
-            onPressed: () async {
-              Navigator.of(context).pop();
-              await _deleteAccount();
-            },
-            child: const Text('Ya, Hapus Akun'),
-          ),
-        ],
-      ),
-    );
-  }
-Future<void> _deleteAccount() async {
-  try {
-    User? user = FirebaseAuth.instance.currentUser;
+  Future<void> deleteUserDataByEmail(String email) async {
+    try {
+      // Cari dokumen pengguna berdasarkan email
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('Users')
+          .where('email', isEqualTo: email)
+          .get();
 
-    if (user != null) {
-      String uid = user.uid;  // UID yang digunakan untuk mengakses Firestore
-      debugPrint("UID yang digunakan untuk menghapus data: $uid");
-      await FirebaseFirestore.instance.collection('Users').doc(uid).delete();
-      debugPrint("Data pengguna berhasil dihapus dari Firestore");
-      await user.delete();
-      debugPrint("Akun pengguna berhasil dihapus dari Firebase Authentication");
-      await FirebaseAuth.instance.signOut();
-      debugPrint("Pengguna berhasil keluar dari Firebase Auth");
+      // Periksa apakah dokumen ditemukan
+      if (querySnapshot.docs.isEmpty) {
+        throw Exception('Data pengguna dengan email $email tidak ditemukan.');
+      }
+
+      // Hapus dokumen
+      for (var doc in querySnapshot.docs) {
+        await doc.reference.delete();
+        print('Data pengguna dengan ID dokumen ${doc.id} berhasil dihapus.');
+      }
+    } catch (e) {
+      print('Gagal menghapus data pengguna: $e');
+    }
+  }
+
+  void _deleteAccount() async {
+    try {
+      if (user == null) {
+        throw Exception('Tidak ada pengguna yang login.');
+      }
+
+      final email = user!.email;
+
+      // Hapus data pengguna di Firestore
+      if (email != null) {
+        await deleteUserDataByEmail(email); // Menghapus data berdasarkan email
+      }
+
+      // Hapus akun dari Firebase Authentication
+      await user!.delete();
+
       if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Akun berhasil dihapus.')),
+        );
+
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const LoginScreen()),
         );
       }
-    } else {
-      print("Tidak ada pengguna yang terautentikasi");
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Gagal menghapus akun: $e')),
+        );
+      }
     }
-  } on FirebaseAuthException catch (e) {
-    String errorMessage;
-    if (e.code == 'requires-recent-login') {
-      errorMessage = 'Tolong login kembali untuk menghapus akun Anda.';
-    } else {
-      errorMessage = 'Terjadi kesalahan saat menghapus akun: ${e.message}';
-    }
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(errorMessage)),
-    );
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Terjadi kesalahan saat menghapus akun.')),
-    );
   }
-}
-
-
 
   void _showLogoutConfirmation() {
     showDialog(
@@ -232,7 +271,8 @@ Future<void> _deleteAccount() async {
                 borderRadius: BorderRadius.circular(16),
               ),
             ),
-            child: const Text("Edit Profil", style: TextStyle(color: Colors.white)),
+            child: const Text("Edit Profil",
+                style: TextStyle(color: Colors.white)),
           ),
           const SizedBox(height: 20),
           Expanded(
@@ -246,7 +286,7 @@ Future<void> _deleteAccount() async {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const ChangePassScreen(),
+                        builder: (context) => ChangePassScreen(),
                       ),
                     );
                   },
@@ -261,18 +301,10 @@ Future<void> _deleteAccount() async {
                   text: "Favorit",
                   backgroundColor: kSecondaryColor,
                 ),
-                ProfileOptionTile(
-                  icon: Icons.lock,
+                const ProfileOptionTile(
+                  icon: Icons.history,
                   text: "History",
                   backgroundColor: kSecondaryColor,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const TicketHistoryScreen(),
-                      ),
-                    );
-                  },
                 ),
                 ProfileOptionTile(
                   icon: Icons.logout,
@@ -286,9 +318,7 @@ Future<void> _deleteAccount() async {
                   text: "Hapus Akun",
                   textColor: tertiaryColor,
                   backgroundColor: tertiaryColor,
-                  onTap: () {
-                    _showDeleteAccountConfirmation(context);
-                  },
+                  onTap: _showDeleteAccountConfirmation,
                 ),
               ],
             ),
@@ -299,7 +329,9 @@ Future<void> _deleteAccount() async {
         currentIndex: _selectedIndex,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.confirmation_number), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.feed), label: ''),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.confirmation_number), label: ''),
           BottomNavigationBarItem(
             icon: CircleAvatar(
               radius: 12,
@@ -324,11 +356,17 @@ Future<void> _deleteAccount() async {
             case 1:
               Navigator.push(
                 context,
+                MaterialPageRoute(builder: (context) => const FeedScreen()),
+              );
+              break;
+            case 2:
+              Navigator.push(
+                context,
                 MaterialPageRoute(
                     builder: (context) => const TicketHistoryScreen()),
               );
               break;
-            case 2:
+            case 3:
               break;
           }
         },
