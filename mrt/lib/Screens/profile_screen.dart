@@ -39,7 +39,34 @@ class ProfileScreenState extends State<ProfileScreen> {
       setState(() {
         name = user!.displayName ?? "No Name";
         email = user!.email ?? "No Email";
+        // Load the profile image path from Firestore
+        _loadProfileImagePath();
       });
+    }
+  }
+
+  Future<void> _loadProfileImagePath() async {
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection('Users')
+        .where('email', isEqualTo: user!.email)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      // Get the first document from the snapshot
+      final doc = querySnapshot.docs.first;
+
+      // Check if the profileImage field exists in the document
+      if (doc.exists && doc.data().containsKey('profileImage')) {
+        setState(() {
+          profileImagePath =
+              doc['profileImage']; // Get the image path if it exists
+        });
+      } else {
+        // Handle the case where profileImage does not exist
+        setState(() {
+          profileImagePath = null; // Or set to default image path if needed
+        });
+      }
     }
   }
 
@@ -52,7 +79,8 @@ class ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  void updateProfile(String newName, String newEmail, String? newImagePath) async {
+  void updateProfile(
+      String newName, String newEmail, String? newImagePath) async {
     try {
       if (user != null) {
         await user!.updateDisplayName(newName);
@@ -64,7 +92,10 @@ class ProfileScreenState extends State<ProfileScreen> {
 
         if (querySnapshot.docs.isNotEmpty) {
           final doc = querySnapshot.docs.first;
-          await doc.reference.update({'name': newName});
+          await doc.reference.update({
+            'name': newName,
+            'profileImage': newImagePath, // Update the profile image path
+          });
 
           await user!.reload();
           user = FirebaseAuth.instance.currentUser;
@@ -73,7 +104,7 @@ class ProfileScreenState extends State<ProfileScreen> {
             name = user!.displayName ?? "No Name";
             email = user!.email ?? "No Email";
             if (newImagePath != null) {
-              profileImagePath = newImagePath; // Update path gambar
+              profileImagePath = newImagePath; // Update image path
             }
           });
 
@@ -241,9 +272,8 @@ class ProfileScreenState extends State<ProfileScreen> {
           CircleAvatar(
             radius: 50,
             backgroundImage: profileImagePath != null
-                ? FileImage(File(profileImagePath!)) // Tampilkan gambar lokal
-                : const AssetImage('assets/blank-profile.png')
-                    as ImageProvider,
+                ? FileImage(File(profileImagePath!)) // Display image from path
+                : const AssetImage('assets/blank-profile.png') as ImageProvider,
           ),
           const SizedBox(height: 10),
           Text(
@@ -263,6 +293,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                   builder: (context) => EditProfileScreen(
                     currentName: name,
                     currentEmail: email,
+                    currentImagePath: profileImagePath,
                   ),
                 ),
               );
@@ -271,7 +302,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                 updateProfile(
                   result['name'],
                   result['email'],
-                  result['profileImage'], // Terima path gambar
+                  result['profileImage'], // Receive image path
                 );
               }
             },
@@ -367,9 +398,10 @@ class ProfileScreenState extends State<ProfileScreen> {
             icon: CircleAvatar(
               radius: 12,
               backgroundImage: profileImagePath != null
-                ? FileImage(File(profileImagePath!)) // Tampilkan gambar lokal
-                : const AssetImage('assets/blank-profile.png')
-                    as ImageProvider,
+                  ? FileImage(
+                      File(profileImagePath!)) // Display image from path
+                  : const AssetImage('assets/blank-profile.png')
+                      as ImageProvider,
             ),
             label: '',
           ),
