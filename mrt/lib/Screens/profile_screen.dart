@@ -24,8 +24,8 @@ class ProfileScreenState extends State<ProfileScreen> {
   User? user;
   String name = "Loading...";
   String email = "Loading...";
+  String? profileImagePath;
   int _selectedIndex = 2;
-  String? profileImageUrl;
 
   @override
   void initState() {
@@ -33,28 +33,15 @@ class ProfileScreenState extends State<ProfileScreen> {
     _loadUserData();
   }
 
-  void _loadUserData() async {
-  user = FirebaseAuth.instance.currentUser;
-  if (user != null) {
-    setState(() {
-      name = user!.displayName ?? "No Name";
-      email = user!.email ?? "No Email";
-    });
-
-    // Muat URL foto profil dari Firestore
-    final doc = await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(user!.email)
-        .get();
-
-    if (doc.exists && doc.data() != null) {
+  void _loadUserData() {
+    user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
       setState(() {
-        profileImageUrl = doc.data()!['profil'] ?? null;
+        name = user!.displayName ?? "No Name";
+        email = user!.email ?? "No Email";
       });
     }
   }
-}
-
 
   void _showCustomerService(BuildContext context) {
     Navigator.push(
@@ -65,22 +52,11 @@ class ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  void _showAboutUs(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const AboutUsScreen(),
-      ),
-    );
-  }
-
-  void updateProfile(String newName, String? newProfileImageUrl) async {
+  void updateProfile(String newName, String newEmail, String? newImagePath) async {
     try {
       if (user != null) {
-        // Update display name
         await user!.updateDisplayName(newName);
 
-        // Update the profile image if provided
         final querySnapshot = await FirebaseFirestore.instance
             .collection('Users')
             .where('email', isEqualTo: user!.email)
@@ -88,10 +64,7 @@ class ProfileScreenState extends State<ProfileScreen> {
 
         if (querySnapshot.docs.isNotEmpty) {
           final doc = querySnapshot.docs.first;
-          await doc.reference.update({
-            'name': newName,
-            if (newProfileImageUrl != null) 'profil': newProfileImageUrl,
-          });
+          await doc.reference.update({'name': newName});
 
           await user!.reload();
           user = FirebaseAuth.instance.currentUser;
@@ -99,7 +72,9 @@ class ProfileScreenState extends State<ProfileScreen> {
           setState(() {
             name = user!.displayName ?? "No Name";
             email = user!.email ?? "No Email";
-            profileImageUrl = newProfileImageUrl;
+            if (newImagePath != null) {
+              profileImagePath = newImagePath; // Update path gambar
+            }
           });
 
           _showInfoDialog("Profil berhasil diperbarui.");
@@ -264,13 +239,12 @@ class ProfileScreenState extends State<ProfileScreen> {
         children: [
           const SizedBox(height: 20),
           CircleAvatar(
-  radius: 50,
-  backgroundImage: profileImageUrl != null
-      ? FileImage(File(profileImageUrl!)) // Gunakan path gambar dari Firestore
-      : const AssetImage('assets/profile_image.png')
-          as ImageProvider, // Default gambar
-),
-
+            radius: 50,
+            backgroundImage: profileImagePath != null
+                ? FileImage(File(profileImagePath!)) // Tampilkan gambar lokal
+                : const AssetImage('assets/blank-profile.png')
+                    as ImageProvider,
+          ),
           const SizedBox(height: 10),
           Text(
             name,
@@ -294,7 +268,11 @@ class ProfileScreenState extends State<ProfileScreen> {
               );
 
               if (result != null) {
-                updateProfile(result['name'], result['profil']);
+                updateProfile(
+                  result['name'],
+                  result['email'],
+                  result['profileImage'], // Terima path gambar
+                );
               }
             },
             style: ElevatedButton.styleFrom(
@@ -354,7 +332,11 @@ class ProfileScreenState extends State<ProfileScreen> {
                   text: "About Us",
                   textColor: Colors.black,
                   backgroundColor: kSecondaryColor,
-                  onTap: () => _showAboutUs(context),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AboutUsScreen()),
+                  ),
                 ),
                 ProfileOptionTile(
                   icon: Icons.logout,
@@ -377,14 +359,17 @@ class ProfileScreenState extends State<ProfileScreen> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(
+        items: [
+          const BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+          const BottomNavigationBarItem(
               icon: Icon(Icons.confirmation_number), label: ''),
           BottomNavigationBarItem(
             icon: CircleAvatar(
               radius: 12,
-              backgroundImage: AssetImage('assets/profile_image.png'),
+              backgroundImage: profileImagePath != null
+                ? FileImage(File(profileImagePath!)) // Tampilkan gambar lokal
+                : const AssetImage('assets/blank-profile.png')
+                    as ImageProvider,
             ),
             label: '',
           ),

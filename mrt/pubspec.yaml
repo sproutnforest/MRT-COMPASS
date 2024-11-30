@@ -22,6 +22,7 @@ dependencies:
   http: ^1.2.2
   path_provider: ^2.1.5
   sqflite: ^2.4.1
+  shared_preferences: ^2.3.3
 
 
 flutter_native_splash:
@@ -51,3 +52,4 @@ flutter:
     - assets/icon_direction.png
     - assets/icon_schedule.png
     - assets/icon_guide.png
+    - assets/blank-profile.png
