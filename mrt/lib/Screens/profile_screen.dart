@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:mrt/Screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,6 +23,7 @@ class ProfileScreenState extends State<ProfileScreen> {
   User? user;
   String name = "Loading...";
   String email = "Loading...";
+  String? profileImagePath;
   int _selectedIndex = 2;
 
   @override
@@ -36,7 +38,34 @@ class ProfileScreenState extends State<ProfileScreen> {
       setState(() {
         name = user!.displayName ?? "No Name";
         email = user!.email ?? "No Email";
+        // Load the profile image path from Firestore
+        _loadProfileImagePath();
       });
+    }
+  }
+
+  Future<void> _loadProfileImagePath() async {
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection('Users')
+        .where('email', isEqualTo: user!.email)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      // Get the first document from the snapshot
+      final doc = querySnapshot.docs.first;
+
+      // Check if the profileImage field exists in the document
+      if (doc.exists && doc.data().containsKey('profileImage')) {
+        setState(() {
+          profileImagePath =
+              doc['profileImage']; // Get the image path if it exists
+        });
+      } else {
+        // Handle the case where profileImage does not exist
+        setState(() {
+          profileImagePath = null; // Or set to default image path if needed
+        });
+      }
     }
   }
 
@@ -49,7 +78,8 @@ class ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  void updateProfile(String newName, String newEmail) async {
+  void updateProfile(
+      String newName, String newEmail, String? newImagePath) async {
     try {
       if (user != null) {
         await user!.updateDisplayName(newName);
@@ -63,6 +93,7 @@ class ProfileScreenState extends State<ProfileScreen> {
           final doc = querySnapshot.docs.first;
           await doc.reference.update({
             'name': newName,
+            'profileImage': newImagePath, // Update the profile image path
           });
 
           await user!.reload();
@@ -71,6 +102,9 @@ class ProfileScreenState extends State<ProfileScreen> {
           setState(() {
             name = user!.displayName ?? "No Name";
             email = user!.email ?? "No Email";
+            if (newImagePath != null) {
+              profileImagePath = newImagePath; // Update image path
+            }
           });
 
           _showInfoDialog("Profil berhasil diperbarui.");
@@ -234,9 +268,11 @@ class ProfileScreenState extends State<ProfileScreen> {
       body: Column(
         children: [
           const SizedBox(height: 20),
-          const CircleAvatar(
+          CircleAvatar(
             radius: 50,
-            backgroundImage: AssetImage('assets/profile_image.png'),
+            backgroundImage: profileImagePath != null
+                ? FileImage(File(profileImagePath!)) // Display image from path
+                : const AssetImage('assets/blank-profile.png') as ImageProvider,
           ),
           const SizedBox(height: 10),
           Text(
@@ -256,12 +292,17 @@ class ProfileScreenState extends State<ProfileScreen> {
                   builder: (context) => EditProfileScreen(
                     currentName: name,
                     currentEmail: email,
+                    currentImagePath: profileImagePath,
                   ),
                 ),
               );
 
               if (result != null) {
-                updateProfile(result['name'], result['email']);
+                updateProfile(
+                  result['name'],
+                  result['email'],
+                  result['profileImage'], // Receive image path
+                );
               }
             },
             style: ElevatedButton.styleFrom(
@@ -348,14 +389,18 @@ class ProfileScreenState extends State<ProfileScreen> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(
+        items: [
+          const BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+          const BottomNavigationBarItem(
               icon: Icon(Icons.confirmation_number), label: ''),
           BottomNavigationBarItem(
             icon: CircleAvatar(
               radius: 12,
-              backgroundImage: AssetImage('assets/profile_image.png'),
+              backgroundImage: profileImagePath != null
+                  ? FileImage(
+                      File(profileImagePath!)) // Display image from path
+                  : const AssetImage('assets/blank-profile.png')
+                      as ImageProvider,
             ),
             label: '',
           ),

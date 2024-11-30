@@ -1,12 +1,20 @@
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mrt/constant.dart';
+import 'package:path_provider/path_provider.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final String currentName;
   final String currentEmail;
+  final String? currentImagePath; // Add this to pass the current image path
 
   const EditProfileScreen(
-      {super.key, required this.currentName, required this.currentEmail});
+      {super.key,
+      required this.currentName,
+      required this.currentEmail,
+      this.currentImagePath});
 
   @override
   _EditProfileScreenState createState() => _EditProfileScreenState();
@@ -15,12 +23,17 @@ class EditProfileScreen extends StatefulWidget {
 class _EditProfileScreenState extends State<EditProfileScreen> {
   late TextEditingController nameController;
   late TextEditingController emailController;
+  File? _profileImage; // Variable to store the profile image locally
 
   @override
   void initState() {
     super.initState();
     nameController = TextEditingController(text: widget.currentName);
     emailController = TextEditingController(text: widget.currentEmail);
+    if (widget.currentImagePath != null) {
+      _profileImage =
+          File(widget.currentImagePath!); // Load the current image path
+    }
   }
 
   @override
@@ -28,6 +41,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     nameController.dispose();
     emailController.dispose();
     super.dispose();
+  }
+
+  // Function to pick an image from the gallery
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _profileImage = File(pickedFile.path); // Save the image in File
+      });
+    }
   }
 
   @override
@@ -45,15 +70,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           children: [
             Stack(
               children: [
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 70,
-                  backgroundImage: AssetImage('assets/profile_image.png'),
+                  backgroundImage: _profileImage != null
+                      ? FileImage(_profileImage!) // If there's a selected image
+                      : widget.currentImagePath != null
+                          ? FileImage(File(widget
+                              .currentImagePath!)) // If there's a path already
+                          : const AssetImage('assets/blank-profile.png')
+                              as ImageProvider, // Default image
                 ),
                 Positioned(
                   bottom: 5,
                   right: 5,
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: _pickImage, // Pick an image when button is pressed
                     child: const CircleAvatar(
                       radius: 18,
                       backgroundColor: kSecondaryColor,
@@ -73,11 +104,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               decoration: const InputDecoration(labelText: "Nama"),
             ),
             const SizedBox(height: 20),
-            // Mengatur email agar tidak dapat diedit
             TextField(
               controller: emailController,
               decoration: const InputDecoration(labelText: "Email"),
-              enabled: false, // Membuat TextField email tidak bisa diedit
+              enabled: false, // Email cannot be edited
             ),
             const SizedBox(height: 40),
             ElevatedButton(
@@ -85,6 +115,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 Navigator.pop(context, {
                   'name': nameController.text,
                   'email': emailController.text,
+                  'profileImage': _profileImage?.path, // Send image path
                 });
               },
               style: ElevatedButton.styleFrom(
