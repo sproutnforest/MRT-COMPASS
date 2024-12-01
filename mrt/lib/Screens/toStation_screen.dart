@@ -52,11 +52,10 @@ class _RouteFinderScreenState extends State<RouteFinderScreen> {
         title: Text("Cari Rute"),
         foregroundColor: Colors.white,
         centerTitle: true,
-        backgroundColor: kPrimaryColor, // Teks judul putih
+        backgroundColor: kPrimaryColor,
       ),
       body: Column(
         children: [
-          // Container for Search Feature
           Container(
             padding: EdgeInsets.all(24),
             margin: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -76,7 +75,6 @@ class _RouteFinderScreenState extends State<RouteFinderScreen> {
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Text "Dari Stasiun" with Padding to move it to the right
                     Container(
                       alignment: Alignment.centerLeft,
                       padding: EdgeInsets.only(left: 33),
@@ -89,11 +87,10 @@ class _RouteFinderScreenState extends State<RouteFinderScreen> {
                         ),
                       ),
                     ),
-                    // Starting Station Dropdown
                     Row(
                       children: [
                         Transform.translate(
-                          offset: Offset(0, -15), // Memberikan jarak ke atas
+                          offset: Offset(0, -15),
                           child: Icon(Icons.location_on,
                               color: kPrimaryHoverColor),
                         ),
@@ -101,8 +98,8 @@ class _RouteFinderScreenState extends State<RouteFinderScreen> {
                         Expanded(
                           child: DropdownButton<String>(
                             isExpanded: true,
-                            underline: SizedBox(), // Remove underline
-                            icon: SizedBox(), // Remove dropdown icon
+                            underline: SizedBox(),
+                            icon: SizedBox(),
                             value: startStation,
                             hint: Text(
                               "Pilih Stasiun Keberangkatan",
@@ -131,7 +128,6 @@ class _RouteFinderScreenState extends State<RouteFinderScreen> {
                         thickness: 1,
                         color: Colors.grey.shade300),
                     SizedBox(height: 12),
-                    // Text "Ke Stasiun" with Padding to move it to the right
                     Container(
                       alignment: Alignment.centerLeft,
                       padding: EdgeInsets.only(left: 32),
@@ -144,19 +140,18 @@ class _RouteFinderScreenState extends State<RouteFinderScreen> {
                         ),
                       ),
                     ),
-                    // Destination Station Dropdown
                     Row(
                       children: [
                         Transform.translate(
-                          offset: Offset(0, -15), // Memberikan jarak ke atas
+                          offset: Offset(0, -15),
                           child: Icon(Icons.location_on, color: Colors.red),
                         ),
                         SizedBox(width: 10),
                         Expanded(
                           child: DropdownButton<String>(
                             isExpanded: true,
-                            underline: SizedBox(), // Remove underline
-                            icon: SizedBox(), // Remove dropdown icon
+                            underline: SizedBox(),
+                            icon: SizedBox(),
                             value: endStation,
                             hint: Text(
                               "Pilih Stasiun Tujuan",
@@ -180,7 +175,6 @@ class _RouteFinderScreenState extends State<RouteFinderScreen> {
                       ],
                     ),
                     SizedBox(height: 10),
-                    // Button to find route
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
@@ -200,10 +194,10 @@ class _RouteFinderScreenState extends State<RouteFinderScreen> {
                     ),
                   ],
                 ),
-                // Swap Button Positioned in the Middle Right
+                // Swap Button
                 Positioned(
-                  top: 54, // Aligns with the middle of the dropdowns
-                  right: 0, // Sticks to the right side
+                  top: 54,
+                  right: 0,
                   child: Container(
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 240, 247, 255),
