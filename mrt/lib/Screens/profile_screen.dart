@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:mrt/Screens/Points.dart';
 import 'package:mrt/Screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mrt/Screens/ticket.dart';
@@ -55,8 +54,7 @@ class ProfileScreenState extends State<ProfileScreen> {
 
       if (doc.exists && doc.data().containsKey('profileImage')) {
         setState(() {
-          profileImagePath =
-              doc['profileImage'];
+          profileImagePath = doc['profileImage'];
         });
       } else {
         setState(() {
@@ -119,12 +117,12 @@ class ProfileScreenState extends State<ProfileScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Info'),
-        content: Text(message),
+        title: const Text('Info', style: TextStyle(fontFamily: 'Serif')),
+        content: Text(message, style: TextStyle(fontFamily: 'Serif')),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
+            child: const Text('OK', style: TextStyle(fontFamily: 'Serif')),
           ),
         ],
       ),
@@ -135,12 +133,12 @@ class ProfileScreenState extends State<ProfileScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Error'),
-        content: Text(message),
+        title: const Text('Error', style: TextStyle(fontFamily: 'Serif')),
+        content: Text(message, style: TextStyle(fontFamily: 'Serif')),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
+            child: const Text('Close', style: TextStyle(fontFamily: 'Serif')),
           ),
         ],
       ),
@@ -151,22 +149,23 @@ class ProfileScreenState extends State<ProfileScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Hapus Akun'),
+        title: const Text('Hapus Akun', style: TextStyle(fontFamily: 'Serif')),
         content: const Text(
-            'Apakah Anda yakin ingin menghapus akun ini? Tindakan ini tidak bisa dibatalkan.'),
+            'Apakah Anda yakin ingin menghapus akun ini? Tindakan ini tidak bisa dibatalkan.',
+            style: TextStyle(fontFamily: 'Serif')),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: const Text('Batal'),
+            child: const Text('Batal', style: TextStyle(fontFamily: 'Serif')),
           ),
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
               _deleteAccount();
             },
-            child: const Text('Hapus'),
+            child: const Text('Hapus', style: TextStyle(fontFamily: 'Serif')),
           ),
         ],
       ),
@@ -186,10 +185,11 @@ class ProfileScreenState extends State<ProfileScreen> {
 
       for (var doc in querySnapshot.docs) {
         await doc.reference.delete();
-        debugPrint('Data pengguna dengan ID dokumen ${doc.id} berhasil dihapus.');
+        debugPrint(
+            'Data pengguna dengan ID dokumen ${doc.id} berhasil dihapus.');
       }
     } catch (e) {
-     debugPrint('Gagal menghapus data pengguna: $e');
+      debugPrint('Gagal menghapus data pengguna: $e');
     }
   }
 
@@ -209,7 +209,9 @@ class ProfileScreenState extends State<ProfileScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Akun berhasil dihapus.')),
+          const SnackBar(
+              content: Text('Akun berhasil dihapus.',
+                  style: TextStyle(fontFamily: 'Serif'))),
         );
 
         Navigator.pushReplacement(
@@ -220,7 +222,9 @@ class ProfileScreenState extends State<ProfileScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Gagal menghapus akun: $e')),
+          SnackBar(
+              content: Text('Gagal menghapus akun: $e',
+                  style: TextStyle(fontFamily: 'Serif'))),
         );
       }
     }
@@ -230,12 +234,13 @@ class ProfileScreenState extends State<ProfileScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Logout'),
-        content: const Text('Apakah Anda yakin ingin keluar?'),
+        title: const Text('Logout', style: TextStyle(fontFamily: 'Serif')),
+        content: const Text('Apakah Anda yakin ingin keluar?',
+            style: TextStyle(fontFamily: 'Serif')),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Batal'),
+            child: const Text('Batal', style: TextStyle(fontFamily: 'Serif')),
           ),
           TextButton(
             onPressed: () {
@@ -245,7 +250,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                 MaterialPageRoute(builder: (context) => const LoginScreen()),
               );
             },
-            child: const Text('Ya'),
+            child: const Text('Ya', style: TextStyle(fontFamily: 'Serif')),
           ),
         ],
       ),
@@ -256,7 +261,7 @@ class ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("PROFIL"),
+        title: const Text("PROFIL", style: TextStyle(fontFamily: 'Serif')),
         foregroundColor: Colors.white,
         centerTitle: true,
         backgroundColor: kPrimaryColor,
@@ -274,11 +279,18 @@ class ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(height: 10),
           Text(
             name,
-            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'serif',
+            ),
           ),
           Text(
             email,
-            style: TextStyle(color: Colors.grey[600]),
+            style: TextStyle(
+              color: Colors.grey[600],
+              fontFamily: 'serif',
+            ),
           ),
           const SizedBox(height: 10),
           ElevatedButton(
@@ -310,7 +322,10 @@ class ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             child: const Text("Edit Profil",
-                style: TextStyle(color: Colors.white)),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'serif',
+                )),
           ),
           const SizedBox(height: 20),
           Expanded(
@@ -329,18 +344,10 @@ class ProfileScreenState extends State<ProfileScreen> {
                     );
                   },
                 ),
-                ProfileOptionTile(
+                const ProfileOptionTile(
                   icon: Icons.emoji_emotions,
                   text: "MRT-points",
                   backgroundColor: kSecondaryColor,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Points(),
-                      ),
-                    );
-                  },
                 ),
                 ProfileOptionTile(
                   icon: Icons.lock,
@@ -402,8 +409,7 @@ class ProfileScreenState extends State<ProfileScreen> {
             icon: CircleAvatar(
               radius: 12,
               backgroundImage: profileImagePath != null
-                  ? FileImage(
-                      File(profileImagePath!))
+                  ? FileImage(File(profileImagePath!))
                   : const AssetImage('assets/blank-profile.png')
                       as ImageProvider,
             ),
@@ -478,7 +484,11 @@ class ProfileOptionTile extends StatelessWidget {
           size: iconSize,
         ),
       ),
-      title: Text(text, style: TextStyle(color: textColor)),
+      title: Text(text,
+          style: TextStyle(
+            color: textColor,
+            fontFamily: 'serif',
+          )),
       trailing: Icon(Icons.chevron_right, color: textColor),
       onTap: onTap,
     );
