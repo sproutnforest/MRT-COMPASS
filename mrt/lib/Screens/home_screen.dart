@@ -32,6 +32,7 @@ class HomePage extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
+                    fontFamily: 'serif',
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -41,6 +42,7 @@ class HomePage extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
+                    fontFamily: 'serif',
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -66,7 +68,7 @@ class HomePage extends StatelessWidget {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Routes()),
+                          MaterialPageRoute(builder: (context) => const Routes()),
                         );
                       },
                       child: _buildLocationCard(
@@ -98,6 +100,7 @@ class HomePage extends StatelessWidget {
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 18,
+                fontFamily: 'serif',
               ),
             ),
           ),
@@ -202,12 +205,13 @@ class HomePage extends StatelessWidget {
               style: const TextStyle(
                   color: Colors.white,
                   fontSize: 16,
+                  fontFamily: 'serif',
                   fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 5),
             Text(
               subtitle,
-              style: const TextStyle(color: Colors.white, fontSize: 12),
+              style: const TextStyle(color: Colors.white, fontFamily: 'serif', fontSize: 12),
             ),
           ],
         ),
@@ -233,7 +237,7 @@ class HomePage extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             title,
-            style: const TextStyle(fontSize: 14),
+            style: const TextStyle(fontSize: 14, fontFamily: 'serif'),
             textAlign: TextAlign.center,
           ),
         ],
