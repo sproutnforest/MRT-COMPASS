@@ -62,11 +62,19 @@ class HomePage extends StatelessWidget {
                         Colors.blue.shade800,
                       ),
                     ),
-                    _buildLocationCard(
-                      'Halte & Rute',
-                      'Telusuri Halte dan Rute',
-                      Icons.map,
-                      Colors.orange.shade800,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Routes()),
+                        );
+                      },
+                      child: _buildLocationCard(
+                        'Halte & Rute',
+                        'Telusuri Halte dan Rute',
+                        Icons.map,
+                        Colors.orange.shade800,
+                      ),
                     ),
                   ],
                 ),
@@ -202,8 +210,8 @@ class HomePage extends StatelessWidget {
               style: const TextStyle(color: Colors.white, fontSize: 12),
             ),
           ],
-          ),
         ),
+      ),
     );
   }
 
