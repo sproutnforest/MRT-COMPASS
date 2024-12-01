@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mrt/Screens/toStation_screen.dart';
+import 'package:mrt/Screens/Routes.dart';
+import 'package:mrt/Screens/nearest_station.dart';
 import 'package:mrt/constant.dart';
 import 'profile_screen.dart';
 import 'schedule_screen.dart';
@@ -30,6 +32,7 @@ class HomePage extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
+                    fontFamily: 'serif',
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -39,6 +42,7 @@ class HomePage extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
+                    fontFamily: 'serif',
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -60,11 +64,20 @@ class HomePage extends StatelessWidget {
                         Colors.blue.shade800,
                       ),
                     ),
-                    _buildLocationCard(
-                      'Halte & Rute',
-                      'Telusuri Halte dan Rute',
-                      Icons.map,
-                      Colors.orange.shade800,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Routes()),
+                        );
+                      },
+                      child: _buildLocationCard(
+                        'Halte & Rute',
+                        'Telusuri Halte dan Rute',
+                        Icons.map,
+                        Colors.orange.shade800,
+                      ),
                     ),
                   ],
                 ),
@@ -82,13 +95,13 @@ class HomePage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-            onPressed: () {
-            },
+            onPressed: () {},
             child: const Text(
               'Beli Tiket',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 18,
+                fontFamily: 'serif',
               ),
             ),
           ),
@@ -105,17 +118,19 @@ class HomePage extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const ScheduleScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const LocationWidget()),
                     );
                   },
-                  child:
-                      _buildInfoCard('Arah MRT', 'assets/icon_direction.png'),
+                  child: _buildInfoCard(
+                      'Stasiun Terdekat', 'assets/icon_direction.png'),
                 ),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const ScheduleScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const ScheduleScreen()),
                     );
                   },
                   child: _buildInfoCard('Jadwal', 'assets/icon_schedule.png'),
@@ -124,7 +139,9 @@ class HomePage extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const StationDetailHomeScreen()),
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const StationDetailHomeScreen()),
                     );
                   },
                   child: _buildInfoCard('Panduan', 'assets/icon_guide.png'),
@@ -134,17 +151,18 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.confirmation_number),
-              label: 'Ticket'),
+              icon: Icon(Icons.confirmation_number), label: 'Ticket'),
           BottomNavigationBarItem(
               icon: Icon(Icons.account_circle), label: 'Profile'),
         ],
-        selectedItemColor: kPrimaryColor,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        backgroundColor: kPrimaryColor,
+        selectedItemColor: kSecondaryColor,
         unselectedItemColor: Colors.grey,
         onTap: (index) {
           switch (index) {
@@ -154,8 +172,7 @@ class HomePage extends StatelessWidget {
             case 1:
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => const TicketScreen()),
+                MaterialPageRoute(builder: (context) => const TicketScreen()),
               );
               break;
             case 2:
@@ -163,7 +180,7 @@ class HomePage extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                         const ProfileScreen()), // Navigate to Profile Screen
+                        const ProfileScreen()), // Navigate to Profile Screen
               );
               break;
           }
@@ -192,12 +209,14 @@ class HomePage extends StatelessWidget {
               style: const TextStyle(
                   color: Colors.white,
                   fontSize: 16,
+                  fontFamily: 'serif',
                   fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 5),
             Text(
               subtitle,
-              style: const TextStyle(color: Colors.white, fontSize: 12),
+              style: const TextStyle(
+                  color: Colors.white, fontFamily: 'serif', fontSize: 12),
             ),
           ],
         ),
@@ -223,7 +242,7 @@ class HomePage extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             title,
-            style: const TextStyle(fontSize: 14),
+            style: const TextStyle(fontSize: 14, fontFamily: 'serif'),
             textAlign: TextAlign.center,
           ),
         ],

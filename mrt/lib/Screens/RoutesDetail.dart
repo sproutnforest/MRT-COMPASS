@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:mrt/Screens/home_screen.dart';
 import 'package:mrt/Screens/profile_screen.dart';
 import 'package:mrt/Screens/ticket.dart';
+import 'package:mrt/Screens/toStation_screen.dart';
+import 'station_detail_screen.dart'; // Import your StationDetailScreen file
+import '../data/station_data.dart'; // Import the station data
 import 'package:mrt/constant.dart';
+
+Map<String, dynamic>? getStationByName(String routeName) {
+  return stations.firstWhere(
+    (station) => station['name'] == routeName,
+  );
+}
 
 class RoutesDetail extends StatelessWidget {
   final String routes;
@@ -18,6 +28,7 @@ class RoutesDetail extends StatelessWidget {
             icon: const Icon(CupertinoIcons.back, color: Colors.black),
             onPressed: () => Navigator.pop(context),
           ),
+          backgroundColor: Colors.white,
         ),
         body: SafeArea(
           child: Padding(
@@ -34,16 +45,36 @@ class RoutesDetail extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       fontSize: 24,
                       color: Colors.black,
+                      fontFamily: 'serif',
                     ),
                   ),
                   const SizedBox(height: 50),
                   SizedBox(
-                    width:
-                        300, // Set the width to the same value for both buttons
+                    width: 300,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        final stationData = getStationByName(routes);
+
+                        if (stationData != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => StationDetailScreen(
+                                stationData: stationData,
+                              ),
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content:
+                                  Text('No station data found for $routes'),
+                            ),
+                          );
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFFFAA00),
+                        backgroundColor: kSecondaryColor,
                         padding: const EdgeInsets.symmetric(vertical: 15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
@@ -55,6 +86,7 @@ class RoutesDetail extends StatelessWidget {
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
+                          fontFamily: 'serif',
                         ),
                       ),
                     ),
@@ -63,31 +95,16 @@ class RoutesDetail extends StatelessWidget {
                   SizedBox(
                     width: 300, // Match the width of the first button
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  RouteFinderScreen(startStation: routes)),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFFFAA00),
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      ),
-                      child: const Text(
-                        'Beli Tiket',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 25),
-                  SizedBox(
-                    width: 300, // Match the width of the first button
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFFFAA00),
+                        backgroundColor: kSecondaryColor,
                         padding: const EdgeInsets.symmetric(vertical: 15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
@@ -99,6 +116,7 @@ class RoutesDetail extends StatelessWidget {
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
+                          fontFamily: 'serif',
                         ),
                       ),
                     ),
@@ -107,9 +125,18 @@ class RoutesDetail extends StatelessWidget {
                   SizedBox(
                     width: 300, // Match the width of the first button
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RouteFinderScreen(
+                              endStation: routes,
+                            ),
+                          ),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFFFAA00),
+                        backgroundColor: kSecondaryColor,
                         padding: const EdgeInsets.symmetric(vertical: 15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
@@ -121,6 +148,7 @@ class RoutesDetail extends StatelessWidget {
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
+                          fontFamily: 'serif',
                         ),
                       ),
                     ),
@@ -143,7 +171,10 @@ class RoutesDetail extends StatelessWidget {
           onTap: (index) {
             switch (index) {
               case 0:
-                // Navigate to Home (currently on Home page)
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomePage()),
+                );
                 break;
               case 1:
                 Navigator.push(
@@ -155,8 +186,7 @@ class RoutesDetail extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          const ProfileScreen()), // Navigate to Profile Screen
+                      builder: (context) => const ProfileScreen()),
                 );
                 break;
             }
