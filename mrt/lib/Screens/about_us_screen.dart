@@ -41,7 +41,8 @@ class AboutUsScreen extends StatelessWidget {
                   borderRadius: BorderRadius.vertical(top: Radius.circular(50)),
                 ),
                 child: ClipRRect(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(50)),
+                  borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(50)),
                   child: Image.asset(
                     'assets/pt1.png',
                     fit: BoxFit.cover,
@@ -60,37 +61,69 @@ class AboutUsScreen extends StatelessWidget {
                     "MRT COMPASS adalah penyedia layanan transportasi yang inovatif dan dapat diandalkan, berkomitmen untuk membuat pengalaman perjalanan Anda lancar dan efisien. Kami bertujuan tidak hanya untuk memenuhi, tetapi melebihi harapan Anda dengan menawarkan layanan cepat, berkualitas, serta teknologi mutakhir.",
                   ),
                   const SizedBox(height: 30),
-                  _buildSectionTitle("Visi & Misi"),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  const Row(
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
                     children: [
                       Expanded(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment
+                              .center,
                           children: [
-                            _buildContentText(
-                              "Visi: Mengubah mobilitas perkotaan dengan menyediakan alternatif transportasi yang modern dan ramah lingkungan, serta memastikan kenyamanan, aksesibilitas, dan keamanan bagi setiap orang.",
+                            Text(
+                              "Visi",
+                              style: TextStyle(
+                                fontFamily: 'serif',
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              "Mengubah mobilitas perkotaan dengan menyediakan alternatif transportasi yang modern dan ramah lingkungan, serta memastikan kenyamanan, aksesibilitas, dan keamanan bagi setiap orang.",
+                              style: TextStyle(
+                                fontFamily: 'serif',
+                                fontSize: 14,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
                           ],
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      SizedBox(
+                          width: 16),
                       Expanded(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment
+                              .center,
                           children: [
-                            _buildContentText(
-                              "Misi: Meningkatkan mobilitas perkotaan dengan solusi transportasi yang berkelanjutan dan inovatif, memberdayakan komunitas untuk terhubung dengan dunia di sekitar mereka.",
+                            Text(
+                              "Misi",
+                              style: TextStyle(
+                                fontFamily: 'serif',
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              "Meningkatkan mobilitas perkotaan dengan solusi transportasi yang berkelanjutan dan inovatif, memberdayakan komunitas untuk terhubung dengan dunia di sekitar mereka.",
+                              style: TextStyle(
+                                fontFamily: 'serif',
+                                fontSize: 14,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
                           ],
                         ),
                       ),
                     ],
                   ),
+
                   const SizedBox(height: 30),
-                  
-                  // New Grid Section for Team Members
+
                   const Text(
                     "Meet the Team",
                     style: TextStyle(
@@ -108,25 +141,15 @@ class AboutUsScreen extends StatelessWidget {
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                     children: [
-                      // Manually created team members (without images)
                       _buildTeamMember('Eryca'),
                       _buildTeamMember('Brenda'),
-                      _buildTeamMember('Maycheren'),
+                      _buildTeamMember('Mayceren'),
                       _buildTeamMember('Chela'),
                       _buildTeamMember('Georgia'),
                       _buildTeamMember('Lusy'),
                     ],
                   ),
-                  
-                  ElevatedButton(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Anda telah terdaftar untuk menerima pembaruan!")));
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: kSecondaryColor,
-                    ),
-                    child: const Text("Daftar"),
-                  ),
+
                   const SizedBox(height: 30),
                   _buildFooter(),
                   const SizedBox(height: 50),
@@ -186,28 +209,39 @@ class AboutUsScreen extends StatelessWidget {
     );
   }
 
-  // Manually create each team member's card without images
   Widget _buildTeamMember(String name) {
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Instead of an image, just show the name
-          const SizedBox(height: 10),
-          Text(
-            name,
-            style: const TextStyle(
-              fontFamily: 'serif',
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
-            textAlign: TextAlign.center,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blue.shade300, Colors.blue.shade700],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-        ],
+          borderRadius: BorderRadius.circular(
+              12),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(height: 10),
+            Text(
+              name,
+              style: const TextStyle(
+                fontFamily: 'serif',
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color:
+                    Colors.white,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }
