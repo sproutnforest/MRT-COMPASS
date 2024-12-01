@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:mrt/Screens/faq.dart';
 import 'package:mrt/Screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mrt/Screens/ticket.dart';
@@ -378,6 +379,17 @@ class ProfileScreenState extends State<ProfileScreen> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => const AboutUsScreen()),
+                  ),
+                ),
+                ProfileOptionTile(
+                  icon: Icons.help_outline,
+                  text: "FAQ",
+                  textColor: Colors.black,
+                  backgroundColor: kSecondaryColor,
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const FAQScreen()),
                   ),
                 ),
                 ProfileOptionTile(
