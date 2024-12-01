@@ -15,7 +15,7 @@ class CustomerServiceScreen extends StatelessWidget {
         automaticallyImplyLeading: true,
       ),
       body: Container(
-        color: const Color.fromARGB(255, 241, 249, 255),
+        color: const Color.fromARGB(255, 255, 255, 255),
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [

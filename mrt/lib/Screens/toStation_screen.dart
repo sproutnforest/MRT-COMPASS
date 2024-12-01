@@ -49,14 +49,13 @@ class _RouteFinderScreenState extends State<RouteFinderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Cari Rute"),
+        title: Text("Cari Rute", style: TextStyle(fontFamily: 'serif')),
         foregroundColor: Colors.white,
         centerTitle: true,
-        backgroundColor: kPrimaryColor, // Teks judul putih
+        backgroundColor: kPrimaryColor,
       ),
       body: Column(
         children: [
-          // Container for Search Feature
           Container(
             padding: EdgeInsets.all(24),
             margin: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -76,43 +75,46 @@ class _RouteFinderScreenState extends State<RouteFinderScreen> {
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Text "Dari Stasiun" with Padding to move it to the right
                     Container(
                       alignment: Alignment.centerLeft,
                       padding: EdgeInsets.only(left: 33),
-                      child: Text(
+                      child: const Text(
                         "Dari Stasiun",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
+                          fontFamily: 'serif',
                         ),
                       ),
                     ),
-                    // Starting Station Dropdown
                     Row(
                       children: [
                         Transform.translate(
-                          offset: Offset(0, -15), // Memberikan jarak ke atas
-                          child: Icon(Icons.location_on,
+                          offset: const Offset(0, -15),
+                          child: const Icon(Icons.location_on,
                               color: kPrimaryHoverColor),
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         Expanded(
                           child: DropdownButton<String>(
                             isExpanded: true,
-                            underline: SizedBox(), // Remove underline
-                            icon: SizedBox(), // Remove dropdown icon
+                            underline: SizedBox(),
+                            icon: SizedBox(),
                             value: startStation,
-                            hint: Text(
+                            hint: const Text(
                               "Pilih Stasiun Keberangkatan",
                               style: TextStyle(
-                                  color: Colors.black54, fontSize: 14),
+                                color: Colors.black54,
+                                fontSize: 14,
+                                fontFamily: 'serif',
+                              ),
                             ),
                             items: stations.map((station) {
                               return DropdownMenuItem(
                                 value: station,
-                                child: Text(station),
+                                child: Text(station,
+                                    style: TextStyle(fontFamily: 'serif')),
                               );
                             }).toList(),
                             onChanged: (value) {
@@ -131,42 +133,44 @@ class _RouteFinderScreenState extends State<RouteFinderScreen> {
                         thickness: 1,
                         color: Colors.grey.shade300),
                     SizedBox(height: 12),
-                    // Text "Ke Stasiun" with Padding to move it to the right
                     Container(
                       alignment: Alignment.centerLeft,
                       padding: EdgeInsets.only(left: 32),
-                      child: Text(
+                      child: const Text(
                         "Ke Stasiun",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
+                          fontFamily: 'serif',
                         ),
                       ),
                     ),
-                    // Destination Station Dropdown
                     Row(
                       children: [
                         Transform.translate(
-                          offset: Offset(0, -15), // Memberikan jarak ke atas
+                          offset: Offset(0, -15),
                           child: Icon(Icons.location_on, color: Colors.red),
                         ),
                         SizedBox(width: 10),
                         Expanded(
                           child: DropdownButton<String>(
                             isExpanded: true,
-                            underline: SizedBox(), // Remove underline
-                            icon: SizedBox(), // Remove dropdown icon
+                            underline: SizedBox(),
+                            icon: SizedBox(),
                             value: endStation,
-                            hint: Text(
+                            hint: const Text(
                               "Pilih Stasiun Tujuan",
                               style: TextStyle(
-                                  color: Colors.black54, fontSize: 14),
+                                  color: Colors.black54,
+                                  fontSize: 14,
+                                  fontFamily: 'serif'),
                             ),
                             items: stations.map((station) {
                               return DropdownMenuItem(
                                 value: station,
-                                child: Text(station),
+                                child: Text(station,
+                                    style: TextStyle(fontFamily: 'serif')),
                               );
                             }).toList(),
                             onChanged: (value) {
@@ -180,7 +184,6 @@ class _RouteFinderScreenState extends State<RouteFinderScreen> {
                       ],
                     ),
                     SizedBox(height: 10),
-                    // Button to find route
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
@@ -192,18 +195,21 @@ class _RouteFinderScreenState extends State<RouteFinderScreen> {
                           ),
                         ),
                         onPressed: findRoute,
-                        child: Text(
+                        child: const Text(
                           "Cari Rute",
-                          style: TextStyle(color: Colors.white, fontSize: 16),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontFamily: 'serif'),
                         ),
                       ),
                     ),
                   ],
                 ),
-                // Swap Button Positioned in the Middle Right
+                // Swap Button
                 Positioned(
-                  top: 54, // Aligns with the middle of the dropdowns
-                  right: 0, // Sticks to the right side
+                  top: 54,
+                  right: 0,
                   child: Container(
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 240, 247, 255),
@@ -234,15 +240,15 @@ class _RouteFinderScreenState extends State<RouteFinderScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 4.0),
                       child: Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.circle,
-                            color: const Color.fromARGB(255, 38, 42, 133),
+                            color: Color.fromARGB(255, 38, 42, 133),
                             size: 12,
                           ),
                           SizedBox(width: 8),
                           Expanded(
                             child: Container(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                 vertical: 12,
                                 horizontal: 16,
                               ),
@@ -252,7 +258,10 @@ class _RouteFinderScreenState extends State<RouteFinderScreen> {
                               ),
                               child: Text(
                                 route[index],
-                                style: TextStyle(color: Colors.black),
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'serif',
+                                ),
                               ),
                             ),
                           ),
