@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:mrt/constant.dart';
 
 class RouteFinderScreen extends StatefulWidget {
+  final String? startStation;
+  final String? endStation;
+
+  RouteFinderScreen({Key? key, this.startStation, this.endStation})
+      : super(key: key);
+
   @override
   _RouteFinderScreenState createState() => _RouteFinderScreenState();
 }
@@ -21,6 +27,13 @@ class _RouteFinderScreenState extends State<RouteFinderScreen> {
   String? startStation;
   String? endStation;
   List<String> route = [];
+
+  @override
+  void initState() {
+    super.initState();
+    startStation = widget.startStation;
+    endStation = widget.endStation;
+  }
 
   void findRoute() {
     setState(() {

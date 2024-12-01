@@ -1,4 +1,5 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mrt/Screens/home_screen.dart';
 import 'package:mrt/Screens/profile_screen.dart';
@@ -144,21 +145,32 @@ class _LocationWidgetState extends State<LocationWidget> {
 
     try {
       String station = await locationService.getNearestStation();
-      setState(() {
-        nearestStation = station;
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          nearestStation = station;
+          isLoading = false;
+        });
+      }
     } catch (e) {
-      setState(() {
-        nearestStation = 'Error: $e';
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          nearestStation = 'Error: $e';
+          isLoading = false;
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(CupertinoIcons.back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
+        ),
+        backgroundColor: Colors.white,
+      ),
       body: SafeArea(
         child: Center(
           child: Column(
@@ -170,7 +182,10 @@ class _LocationWidgetState extends State<LocationWidget> {
                   ? const CircularProgressIndicator()
                   : Text(
                       nearestStation,
-                      style: const TextStyle(fontSize: 30),
+                      style: const TextStyle(
+                        fontSize: 30,
+                        fontFamily: 'serif',
+                      ),
                     ),
               const SizedBox(height: 25),
               SizedBox(
@@ -178,7 +193,7 @@ class _LocationWidgetState extends State<LocationWidget> {
                 child: ElevatedButton(
                   onPressed: _updateNearestStation,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFFFAA00),
+                    backgroundColor: kSecondaryColor,
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
@@ -190,6 +205,7 @@ class _LocationWidgetState extends State<LocationWidget> {
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
+                      fontFamily: 'serif',
                     ),
                   ),
                 ),
@@ -211,7 +227,10 @@ class _LocationWidgetState extends State<LocationWidget> {
         onTap: (index) {
           switch (index) {
             case 0:
-              // Navigate to Home (currently on Home page)
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage()),
+              );
               break;
             case 1:
               Navigator.push(
