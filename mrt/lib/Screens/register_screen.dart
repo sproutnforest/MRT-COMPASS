@@ -61,17 +61,13 @@ class RegisterScreenState extends State<RegisterScreen> {
   Future<void> registerWithEmailPassword() async {
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
-
-      await FirebaseAuth.instance.currentUser!
-          .updateDisplayName(nameController.text.trim());
+        email: emailController.text.trim(),password: passwordController.text.trim(), );
+ //memperbarui nama tampilan pengguna yang sedang masuk di Firebase Authentication
+      await FirebaseAuth.instance.currentUser!.updateDisplayName(nameController.text.trim());
       await FirebaseAuth.instance.currentUser!.reload();
 
-      // Add a new document to the 'testCollection'
-      await _firestore.collection('Users').add({
-        
+      //Menyimpan Data Pengguna di Firestore
+      await _firestore.collection('Users').add({ 
         'email': emailController.text.trim(),
         'name': nameController.text.trim(),
         'password': passwordController.text.trim(),
@@ -80,8 +76,6 @@ class RegisterScreenState extends State<RegisterScreen> {
         'saldo': 0,
         'timestamp': FieldValue.serverTimestamp(),
       });
-
-
       // Navigasi ke layar login
       Navigator.push(
         context,
