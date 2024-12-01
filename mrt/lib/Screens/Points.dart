@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mrt/Screens/profile_screen.dart';
+import 'package:mrt/Screens/ticket.dart';
+import 'package:mrt/constant.dart';
 
 class Points extends StatefulWidget {
   @override
@@ -304,6 +307,38 @@ class _PointsState extends State<Points> {
               ),
             ),
           ],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.confirmation_number), label: 'Ticket'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.account_circle), label: 'Profile'),
+          ],
+          selectedItemColor: kPrimaryColor,
+          unselectedItemColor: Colors.grey,
+          onTap: (index) {
+            switch (index) {
+              case 0:
+                // Navigate to Home (currently on Home page)
+                break;
+              case 1:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const TicketScreen()),
+                );
+                break;
+              case 2:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          const ProfileScreen()), // Navigate to Profile Screen
+                );
+                break;
+            }
+          },
         ),
       ),
     );
