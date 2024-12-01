@@ -24,12 +24,12 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Error'),
-        content: Text(message),
+        title: const Text('Error', style: TextStyle(fontFamily: 'Serif')),
+        content: Text(message, style: TextStyle(fontFamily: 'Serif')),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
+            child: const Text('Close', style: TextStyle(fontFamily: 'Serif')),
           ),
         ],
       ),
@@ -92,8 +92,7 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
         if (querySnapshot.docs.isNotEmpty) {
           final doc = querySnapshot.docs.first;
           await doc.reference.update({
-            'password':
-                newPassword,
+            'password': newPassword,
           });
         }
       }
@@ -110,8 +109,8 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Success'),
-        content: Text(message),
+        title: const Text('Success', style: TextStyle(fontFamily: 'Serif')),
+        content: Text(message, style: TextStyle(fontFamily: 'Serif')),
         actions: [
           TextButton(
             onPressed: () {
@@ -120,12 +119,10 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
               // Navigate to profile page
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        ProfileScreen()),
+                MaterialPageRoute(builder: (context) => ProfileScreen()),
               );
             },
-            child: const Text('OK'),
+            child: const Text('OK', style: TextStyle(fontFamily: 'Serif')),
           ),
         ],
       ),
@@ -136,7 +133,8 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("UBAH PASSWORD"),
+        title:
+            const Text("UBAH PASSWORD", style: TextStyle(fontFamily: 'Serif')),
         foregroundColor: Colors.white,
         centerTitle: true,
         backgroundColor: kPrimaryColor,
@@ -182,7 +180,11 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
               ),
               child: const Text(
                 "Simpan",
-                style: TextStyle(color: Colors.white, fontSize: 16),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontFamily: 'serif',
+                ),
               ),
             ),
           ],
