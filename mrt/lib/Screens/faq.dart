@@ -101,28 +101,6 @@ class _FAQScreenState extends State<FAQScreen> {
     });
   }
 
-  // void _onNavBarTap(int index) {
-  //   setState(() {
-  //     _selectedIndex = index;
-  //   });
-  //   switch (index) {
-  //     case 1:
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(builder: (context) => const TicketScreen()),
-  //       );
-  //       break;
-  //     case 2:
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(builder: (context) => const ProfileScreen()),
-  //       );
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
