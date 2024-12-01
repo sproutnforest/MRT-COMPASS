@@ -7,6 +7,7 @@ import 'profile_screen.dart';
 import 'schedule_screen.dart';
 import 'ticket.dart';
 import 'station_home_screen.dart';
+import 'jarak.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -88,7 +89,7 @@ class HomePage extends StatelessWidget {
 
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
+              backgroundColor: Colors.blue.shade800,
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -106,8 +107,32 @@ class HomePage extends StatelessWidget {
           ),
 
           const SizedBox(height: 20),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue.shade800,
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const EstimasiWaktuScreen()),
+              );
+            },
+            child: const Text(
+              'Estimasi Waktu',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontFamily: 'serif',
+              ),
+            ),
+          ),
 
-          // Information Section with Grid
+          const SizedBox(height: 20),
+
           Expanded(
             child: GridView.count(
               crossAxisCount: 3,
@@ -150,6 +175,7 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
+
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
@@ -163,7 +189,6 @@ class HomePage extends StatelessWidget {
         onTap: (index) {
           switch (index) {
             case 0:
-              // Navigate to Home (currently on Home page)
               break;
             case 1:
               Navigator.push(
@@ -176,7 +201,7 @@ class HomePage extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        const ProfileScreen()), // Navigate to Profile Screen
+                        const ProfileScreen()), 
               );
               break;
           }
@@ -219,7 +244,6 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // Card for Additional Information
   Widget _buildInfoCard(String title, String imagePath) {
     return Card(
       elevation: 2,
