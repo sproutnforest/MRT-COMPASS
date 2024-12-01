@@ -19,12 +19,11 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  // Show error dialog
   void _showErrorDialog(String message) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Error', style: TextStyle(fontFamily: 'Serif')),
+        title: const Text('Failed change password', style: TextStyle(fontFamily: 'Serif')),
         content: Text(message, style: TextStyle(fontFamily: 'Serif')),
         actions: [
           TextButton(
@@ -36,9 +35,7 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
     );
   }
 
-  // Function to check password validity
   bool _isPasswordValid(String password) {
-    // Regular expression to check password strength
     RegExp regExp = RegExp(
       r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$',
     );
@@ -57,7 +54,7 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
     final String newPassword = _newPasswordController.text;
     final String confirmPassword = _confirmPasswordController.text;
 
-    // Validate if the new password meets the criteria
+
     if (!_isPasswordValid(newPassword)) {
       _showErrorDialog(
           'Password must contain at least 1 lowercase letter, 1 uppercase letter, 1 special character, and 1 number.');
@@ -70,7 +67,6 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
     }
 
     try {
-      // Reauthenticate the user with their old password
       final AuthCredential credential = EmailAuthProvider.credential(
         email: user.email!,
         password: oldPassword,
@@ -97,14 +93,12 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
         }
       }
 
-      // Show success dialog
-      _showSuccessDialog('Password successfully updated.');
+      _showSuccessDialog('Password successfully changed.');
     } catch (e) {
-      _showErrorDialog('Failed to update password: ${e.toString()}');
+      _showErrorDialog('Failed to change password: ${e.toString()}');
     }
   }
 
-// Success dialog with navigation to profile page
   void _showSuccessDialog(String message) {
     showDialog(
       context: context,
@@ -114,9 +108,7 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
         actions: [
           TextButton(
             onPressed: () {
-              // Close the dialog
               Navigator.of(context).pop();
-              // Navigate to profile page
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => ProfileScreen()),
@@ -143,7 +135,6 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            // Old password field
             TextField(
               controller: _oldPasswordController,
               obscureText: true,
@@ -151,7 +142,6 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
             ),
             const SizedBox(height: 20),
 
-            // New password field
             TextField(
               controller: _newPasswordController,
               obscureText: true,
@@ -159,7 +149,6 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
             ),
             const SizedBox(height: 20),
 
-            // Confirm new password field
             TextField(
               controller: _confirmPasswordController,
               obscureText: true,
@@ -168,7 +157,6 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
             ),
             const SizedBox(height: 40),
 
-            // Save button
             ElevatedButton(
               onPressed: _changePassword,
               style: ElevatedButton.styleFrom(
