@@ -31,8 +31,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     nameController = TextEditingController(text: widget.currentName);
     emailController = TextEditingController(text: widget.currentEmail);
     if (widget.currentImagePath != null) {
-      _profileImage =
-          File(widget.currentImagePath!);
+      _profileImage = File(widget.currentImagePath!);
     }
   }
 
@@ -58,7 +57,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("EDIT PROFIL"),
+        title: const Text("EDIT PROFIL", style: TextStyle(fontFamily: 'Serif')),
         backgroundColor: kPrimaryColor,
         foregroundColor: Colors.white,
         centerTitle: true,
@@ -74,8 +73,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   backgroundImage: _profileImage != null
                       ? FileImage(_profileImage!)
                       : widget.currentImagePath != null
-                          ? FileImage(File(widget
-                              .currentImagePath!))
+                          ? FileImage(File(widget.currentImagePath!))
                           : const AssetImage('assets/blank-profile.png')
                               as ImageProvider,
                 ),
@@ -126,7 +124,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               child: const Text(
                 "Save",
-                style: TextStyle(color: Colors.white, fontSize: 16),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontFamily: 'serif',
+                ),
               ),
             ),
           ],
