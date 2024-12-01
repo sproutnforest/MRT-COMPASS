@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mrt/Screens/toStation_screen.dart';
 import 'package:mrt/constant.dart';
 import 'profile_screen.dart';
 import 'schedule_screen.dart';
@@ -44,11 +45,20 @@ class HomePage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _buildLocationCard(
-                      'Tujuan Kamu',
-                      'Kemana kita hari ini?',
-                      Icons.directions,
-                      Colors.blue.shade800,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => RouteFinderScreen()),
+                        );
+                      },
+                      child: _buildLocationCard(
+                        'Tujuan Kamu',
+                        'Kemana kita hari ini?',
+                        Icons.directions,
+                        Colors.blue.shade800,
+                      ),
                     ),
                     _buildLocationCard(
                       'Halte & Rute',
