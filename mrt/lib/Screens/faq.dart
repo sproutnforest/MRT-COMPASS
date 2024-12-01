@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mrt/constant.dart';
+import '../constant.dart';
 
 class FAQScreen extends StatefulWidget {
   const FAQScreen({super.key});
@@ -107,7 +109,7 @@ class _FAQScreenState extends State<FAQScreen> {
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: const Text('FAQ'),
-        backgroundColor: Colors.grey[700],
+        backgroundColor: kPrimaryColor,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
@@ -124,7 +126,7 @@ class _FAQScreenState extends State<FAQScreen> {
                   width: 40,
                   height: 40,
                   decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: kPrimaryColor, 
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Center(
@@ -174,7 +176,7 @@ class _FAQScreenState extends State<FAQScreen> {
                     decoration: InputDecoration(
                       hintText: 'Ketik pesan...',
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: kPrimaryLightColor,  // Menggunakan konstanta kPrimaryLightColor
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
                         borderSide: BorderSide.none,
@@ -203,18 +205,30 @@ class _FAQScreenState extends State<FAQScreen> {
               children: [
                 ElevatedButton(
                   onPressed: () => _sendSuggestedMessage('Help'),
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all(kSecondaryColor), 
+                  ),
                   child: const Text('Help'),
                 ),
                 ElevatedButton(
                   onPressed: () => _sendSuggestedMessage('Contact Phone'),
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all(kSecondaryColor),
+                  ),
                   child: const Text('Contact Us'),
                 ),
                 ElevatedButton(
                   onPressed: () => _sendSuggestedMessage('Check Balance'),
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all(kSecondaryColor), 
+                  ),
                   child: const Text('Check Balance'),
                 ),
                 ElevatedButton(
                   onPressed: () => _sendSuggestedMessage('Transaction History'),
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all(kSecondaryColor),
+                  ),
                   child: const Text('Transaction History'),
                 ),
               ],
@@ -231,7 +245,7 @@ class _FAQScreenState extends State<FAQScreen> {
       //     BottomNavigationBarItem(
       //         icon: Icon(Icons.account_circle), label: 'Profile'),
       //   ],
-      //   selectedItemColor: Colors.blue,
+      //   selectedItemColor: kPrimaryColor,  // Menggunakan kPrimaryColor
       //   unselectedItemColor: Colors.grey,
       //   currentIndex: _selectedIndex,
       //   // onTap: _onNavBarTap,
@@ -264,7 +278,7 @@ class ChatBubble extends StatelessWidget {
           ),
           padding: const EdgeInsets.all(12.0),
           decoration: BoxDecoration(
-            color: isSentByAssistant ? Colors.blue : Colors.green,
+            color: isSentByAssistant ? kPrimaryColor : kSecondaryColor, 
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(
