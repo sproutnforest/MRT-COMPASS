@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:mrt/Screens/profile_screen.dart';
 import 'package:mrt/Screens/ticket.dart';
 import 'package:mrt/constant.dart';
+import 'dart:io';
 
 class Points extends StatefulWidget {
   @override
@@ -17,6 +18,7 @@ class _PointsState extends State<Points> {
   int buttonValue1 = 2000;
   int buttonValue2 = 4000;
   int buttonValue3 = 7000;
+  String _profilePictureUrl = 'assets/blank-profile.png';
 
   @override
   void initState() {
@@ -122,26 +124,32 @@ class _PointsState extends State<Points> {
           DocumentSnapshot document = querySnapshot.docs.first;
           String userID = document.id;
           print('Document data: ${document.data()}');
+          String profilePictureUrl =
+              document['profileImage'] ?? 'assets/blank-profile.png';
           setState(() {
             userPoints = document['points'];
+            _profilePictureUrl = profilePictureUrl;
           });
           print('User points updated to: $userPoints');
         } else {
           print('User document not found.');
           setState(() {
             userPoints = 1;
+            _profilePictureUrl = 'assets/blank-profile.png';
           });
         }
       } catch (e) {
         print('Error fetching user data: $e');
         setState(() {
           userPoints = 1;
+          _profilePictureUrl = 'assets/blank-profile.png';
         });
       }
     } else {
       print('No user is currently logged in or user email is null.');
       setState(() {
         userPoints = 1;
+        _profilePictureUrl = 'assets/blank-profile.png';
       });
     }
   }
@@ -154,8 +162,6 @@ class _PointsState extends State<Points> {
       userID = user.uid; // Get the current user's ID
     }
 
-    CollectionReference ticketsCollection =
-        FirebaseFirestore.instance.collection('riwayat_transaksi');
     CollectionReference ticketscollection =
         FirebaseFirestore.instance.collection('riwayat_transaksi');
     try {
@@ -236,7 +242,10 @@ class _PointsState extends State<Points> {
                     padding: const EdgeInsets.only(right: 35.0),
                     child: CircleAvatar(
                       radius: 50,
-                      backgroundImage: AssetImage('assets/profile_image.png'),
+                      backgroundImage: _profilePictureUrl != null
+                          ? FileImage(File(_profilePictureUrl!))
+                          : const AssetImage('assets/blank-profile.png')
+                              as ImageProvider,
                     ),
                   ),
                 ],
