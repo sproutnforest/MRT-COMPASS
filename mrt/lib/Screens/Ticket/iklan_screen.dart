@@ -22,6 +22,7 @@ class _IklanScreenState extends State<IklanScreen> {
         title: const Text('Iklan',
             style: TextStyle(
                 fontSize: 24,
+                fontFamily: 'serif',
                 color: Colors.white,
                 fontWeight: FontWeight.bold)),
       ),
