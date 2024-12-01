@@ -243,11 +243,15 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             children: [
               Icon(Icons.directions_subway, size: 20, color: color),
               const SizedBox(width: 8),
-              Text(
-                title,
-                style: TextStyle(
-                  color: color,
-                  fontWeight: FontWeight.bold,
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    color: color,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center, // Membuat teks tetap terpusat
+                  softWrap: true,
                 ),
               ),
             ],
