@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '/constant.dart';
+import 'home_screen.dart';
+import 'profile_screen.dart'; // Import the profile screen here
+import 'ticket.dart';
 
 class StationDetailScreen extends StatelessWidget {
   final Map<String, dynamic> stationData;
@@ -10,18 +13,19 @@ class StationDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Bottom Navbar
+      // top Navbar
       appBar: AppBar(
         title: const Text(
           'INFO PINTU KELUAR',
           style: TextStyle(
-            color: Colors.white,
+            color: kPrimaryLightColor,
+            fontFamily: 'serif',
           ),
         ),
         backgroundColor: kPrimaryColor,
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white), // Ikon back
+          icon: Icon(Icons.arrow_back, color: kPrimaryLightColor),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -42,11 +46,16 @@ class StationDetailScreen extends StatelessWidget {
                   children: [
                     Text(
                       stationData['name'] ??
-                          'Unknown Station', // Beri nilai default jika null
+                          'Unknown Station',
                       style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 18),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 22,
+                          fontFamily: 'serif'),
                     ),
-                    const Text('Daftar Pintu Keluar Pada Stasiun'),
+                    const Text(
+                      'Daftar Pintu Keluar Pada Stasiun',
+                      style: TextStyle(fontFamily: 'serif'),
+                    ),
                   ],
                 ),
               ],
@@ -55,12 +64,15 @@ class StationDetailScreen extends StatelessWidget {
             const SizedBox(height: 8),
             const Text(
               'Pintu Keluar',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'serif'),
             ),
             const SizedBox(height: 4),
             const Text(
               'Daftar Pintu Keluar Pada Stasiun',
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 15),
             ),
             const SizedBox(height: 20),
             Expanded(
@@ -80,12 +92,16 @@ class StationDetailScreen extends StatelessWidget {
                       Text(
                         exitName,
                         style: const TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'serif'),
                       ),
                       Text(
                         address,
-                        style:
-                            const TextStyle(fontSize: 14, color: Colors.grey),
+                        style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey,
+                            fontFamily: 'serif'),
                       ),
                       ...exitLocations.map((location) {
                         return Padding(
@@ -93,7 +109,9 @@ class StationDetailScreen extends StatelessWidget {
                           child: Text(
                             location,
                             style: const TextStyle(
-                                fontSize: 14, color: Colors.grey),
+                                fontSize: 16,
+                                color: Colors.grey,
+                                fontFamily: 'serif'),
                           ),
                         );
                       }).toList(),
@@ -108,25 +126,48 @@ class StationDetailScreen extends StatelessWidget {
 
       //bottom navbar
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
         backgroundColor: kPrimaryColor,
+        type: BottomNavigationBarType.fixed,
+
         items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
+              icon: Icon(Icons.confirmation_number), label: 'Ticket'),
           BottomNavigationBarItem(
-            icon: Icon(Icons.confirmation_number),
-            label: 'Tickets',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Profile',
+            icon: CircleAvatar(
+              radius: 12,
+              backgroundImage: AssetImage('assets/profile_image.png'),
+            ),
+            label: '',
           ),
         ],
-        selectedItemColor: Colors.white,
+        selectedItemColor: kPrimaryLightColor,
         unselectedItemColor: Colors.grey,
-        onTap: (index) {},
+        onTap: (index) {
+          // Handle bottom navigation actions here
+          switch (index) {
+            case 0:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage()),
+              );
+              break;
+            case 1:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const TicketScreen()),
+              );
+              break;
+            case 2:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        const ProfileScreen()), // Navigate to Profile Screen
+              );
+              break;
+          }
+        },
       ),
     );
   }

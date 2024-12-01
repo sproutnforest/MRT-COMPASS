@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mrt/constant.dart';
-import 'profile_screen.dart'; 
+import 'profile_screen.dart';
 import 'schedule_screen.dart';
 import 'ticket.dart';
+import 'station_home_screen.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -13,7 +14,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        toolbarHeight: 0, 
+        toolbarHeight: 0,
       ),
       body: Column(
         children: [
@@ -113,7 +114,7 @@ class HomePage extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const ScheduleScreen()),
+                      MaterialPageRoute(builder: (context) => const StationDetailHomeScreen()),
                     );
                   },
                   child: _buildInfoCard('Panduan', 'assets/icon_guide.png'),

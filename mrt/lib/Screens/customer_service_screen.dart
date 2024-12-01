@@ -15,7 +15,7 @@ class CustomerServiceScreen extends StatelessWidget {
         automaticallyImplyLeading: true,
       ),
       body: Container(
-        color: const Color.fromARGB(255, 226, 242, 255),
+        color: const Color.fromARGB(255, 255, 255, 255),
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
@@ -60,19 +60,19 @@ class CustomerServiceScreen extends StatelessWidget {
                     "Kami di MRT COMPASS berkomitmen untuk menyediakan layanan transportasi yang terbaik dan inovatif. Kami berusaha tidak hanya memenuhi harapan Anda, tetapi juga melebihi mereka. Kami menjamin layanan yang cepat, berkualitas, serta teknologi yang inovatif untuk pengalaman perjalanan yang lebih efisien dan nyaman.",
                   ),
                   const SizedBox(height: 30),
-                  _buildSectionTitle("Need Help?"),
+                  _buildSectionTitle("Butuh Bantuan?"),
                   const SizedBox(height: 10),
                   _buildContentText(
-                    "MRT COMPASS menawarkan dukungan pelanggan yang cepat dan ramah untuk memastikan perjalanan Anda berjalan lancar. Jika Anda memiliki pertanyaan tentang aplikasi atau perjalanan MRT, tim dukungan kami siap membantu Anda setiap saat.",
+                    "MRT COMPASS memberikan layanan pelanggan yang cepat dan ramah untuk memastikan perjalanan Anda berjalan lancar. Jika Anda memiliki pertanyaan tentang aplikasi atau perjalanan MRT, tim dukungan kami siap membantu Anda setiap saat.",
                   ),
                   const SizedBox(height: 30),
                   _buildContentText("MRT COMPASS Customer Support – 800.123.4567"),
                   const SizedBox(height: 20),
-                  _buildContentText("Support Regular Hours"),
-                  _buildContentText("Mon-Sat 6:00am-10:00pm, PST"),
+                  _buildContentText("Layanan setiap hari"),
+                  _buildContentText("Sen-Sab 6:00am-10:00pm, WIB"),
                   const SizedBox(height: 10),
-                  _buildContentText("Support After Hour Emergencies"),
-                  _buildContentText("Mon-Sat 10:00pm-12:00am, PST\nSunday 6:00am-6:00pm, PST"),
+                  _buildContentText("Dukungan Darurat Setelah Jam Kerja"),
+                  _buildContentText("Sen-Sab 10:00pm-12:00am, WIB \nMinggu 6:00am-6:00pm, WIB"),
                   const SizedBox(height: 40),
                   Container(
                     color: const Color.fromARGB(255, 255, 255, 255),
@@ -80,17 +80,17 @@ class CustomerServiceScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildSectionTitle("Send a Message"),
+                        _buildSectionTitle("Kirim Pesan"),
                         const SizedBox(height: 20),
-                        _buildTextField("Name"),
-                        _buildTextField("Company"),
-                        _buildTextField("Phone"),
+                        _buildTextField("Nama"),
+                        _buildTextField("Perusahaan"),
+                        _buildTextField("No Telphone"),
                         _buildTextField("Email"),
-                        _buildTextField("Message", maxLines: 4),
+                        _buildTextField("Pesan", maxLines: 4),
                         const SizedBox(height: 20),
                         ElevatedButton(
                           onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Terima kasih telah menghubungi kami!")));
+                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Terima kasih telah menghubungi kami!")));
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: kSecondaryColor,
@@ -101,13 +101,13 @@ class CustomerServiceScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 40),
-                  _buildSectionTitle("The Latest"),
+                  _buildSectionTitle("Terbaru"),
                   const SizedBox(height: 10),
                   _buildContentText(
                     "Pembaruan Terbaru: MRT COMPASS memperkenalkan sistem pemesanan tiket terbaru yang memungkinkan pengguna memesan tiket lebih cepat dan mudah.\n\nJadwal MRT baru saja diperbarui untuk memastikan perjalanan yang lebih tepat waktu dan efisien.",
                   ),
                   const SizedBox(height: 20),
-                  _buildSectionTitle("Stay Up-to-Date"),
+                  _buildSectionTitle("Mendapatkan Update Informasi"),
                   _buildTextField("Enter your email address"),
                   const SizedBox(height: 20),
                   ElevatedButton(
@@ -137,6 +137,7 @@ class CustomerServiceScreen extends StatelessWidget {
       style: const TextStyle(
         fontSize: 28,
         fontWeight: FontWeight.bold,
+        fontFamily: 'serif', 
       ),
       textAlign: TextAlign.center,
     );
@@ -145,7 +146,10 @@ class CustomerServiceScreen extends StatelessWidget {
   Widget _buildContentText(String text) {
     return Text(
       text,
-      style: const TextStyle(fontSize: 14),
+      style: const TextStyle(
+        fontSize: 14,
+        fontFamily: 'serif', 
+      ),
       textAlign: TextAlign.justify,
     );
   }
@@ -153,21 +157,28 @@ class CustomerServiceScreen extends StatelessWidget {
   Widget _buildSectionTitle(String text) {
     return Text(
       text,
-      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      style: const TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        fontFamily: 'serif', 
+      ),
     );
   }
 
   Widget _buildFooter() {
     return const Align(
-      alignment: Alignment.bottomCenter, 
+      alignment: Alignment.bottomCenter,
       child: Padding(
-        padding: EdgeInsets.only(bottom: 100.0), 
+        padding: EdgeInsets.only(bottom: 100.0),
         child: Column(
           children: [
             Text(
               "MRT COMPASS\nJl. Raya Transportasi No. 123\nJakarta, Indonesia\nToll Free: 800.123.4567\nEmail: support@mrtcompass.com",
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14),
+              style: TextStyle(
+                fontSize: 14,
+                fontFamily: 'serif', 
+              ),
             ),
           ],
         ),
@@ -184,6 +195,7 @@ class CustomerServiceScreen extends StatelessWidget {
           labelText: label,
           border: const OutlineInputBorder(),
         ),
+        style: const TextStyle(fontFamily: 'serif'), 
       ),
     );
   }
