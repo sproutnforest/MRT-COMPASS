@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mrt/Screens/Ticket/ticket_screen.dart';
 
 class TicketPurchaseScreen extends StatefulWidget {
   @override
@@ -202,6 +203,7 @@ class _TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
             style: TextStyle(
                 fontSize: 24,
                 color: Colors.white,
+                fontFamily: 'serif',
                 fontWeight: FontWeight.bold)),
         leading: IconButton(
           icon: const Icon(Icons.close),
@@ -209,7 +211,7 @@ class _TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => TicketScreen(),
+                builder: (context) => const TicketScreen(),
               ),
             );
           },
@@ -222,7 +224,7 @@ class _TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
           children: [
             const Text(
               'Pembelian Tiket',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontFamily: 'serif', fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
           
@@ -277,7 +279,7 @@ class _TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
            
             const Text(
               'Jumlah Tiket',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 16, fontFamily: 'serif', fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Container(
@@ -345,7 +347,7 @@ class _TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
             const Divider(),
             const Text(
               'Rincian Pembelian',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 16, fontFamily: 'serif', fontWeight: FontWeight.bold),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -358,12 +360,14 @@ class _TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
                       'Harga Tiket',
                       style: TextStyle(
                         fontSize: 16,
+                        fontFamily: 'serif',
                       ),
                     ),
                     Text(
                       'Rp ${hargaPerTikets.toStringAsFixed(0)}',
                       style: const TextStyle(
                         fontSize: 16,
+                        fontFamily: 'serif',
                       ),
                     ),
                   ],
@@ -375,12 +379,12 @@ class _TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
                     const Text(
                       'Total Harga',
                       style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 16, fontFamily: 'serif', fontWeight: FontWeight.bold),
                     ),
                     Text(
                       'Rp ${totalPrice.toStringAsFixed(0)}',
                       style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold),
+                          fontSize: 16, fontFamily: 'serif', fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -408,12 +412,12 @@ class _TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
                                 children: [
                                   Row(
                                     children: [
-                                      Spacer(),
+                                      const Spacer(),
                                       IconButton(
                                           onPressed: () {
                                             Navigator.pop(context);
                                           },
-                                          icon: Icon(Icons.cancel_outlined))
+                                          icon: const Icon(Icons.cancel_outlined))
                                     ],
                                   ),
                                   const Text(
@@ -421,6 +425,7 @@ class _TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
                                     style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
+                                      fontFamily: 'serif',
                                     ),
                                   ),
                                   const SizedBox(height: 16),
@@ -431,7 +436,7 @@ class _TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
                                     '\n4. Penumpang wajib mengikuti peraturan yang berlaku di dalam kereta dan stasiun.'
                                     '\n5. Penumpang bertanggung jawab atas barang bawaan pribadi.'
                                     '\n\nBaca lebih lanjut di website kami.',
-                                    style: TextStyle(fontSize: 14),
+                                    style: TextStyle(fontSize: 14, fontFamily: 'serif'),
                                   ),
                                   const SizedBox(height: 16),
                                 ],
@@ -446,6 +451,7 @@ class _TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
                       style: TextStyle(
                         color: Colors.blue,
                         fontWeight: FontWeight.bold,
+                        fontFamily: 'serif',
                       ),
                     ),
                   ),
@@ -463,6 +469,7 @@ class _TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
+                          fontFamily: 'serif',
                           color: Colors.white),
                     ),
                   ),
@@ -542,6 +549,7 @@ class _TravelOptionState extends State<_TravelOption> {
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'serif',
                   color: widget.isSelected ? Colors.blue : Colors.black,
                 ),
                 textAlign: TextAlign.center,
