@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:mrt/Screens/home_screen.dart';
+import 'package:mrt/Screens/nearest_station.dart';
 import 'package:mrt/Screens/profile_screen.dart';
 import 'package:mrt/Screens/ticket.dart';
 import 'package:timeline_tile/timeline_tile.dart';
@@ -13,6 +15,13 @@ class Routes extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(CupertinoIcons.back, color: Colors.black),
+            onPressed: () => Navigator.pop(context),
+          ),
+          backgroundColor: Colors.white,
+        ),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
@@ -24,19 +33,30 @@ class Routes extends StatelessWidget {
                   children: [
                     const SizedBox(height: 30),
                     SizedBox(
-                      width: 375, // Control the width of the TextField
-                      child: TextField(
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: const Color(0xFFE0E0E0),
-                          border: OutlineInputBorder(
+                      width: 375,
+                      height: 60, // Control the width of the TextField
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: tertiaryColor,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 10),
+                          shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          labelText: 'Stasiun apa?',
-                          hintText: 'Aku mau ke stasiun ',
-                          suffixIcon: IconButton(
-                            icon: const Icon(CupertinoIcons.search),
-                            onPressed: () {},
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LocationWidget()),
+                          );
+                        },
+                        child: const Text(
+                          'Cari Stasiun Terdekat',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontFamily: 'serif',
                           ),
                         ),
                       ),
@@ -44,10 +64,9 @@ class Routes extends StatelessWidget {
                     const SizedBox(height: 20),
                     TimelineTile(
                       isFirst: true,
-                      beforeLineStyle:
-                          const LineStyle(color: Color(0xFF173156)),
+                      beforeLineStyle: const LineStyle(color: kPrimaryColor),
                       indicatorStyle:
-                          const IndicatorStyle(color: Color(0xFF173156)),
+                          const IndicatorStyle(color: kPrimaryColor),
                       endChild: Container(
                         margin: const EdgeInsets.all(25),
                         child: ElevatedButton(
@@ -61,8 +80,7 @@ class Routes extends StatelessWidget {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color(0xFFFFAA00), // Button color
+                            backgroundColor: kSecondaryColor, // Button color
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 15), // Button size
                             shape: RoundedRectangleBorder(
@@ -82,10 +100,9 @@ class Routes extends StatelessWidget {
                       ),
                     ),
                     TimelineTile(
-                      beforeLineStyle:
-                          const LineStyle(color: Color(0xFF173156)),
+                      beforeLineStyle: const LineStyle(color: kPrimaryColor),
                       indicatorStyle:
-                          const IndicatorStyle(color: Color(0xFF173156)),
+                          const IndicatorStyle(color: kPrimaryColor),
                       endChild: Container(
                         margin: const EdgeInsets.all(25),
                         child: ElevatedButton(
@@ -99,8 +116,7 @@ class Routes extends StatelessWidget {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color(0xFFFFAA00), // Button color
+                            backgroundColor: kSecondaryColor, // Button color
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 15), // Button size
                             shape: RoundedRectangleBorder(
@@ -114,16 +130,16 @@ class Routes extends StatelessWidget {
                               fontSize: 18, // Text size
                               fontWeight: FontWeight.bold, // Bold text
                               color: Colors.white, // Text color
+                              fontFamily: 'serif',
                             ),
                           ),
                         ),
                       ),
                     ),
                     TimelineTile(
-                      beforeLineStyle:
-                          const LineStyle(color: Color(0xFF173156)),
+                      beforeLineStyle: const LineStyle(color: kPrimaryColor),
                       indicatorStyle:
-                          const IndicatorStyle(color: Color(0xFF173156)),
+                          const IndicatorStyle(color: kPrimaryColor),
                       endChild: Container(
                         margin: const EdgeInsets.all(25),
                         child: ElevatedButton(
@@ -137,8 +153,7 @@ class Routes extends StatelessWidget {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color(0xFFFFAA00), // Button color
+                            backgroundColor: kSecondaryColor, // Button color
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 15), // Button size
                             shape: RoundedRectangleBorder(
@@ -152,16 +167,16 @@ class Routes extends StatelessWidget {
                               fontSize: 18, // Text size
                               fontWeight: FontWeight.bold, // Bold text
                               color: Colors.white, // Text color
+                              fontFamily: 'serif',
                             ),
                           ),
                         ),
                       ),
                     ),
                     TimelineTile(
-                      beforeLineStyle:
-                          const LineStyle(color: Color(0xFF173156)),
+                      beforeLineStyle: const LineStyle(color: kPrimaryColor),
                       indicatorStyle:
-                          const IndicatorStyle(color: Color(0xFF173156)),
+                          const IndicatorStyle(color: kPrimaryColor),
                       endChild: Container(
                         margin: const EdgeInsets.all(25),
                         child: ElevatedButton(
@@ -175,8 +190,7 @@ class Routes extends StatelessWidget {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color(0xFFFFAA00), // Button color
+                            backgroundColor: kSecondaryColor, // Button color
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 15), // Button size
                             shape: RoundedRectangleBorder(
@@ -190,16 +204,16 @@ class Routes extends StatelessWidget {
                               fontSize: 18, // Text size
                               fontWeight: FontWeight.bold, // Bold text
                               color: Colors.white, // Text color
+                              fontFamily: 'serif',
                             ),
                           ),
                         ),
                       ),
                     ),
                     TimelineTile(
-                      beforeLineStyle:
-                          const LineStyle(color: Color(0xFF173156)),
+                      beforeLineStyle: const LineStyle(color: kPrimaryColor),
                       indicatorStyle:
-                          const IndicatorStyle(color: Color(0xFF173156)),
+                          const IndicatorStyle(color: kPrimaryColor),
                       endChild: Container(
                         margin: const EdgeInsets.all(25),
                         child: ElevatedButton(
@@ -213,8 +227,7 @@ class Routes extends StatelessWidget {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color(0xFFFFAA00), // Button color
+                            backgroundColor: kSecondaryColor, // Button color
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 15), // Button size
                             shape: RoundedRectangleBorder(
@@ -228,16 +241,16 @@ class Routes extends StatelessWidget {
                               fontSize: 18, // Text size
                               fontWeight: FontWeight.bold, // Bold text
                               color: Colors.white, // Text color
+                              fontFamily: 'serif',
                             ),
                           ),
                         ),
                       ),
                     ),
                     TimelineTile(
-                      beforeLineStyle:
-                          const LineStyle(color: Color(0xFF173156)),
+                      beforeLineStyle: const LineStyle(color: kPrimaryColor),
                       indicatorStyle:
-                          const IndicatorStyle(color: Color(0xFF173156)),
+                          const IndicatorStyle(color: kPrimaryColor),
                       endChild: Container(
                         margin: const EdgeInsets.all(25),
                         child: ElevatedButton(
@@ -251,8 +264,7 @@ class Routes extends StatelessWidget {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color(0xFFFFAA00), // Button color
+                            backgroundColor: kSecondaryColor, // Button color
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 15), // Button size
                             shape: RoundedRectangleBorder(
@@ -266,16 +278,16 @@ class Routes extends StatelessWidget {
                               fontSize: 18, // Text size
                               fontWeight: FontWeight.bold, // Bold text
                               color: Colors.white, // Text color
+                              fontFamily: 'serif',
                             ),
                           ),
                         ),
                       ),
                     ),
                     TimelineTile(
-                      beforeLineStyle:
-                          const LineStyle(color: Color(0xFF173156)),
+                      beforeLineStyle: const LineStyle(color: kPrimaryColor),
                       indicatorStyle:
-                          const IndicatorStyle(color: Color(0xFF173156)),
+                          const IndicatorStyle(color: kPrimaryColor),
                       endChild: Container(
                         margin: const EdgeInsets.all(25),
                         child: ElevatedButton(
@@ -289,8 +301,7 @@ class Routes extends StatelessWidget {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color(0xFFFFAA00), // Button color
+                            backgroundColor: kSecondaryColor, // Button color
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 15), // Button size
                             shape: RoundedRectangleBorder(
@@ -304,16 +315,16 @@ class Routes extends StatelessWidget {
                               fontSize: 18, // Text size
                               fontWeight: FontWeight.bold, // Bold text
                               color: Colors.white, // Text color
+                              fontFamily: 'serif',
                             ),
                           ),
                         ),
                       ),
                     ),
                     TimelineTile(
-                      beforeLineStyle:
-                          const LineStyle(color: Color(0xFF173156)),
+                      beforeLineStyle: const LineStyle(color: kPrimaryColor),
                       indicatorStyle:
-                          const IndicatorStyle(color: Color(0xFF173156)),
+                          const IndicatorStyle(color: kPrimaryColor),
                       endChild: Container(
                         margin: const EdgeInsets.all(25),
                         child: ElevatedButton(
@@ -321,14 +332,13 @@ class Routes extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    const RoutesDetail(routes: "Senayan"),
+                                builder: (context) => const RoutesDetail(
+                                    routes: "Senayan Mastercard"),
                               ),
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color(0xFFFFAA00), // Button color
+                            backgroundColor: kSecondaryColor, // Button color
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 15), // Button size
                             shape: RoundedRectangleBorder(
@@ -337,21 +347,21 @@ class Routes extends StatelessWidget {
                             ),
                           ),
                           child: const Text(
-                            'Senayan',
+                            'Senayan Mastercard',
                             style: TextStyle(
                               fontSize: 18, // Text size
                               fontWeight: FontWeight.bold, // Bold text
                               color: Colors.white, // Text color
+                              fontFamily: 'serif',
                             ),
                           ),
                         ),
                       ),
                     ),
                     TimelineTile(
-                      beforeLineStyle:
-                          const LineStyle(color: Color(0xFF173156)),
+                      beforeLineStyle: const LineStyle(color: kPrimaryColor),
                       indicatorStyle:
-                          const IndicatorStyle(color: Color(0xFF173156)),
+                          const IndicatorStyle(color: kPrimaryColor),
                       endChild: Container(
                         margin: const EdgeInsets.all(25),
                         child: ElevatedButton(
@@ -365,8 +375,7 @@ class Routes extends StatelessWidget {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color(0xFFFFAA00), // Button color
+                            backgroundColor: kSecondaryColor, // Button color
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 15), // Button size
                             shape: RoundedRectangleBorder(
@@ -380,16 +389,16 @@ class Routes extends StatelessWidget {
                               fontSize: 18, // Text size
                               fontWeight: FontWeight.bold, // Bold text
                               color: Colors.white, // Text color
+                              fontFamily: 'serif',
                             ),
                           ),
                         ),
                       ),
                     ),
                     TimelineTile(
-                      beforeLineStyle:
-                          const LineStyle(color: Color(0xFF173156)),
+                      beforeLineStyle: const LineStyle(color: kPrimaryColor),
                       indicatorStyle:
-                          const IndicatorStyle(color: Color(0xFF173156)),
+                          const IndicatorStyle(color: kPrimaryColor),
                       endChild: Container(
                         margin: const EdgeInsets.all(25),
                         child: ElevatedButton(
@@ -403,8 +412,7 @@ class Routes extends StatelessWidget {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color(0xFFFFAA00), // Button color
+                            backgroundColor: kSecondaryColor, // Button color
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 15), // Button size
                             shape: RoundedRectangleBorder(
@@ -418,16 +426,16 @@ class Routes extends StatelessWidget {
                               fontSize: 18, // Text size
                               fontWeight: FontWeight.bold, // Bold text
                               color: Colors.white, // Text color
+                              fontFamily: 'serif',
                             ),
                           ),
                         ),
                       ),
                     ),
                     TimelineTile(
-                      beforeLineStyle:
-                          const LineStyle(color: Color(0xFF173156)),
+                      beforeLineStyle: const LineStyle(color: kPrimaryColor),
                       indicatorStyle:
-                          const IndicatorStyle(color: Color(0xFF173156)),
+                          const IndicatorStyle(color: kPrimaryColor),
                       endChild: Container(
                         margin: const EdgeInsets.all(25),
                         child: ElevatedButton(
@@ -441,8 +449,7 @@ class Routes extends StatelessWidget {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color(0xFFFFAA00), // Button color
+                            backgroundColor: kSecondaryColor, // Button color
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 15), // Button size
                             shape: RoundedRectangleBorder(
@@ -456,16 +463,16 @@ class Routes extends StatelessWidget {
                               fontSize: 18, // Text size
                               fontWeight: FontWeight.bold, // Bold text
                               color: Colors.white, // Text color
+                              fontFamily: 'serif',
                             ),
                           ),
                         ),
                       ),
                     ),
                     TimelineTile(
-                      beforeLineStyle:
-                          const LineStyle(color: Color(0xFF173156)),
+                      beforeLineStyle: const LineStyle(color: kPrimaryColor),
                       indicatorStyle:
-                          const IndicatorStyle(color: Color(0xFF173156)),
+                          const IndicatorStyle(color: kPrimaryColor),
                       endChild: Container(
                         margin: const EdgeInsets.all(25),
                         child: ElevatedButton(
@@ -479,8 +486,7 @@ class Routes extends StatelessWidget {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color(0xFFFFAA00), // Button color
+                            backgroundColor: kSecondaryColor, // Button color
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 15), // Button size
                             shape: RoundedRectangleBorder(
@@ -494,6 +500,7 @@ class Routes extends StatelessWidget {
                               fontSize: 18, // Text size
                               fontWeight: FontWeight.bold, // Bold text
                               color: Colors.white, // Text color
+                              fontFamily: 'serif',
                             ),
                           ),
                         ),
@@ -501,10 +508,9 @@ class Routes extends StatelessWidget {
                     ),
                     TimelineTile(
                       isLast: true,
-                      beforeLineStyle:
-                          const LineStyle(color: Color(0xFF173156)),
+                      beforeLineStyle: const LineStyle(color: kPrimaryColor),
                       indicatorStyle:
-                          const IndicatorStyle(color: Color(0xFF173156)),
+                          const IndicatorStyle(color: kPrimaryColor),
                       endChild: Container(
                         margin: const EdgeInsets.all(25),
                         child: ElevatedButton(
@@ -512,14 +518,13 @@ class Routes extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    const RoutesDetail(routes: "Bundaran HI"),
+                                builder: (context) => const RoutesDetail(
+                                    routes: "Bundaran HI Bank DKI"),
                               ),
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color(0xFFFFAA00), // Button color
+                            backgroundColor: kSecondaryColor, // Button color
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 15), // Button size
                             shape: RoundedRectangleBorder(
@@ -528,11 +533,12 @@ class Routes extends StatelessWidget {
                             ),
                           ),
                           child: const Text(
-                            'Bundaran HI',
+                            'Bundaran HI Bank DKI',
                             style: TextStyle(
                               fontSize: 18, // Text size
                               fontWeight: FontWeight.bold, // Bold text
                               color: Colors.white, // Text color
+                              fontFamily: 'serif',
                             ),
                           ),
                         ),
@@ -545,39 +551,40 @@ class Routes extends StatelessWidget {
           ),
         ),
         bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.confirmation_number),
-              label: 'Ticket'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle), label: 'Profile'),
-        ],
-        selectedItemColor: kPrimaryColor,
-        unselectedItemColor: Colors.grey,
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              // Navigate to Home (currently on Home page)
-              break;
-            case 1:
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const TicketScreen()),
-              );
-              break;
-            case 2:
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                         const ProfileScreen()), // Navigate to Profile Screen
-              );
-              break;
-          }
-        },
-      ),
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.confirmation_number), label: 'Ticket'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.account_circle), label: 'Profile'),
+          ],
+          selectedItemColor: kPrimaryColor,
+          unselectedItemColor: Colors.grey,
+          onTap: (index) {
+            switch (index) {
+              case 0:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomePage()),
+                );
+                break;
+              case 1:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const TicketScreen()),
+                );
+                break;
+              case 2:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          const ProfileScreen()), // Navigate to Profile Screen
+                );
+                break;
+            }
+          },
+        ),
       ),
     );
   }

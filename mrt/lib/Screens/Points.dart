@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mrt/Screens/home_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:mrt/Screens/profile_screen.dart';
 import 'package:mrt/Screens/ticket.dart';
 import 'package:mrt/constant.dart';
@@ -58,7 +60,48 @@ class _PointsState extends State<Points> {
     } else {
       print('No user is currently logged in or user email is null.');
       setState(() {
-        userPoints = 1; // Set a default value when the user is not logged in
+        userPoints = 1;
+      });
+    }
+  }
+
+  void removePoints(int many) async {
+    var user = FirebaseAuth.instance.currentUser;
+
+    if (user != null && user.email != null) {
+      String email = user.email!;
+      print('User email: $email');
+
+      CollectionReference usersCollection =
+          FirebaseFirestore.instance.collection('Users');
+      try {
+        QuerySnapshot querySnapshot =
+            await usersCollection.where('email', isEqualTo: email).get();
+        if (querySnapshot.docs.isNotEmpty) {
+          DocumentSnapshot document = querySnapshot.docs.first;
+          int currentPoints = document['points'];
+          int newPoints = currentPoints - many;
+          await document.reference.update({'points': newPoints});
+          print('User points updated to: $newPoints');
+          setState(() {
+            userPoints = newPoints;
+          });
+        } else {
+          print('User document not found.');
+          setState(() {
+            userPoints = 1;
+          });
+        }
+      } catch (e) {
+        print('Error fetching user data: $e');
+        setState(() {
+          userPoints = 1;
+        });
+      }
+    } else {
+      print('No user is currently logged in or user email is null.');
+      setState(() {
+        userPoints = 1;
       });
     }
   }
@@ -77,6 +120,7 @@ class _PointsState extends State<Points> {
             await usersCollection.where('email', isEqualTo: email).get();
         if (querySnapshot.docs.isNotEmpty) {
           DocumentSnapshot document = querySnapshot.docs.first;
+          String userID = document.id;
           print('Document data: ${document.data()}');
           setState(() {
             userPoints = document['points'];
@@ -97,29 +141,64 @@ class _PointsState extends State<Points> {
     } else {
       print('No user is currently logged in or user email is null.');
       setState(() {
-        userPoints = 1; // Set a default value when the user is not logged in
+        userPoints = 1;
       });
+    }
+  }
+
+  void addTickets(int manytickets, int points) async {
+    var user = FirebaseAuth.instance.currentUser;
+    String userID = "unknown";
+
+    if (user != null) {
+      userID = user.uid; // Get the current user's ID
+    }
+
+    CollectionReference ticketsCollection =
+        FirebaseFirestore.instance.collection('riwayat_transaksi');
+    CollectionReference ticketscollection =
+        FirebaseFirestore.instance.collection('riwayat_transaksi');
+    try {
+      DocumentReference documentRef = await ticketscollection.add({
+        'created_at': FieldValue.serverTimestamp(),
+        'harga': 0,
+        'qty': manytickets,
+        'stasiun_berangkat': "Kemana aja",
+        'stasiun_tujuan': "Kemana aja",
+        'status': "aktif",
+        'uid': userID,
+      });
+      removePoints(points);
+      print('Document added with ID: ${documentRef.id}');
+    } catch (e) {
+      print('Error adding document: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     Color buttonColor1 =
-        buttonValue1 > userPoints ? Colors.grey : const Color(0xFFFFAA00);
+        buttonValue1 > userPoints ? Colors.grey : kSecondaryColor;
     Color buttonColor2 =
-        buttonValue2 > userPoints ? Colors.grey : const Color(0xFFFFAA00);
+        buttonValue2 > userPoints ? Colors.grey : kSecondaryColor;
     Color buttonColor3 =
-        buttonValue3 > userPoints ? Colors.grey : const Color(0xFFFFAA00);
+        buttonValue3 > userPoints ? Colors.grey : kSecondaryColor;
 
     return MaterialApp(
       home: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(CupertinoIcons.back, color: Colors.black),
+            onPressed: () => Navigator.pop(context),
+          ),
+          backgroundColor: kPrimaryHoverColor,
+        ),
         body: Column(
           children: [
-            // The existing blue container section
             Container(
               width: double.infinity,
-              height: 350,
-              color: Colors.blue,
+              height: 275,
+              color: kPrimaryHoverColor,
               padding: const EdgeInsets.all(16.0),
               child: Row(
                 children: [
@@ -132,15 +211,20 @@ class _PointsState extends State<Points> {
                         children: [
                           Text(
                             'My MRT-points',
-                            style: TextStyle(color: Colors.white, fontSize: 18),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontFamily: 'serif',
+                            ),
                           ),
                           SizedBox(height: 8),
                           Text(
                             '${userPoints.toString()}',
                             style: TextStyle(
-                              color: const Color(0xFFFFAA00),
+                              color: kSecondaryColor,
                               fontSize: 30,
                               fontWeight: FontWeight.bold,
+                              fontFamily: 'serif',
                             ),
                           ),
                         ],
@@ -168,6 +252,7 @@ class _PointsState extends State<Points> {
                   color: Colors.black,
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'serif',
                 ),
               ),
             ),
@@ -184,6 +269,7 @@ class _PointsState extends State<Points> {
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 18,
+                        fontFamily: 'serif',
                       ),
                     ),
                   ),
@@ -193,8 +279,7 @@ class _PointsState extends State<Points> {
                       onPressed: buttonColor1 == Colors.grey
                           ? null
                           : () {
-                              // Add your action for when the button is clicked here
-                              print('Button 1 pressed');
+                              addTickets(1, 2000);
                             },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -209,6 +294,7 @@ class _PointsState extends State<Points> {
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
+                          fontFamily: 'serif',
                         ),
                       ),
                     ),
@@ -229,6 +315,7 @@ class _PointsState extends State<Points> {
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 18,
+                        fontFamily: 'serif',
                       ),
                     ),
                   ),
@@ -238,8 +325,7 @@ class _PointsState extends State<Points> {
                       onPressed: buttonColor2 == Colors.grey
                           ? null
                           : () {
-                              // Add your action for when the button is clicked here
-                              print('Button 2 pressed');
+                              addTickets(3, 4000);
                             },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -254,6 +340,7 @@ class _PointsState extends State<Points> {
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
+                          fontFamily: 'serif',
                         ),
                       ),
                     ),
@@ -274,6 +361,7 @@ class _PointsState extends State<Points> {
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 18,
+                        fontFamily: 'serif',
                       ),
                     ),
                   ),
@@ -283,8 +371,7 @@ class _PointsState extends State<Points> {
                       onPressed: buttonColor3 == Colors.grey
                           ? null
                           : () {
-                              // Add your action for when the button is clicked here
-                              print('Button 3 pressed');
+                              addTickets(5, 7000);
                             },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -299,6 +386,7 @@ class _PointsState extends State<Points> {
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
+                          fontFamily: 'serif',
                         ),
                       ),
                     ),
@@ -321,7 +409,10 @@ class _PointsState extends State<Points> {
           onTap: (index) {
             switch (index) {
               case 0:
-                // Navigate to Home (currently on Home page)
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomePage()),
+                );
                 break;
               case 1:
                 Navigator.push(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mrt/Screens/toStation_screen.dart';
+import 'package:mrt/Screens/Routes.dart';
+import 'package:mrt/Screens/nearest_station.dart';
 import 'package:mrt/constant.dart';
 import 'profile_screen.dart';
 import 'schedule_screen.dart';
@@ -60,11 +62,19 @@ class HomePage extends StatelessWidget {
                         Colors.blue.shade800,
                       ),
                     ),
-                    _buildLocationCard(
-                      'Halte & Rute',
-                      'Telusuri Halte dan Rute',
-                      Icons.map,
-                      Colors.orange.shade800,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Routes()),
+                        );
+                      },
+                      child: _buildLocationCard(
+                        'Halte & Rute',
+                        'Telusuri Halte dan Rute',
+                        Icons.map,
+                        Colors.orange.shade800,
+                      ),
                     ),
                   ],
                 ),
@@ -82,8 +92,7 @@ class HomePage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-            onPressed: () {
-            },
+            onPressed: () {},
             child: const Text(
               'Beli Tiket',
               style: TextStyle(
@@ -105,17 +114,19 @@ class HomePage extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const ScheduleScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const LocationWidget()),
                     );
                   },
-                  child:
-                      _buildInfoCard('Arah MRT', 'assets/icon_direction.png'),
+                  child: _buildInfoCard(
+                      'Stasiun Terdekat', 'assets/icon_direction.png'),
                 ),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const ScheduleScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const ScheduleScreen()),
                     );
                   },
                   child: _buildInfoCard('Jadwal', 'assets/icon_schedule.png'),
@@ -124,7 +135,9 @@ class HomePage extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const StationDetailHomeScreen()),
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const StationDetailHomeScreen()),
                     );
                   },
                   child: _buildInfoCard('Panduan', 'assets/icon_guide.png'),
@@ -134,13 +147,11 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.confirmation_number),
-              label: 'Ticket'),
+              icon: Icon(Icons.confirmation_number), label: 'Ticket'),
           BottomNavigationBarItem(
               icon: Icon(Icons.account_circle), label: 'Profile'),
         ],
@@ -154,8 +165,7 @@ class HomePage extends StatelessWidget {
             case 1:
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => const TicketScreen()),
+                MaterialPageRoute(builder: (context) => const TicketScreen()),
               );
               break;
             case 2:
@@ -163,7 +173,7 @@ class HomePage extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                         const ProfileScreen()), // Navigate to Profile Screen
+                        const ProfileScreen()), // Navigate to Profile Screen
               );
               break;
           }
