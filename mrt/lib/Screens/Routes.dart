@@ -94,6 +94,7 @@ class Routes extends StatelessWidget {
                               fontSize: 18, // Text size
                               fontWeight: FontWeight.bold, // Bold text
                               color: Colors.white, // Text color
+                              fontFamily: 'serif',
                             ),
                           ),
                         ),
