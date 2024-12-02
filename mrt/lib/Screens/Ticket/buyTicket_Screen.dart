@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mrt/Screens/Ticket/ticket_screen.dart';
+import 'package:mrt/constant.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TicketPurchaseScreen extends StatefulWidget {
   @override
@@ -61,65 +62,66 @@ class _TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
   }
 
   void _submitTransaction() async {
-  if (selectedStation == "Dari Stasiun" || selectedStationTo == "Ke Stasiun") {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Pilih stasiun keberangkatan dan tujuan.")),
-    );
-    return;
-  }
-
-  final prefs = await SharedPreferences.getInstance();
-  final uid = prefs.getString('uid');
-  try {
-     final now = Timestamp.now(); 
-    await FirebaseFirestore.instance.collection('riwayat_transaksi').add({
-      'stasiun_berangkat': selectedStation,
-      'stasiun_tujuan': selectedStationTo,
-      'uid': uid,
-      'harga': totalPrice ~/ (isPergiPulangSelected ? 2 : 1),
-      'qty': _counter,
-      'status': "aktif",
-      'created_at': now,
-    });
-
-    if (isPergiPulangSelected) {
-      await FirebaseFirestore.instance.collection('riwayat_transaksi').add({
-        'stasiun_berangkat': selectedStationTo,
-        'stasiun_tujuan': selectedStation,
-        'uid': uid,
-        'harga': totalPrice ~/ 2,
-        'qty': _counter,
-        'status': "aktif",
-        'created_at': now, 
-      });
+    if (selectedStation == "Dari Stasiun" ||
+        selectedStationTo == "Ke Stasiun") {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text("Pilih stasiun keberangkatan dan tujuan.")),
+      );
+      return;
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Transaksi berhasil ditambahkan.")),
-    );
+    final prefs = await SharedPreferences.getInstance();
+    final uid = prefs.getString('uid');
+    try {
+      final now = Timestamp.now();
+      await FirebaseFirestore.instance.collection('riwayat_transaksi').add({
+        'stasiun_berangkat': selectedStation,
+        'stasiun_tujuan': selectedStationTo,
+        'uid': uid,
+        'harga': totalPrice ~/ (isPergiPulangSelected ? 2 : 1),
+        'qty': _counter,
+        'status': "aktif",
+        'created_at': now,
+      });
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => TicketScreen(),
-      ),
-    );
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Terjadi kesalahan: $e")),
-    );
+      if (isPergiPulangSelected) {
+        await FirebaseFirestore.instance.collection('riwayat_transaksi').add({
+          'stasiun_berangkat': selectedStationTo,
+          'stasiun_tujuan': selectedStation,
+          'uid': uid,
+          'harga': totalPrice ~/ 2,
+          'qty': _counter,
+          'status': "aktif",
+          'created_at': now,
+        });
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Transaksi berhasil ditambahkan.")),
+      );
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TicketScreen(),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Terjadi kesalahan: $e")),
+      );
+    }
   }
-}
-
 
   void _showStationPicker(BuildContext context) async {
     final stationsSnapshot = await FirebaseFirestore.instance
         .collection('station')
-        .orderBy('jarak') 
+        .orderBy('jarak')
         .get();
 
     final stations = stationsSnapshot.docs
-        .where((station) => station['nama'] != selectedStationTo) 
+        .where((station) => station['nama'] != selectedStationTo)
         .toList();
 
     showModalBottomSheet(
@@ -195,27 +197,21 @@ class _TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        iconTheme: const IconThemeData(
-          color: Colors.white,
+        title: const Text(
+          'Beli Tiket',
+          style: TextStyle(
+            fontFamily: 'serif',
+            color: Colors.white,
+          ),
         ),
-        backgroundColor: const Color(0xFF173156),
-        title: const Text('Beli Tiket',
-            style: TextStyle(
-                fontSize: 24,
-                color: Colors.white,
-                fontFamily: 'serif',
-                fontWeight: FontWeight.bold)),
+        backgroundColor: kPrimaryColor,
         leading: IconButton(
-          icon: const Icon(Icons.close),
+          icon: Icon(Icons.arrow_back, color: kPrimaryLightColor),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const TicketScreen(),
-              ),
-            );
+            Navigator.pop(context);
           },
         ),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -224,10 +220,12 @@ class _TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
           children: [
             const Text(
               'Pembelian Tiket',
-              style: TextStyle(fontSize: 18, fontFamily: 'serif', fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 18,
+                  fontFamily: 'serif',
+                  fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-          
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
@@ -276,10 +274,12 @@ class _TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
               ),
             ),
             const SizedBox(height: 24),
-           
             const Text(
               'Jumlah Tiket',
-              style: TextStyle(fontSize: 16, fontFamily: 'serif', fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 16,
+                  fontFamily: 'serif',
+                  fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Container(
@@ -303,7 +303,6 @@ class _TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
                   ],
                 )),
             const SizedBox(height: 24),
-         
             const Text(
               'Pilihan Perjalanan',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -343,11 +342,13 @@ class _TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
               ],
             ),
             const Spacer(),
-           
             const Divider(),
             const Text(
               'Rincian Pembelian',
-              style: TextStyle(fontSize: 16, fontFamily: 'serif', fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 16,
+                  fontFamily: 'serif',
+                  fontWeight: FontWeight.bold),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -378,31 +379,32 @@ class _TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
                   children: [
                     const Text(
                       'Total Harga',
-                      style:
-                          TextStyle(fontSize: 16, fontFamily: 'serif', fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: 'serif',
+                          fontWeight: FontWeight.bold),
                     ),
                     Text(
                       'Rp ${totalPrice.toStringAsFixed(0)}',
                       style: const TextStyle(
-                          fontSize: 16, fontFamily: 'serif', fontWeight: FontWeight.bold),
+                          fontSize: 16,
+                          fontFamily: 'serif',
+                          fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
                 const SizedBox(height: 16),
               ],
             ),
-
             Center(
               child: Column(
                 children: [
                   TextButton(
                     onPressed: () {
-                      
                       showModalBottomSheet(
                         context: context,
                         backgroundColor: Colors.white,
-                        isScrollControlled:
-                            true, 
+                        isScrollControlled: true,
                         builder: (BuildContext context) {
                           return Padding(
                             padding: const EdgeInsets.all(16.0),
@@ -417,7 +419,8 @@ class _TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
                                           onPressed: () {
                                             Navigator.pop(context);
                                           },
-                                          icon: const Icon(Icons.cancel_outlined))
+                                          icon:
+                                              const Icon(Icons.cancel_outlined))
                                     ],
                                   ),
                                   const Text(
@@ -436,7 +439,8 @@ class _TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
                                     '\n4. Penumpang wajib mengikuti peraturan yang berlaku di dalam kereta dan stasiun.'
                                     '\n5. Penumpang bertanggung jawab atas barang bawaan pribadi.'
                                     '\n\nBaca lebih lanjut di website kami.',
-                                    style: TextStyle(fontSize: 14, fontFamily: 'serif'),
+                                    style: TextStyle(
+                                        fontSize: 14, fontFamily: 'serif'),
                                   ),
                                   const SizedBox(height: 16),
                                 ],
@@ -523,7 +527,6 @@ class _TravelOptionState extends State<_TravelOption> {
     return Expanded(
       child: GestureDetector(
         onTap: () {
-        
           widget.onSelected(!widget.isSelected);
         },
         child: Container(
