@@ -32,7 +32,7 @@ class _EstimasiWaktuScreenState extends State<EstimasiWaktuScreen> {
     'Bundaran HI': 15,
     'Sudirman': 20, 
     'Setiabudi': 25,
-    'Benhill': 30, 
+    'Bendungan Hilir': 30, 
     'Fatmawati': 75, 
     'Lebak Bulus': 90,
   };
@@ -97,7 +97,7 @@ class _EstimasiWaktuScreenState extends State<EstimasiWaktuScreen> {
             if (estimasiWaktu != null)
               Text(
                 estimasiWaktu!,
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 18, fontFamily: 'serif', fontWeight: FontWeight.bold),
               ),
           ],
         ),
