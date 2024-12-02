@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:mrt/Screens/toStation_screen.dart';
 import 'package:mrt/Screens/Routes.dart';
 import 'package:mrt/Screens/nearest_station.dart';
+import 'package:mrt/Screens/toStation_screen.dart';
 import 'package:mrt/constant.dart';
+
+import 'Ticket/buyTicket_Screen.dart';
+import 'jarak.dart';
 import 'profile_screen.dart';
 import 'schedule_screen.dart';
-import 'ticket.dart';
 import 'station_home_screen.dart';
+import 'ticket.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -68,7 +71,8 @@ class HomePage extends StatelessWidget {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const Routes()),
+                          MaterialPageRoute(
+                              builder: (context) => const Routes()),
                         );
                       },
                       child: _buildLocationCard(
@@ -83,18 +87,21 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
-
           const SizedBox(height: 20),
-
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
+              backgroundColor: Colors.blue.shade800,
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => TicketPurchaseScreen()),
+              );
+            },
             child: const Text(
               'Beli Tiket',
               style: TextStyle(
@@ -104,10 +111,32 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-
           const SizedBox(height: 20),
-
-          // Information Section with Grid
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue.shade800,
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const EstimasiWaktuScreen()),
+              );
+            },
+            child: const Text(
+              'Estimasi Waktu',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontFamily: 'serif',
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
           Expanded(
             child: GridView.count(
               crossAxisCount: 3,
@@ -163,7 +192,6 @@ class HomePage extends StatelessWidget {
         onTap: (index) {
           switch (index) {
             case 0:
-              // Navigate to Home (currently on Home page)
               break;
             case 1:
               Navigator.push(
@@ -174,9 +202,7 @@ class HomePage extends StatelessWidget {
             case 2:
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        const ProfileScreen()), // Navigate to Profile Screen
+                MaterialPageRoute(builder: (context) => const ProfileScreen()),
               );
               break;
           }
@@ -211,7 +237,8 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 5),
             Text(
               subtitle,
-              style: const TextStyle(color: Colors.white, fontFamily: 'serif', fontSize: 12),
+              style: const TextStyle(
+                  color: Colors.white, fontFamily: 'serif', fontSize: 12),
             ),
           ],
         ),
@@ -219,7 +246,6 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // Card for Additional Information
   Widget _buildInfoCard(String title, String imagePath) {
     return Card(
       elevation: 2,
