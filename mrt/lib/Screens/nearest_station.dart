@@ -6,7 +6,9 @@ import 'package:mrt/Screens/profile_screen.dart';
 import 'dart:math';
 import 'package:mrt/Screens/ticket.dart';
 import 'package:mrt/Screens/ticket_screen_history.dart';
+import 'package:mrt/Screens/toStation_screen.dart';
 import 'package:mrt/constant.dart';
+import 'RoutesDetail.dart';
 
 class LocationService {
   late double lat;
@@ -80,7 +82,7 @@ class LocationService {
                           double bundaranhi = calculateDistance(
                               lng, lat, 106.82297685198046, -6.191667968783277);
                           if (dukuhatas > bundaranhi) {
-                            station = "Bundaran HI";
+                            station = "Bundaran HI Bank DKI";
                           } else {
                             station = "Dukuh Atas BNI";
                           }
@@ -91,10 +93,10 @@ class LocationService {
                         station = "Bendungan Hilir";
                       }
                     } else {
-                      station = "Istora Mnadiri";
+                      station = "Istora Mandiri";
                     }
                   } else {
-                    station = "Senayan";
+                    station = "Senayan Mastercard";
                   }
                 } else {
                   station = "ASEAN";
@@ -210,6 +212,41 @@ class _LocationWidgetState extends State<LocationWidget> {
                   ),
                 ),
               ),
+              SizedBox(height: 15),
+              SizedBox(
+    width: 170,
+    child: isLoading
+        ? Text(" ")
+        :  SizedBox(
+                    width: 300, // Match the width of the first button
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RoutesDetail(
+                                    routes: nearestStation),
+                              ),
+                            );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: kSecondaryColor,
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      child: const Text(
+                        'Lihat stasiun',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontFamily: 'serif',
+                        ),
+                      ),
+                    ),
+                  ), ),               
             ],
           ),
         ),
